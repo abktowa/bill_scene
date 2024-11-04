@@ -1,1 +1,1 @@
-Check out our (group notion page)[https://www.notion.so/Project-3-Group-page-1303b34792c48004b53dc1561fd303cf?pvs=4] where we list the project details and assign jobs (Speak to Sam to get access)
+Check out our [group notion page](https://www.notion.so/Project-3-Group-page-1303b34792c48004b53dc1561fd303cf?pvs=4) where we list the project details and assign jobs (Speak to Sam to get access)
