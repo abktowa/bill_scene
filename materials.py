@@ -13,7 +13,7 @@ from OpenGL.GL import *
 
 class Materials:
 	
-	# Material class
+	# Material object
 	class Material:
 		def __init__(self, ambient, diffuse, specular, shininess):
 			self.ambient = ambient
