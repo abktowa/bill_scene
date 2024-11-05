@@ -1,8 +1,9 @@
 """
-This class holds all the necessary materials for our project, making it easy to set them.
+This class contains all the materials required for our project and includes a setter method. 
+It simplifies the process of assigning materials. 
 Additional materials can be looked up and added as needed.
 
-Example usage:
+Example usage in the main code:
 Materials.set_material(GL_FRONT, Materials.COPPER)
 """
 
