@@ -1,3 +1,9 @@
+# Project 3: Interactive (Billiard Table) Scene
+
+## Authors
+Aban Khan, Shmuel Feld, Matthew Glennon, Jose Salgado, Sai Srujan Vemula, Camryn Keller
+
+## Task assignment
 Check out our [group notion page](https://www.notion.so/Project-3-Group-page-1303b34792c48004b53dc1561fd303cf?pvs=4) where we list the project details and assign jobs (Speak to Sam to get access)<br/>
 
 ## Consistency guidelines
