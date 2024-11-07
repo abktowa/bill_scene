@@ -10,11 +10,26 @@ Check out our [group notion page](https://www.notion.so/Project-3-Group-page-130
 - When drawing our scene, one unit in the coordanite system will correspond to one foot
 - When creating hierarchical models, objects will be centered along the x and z axes, positioned above the ground level, as if they’re placed on the floor at the y = 0 plane, as shown in the image below.
 ![demopnstration](https://github.com/user-attachments/assets/562dd0e4-c9a5-4814-aefc-b15df373a29a)
-- We'll follow standard Python style conventions. Some examples are provided below:
+- We'll follow standard Python style conventions. Here are some standard Python style guidelines:
 
     | Element               | Naming Convention | Example                                    |
     |-----------------------|-------------------|--------------------------------------------|
     | **File, Variable, and Function Names** | `snake_case`      | `data_loader.py`, `user_name`, `process_data()` |
     | **Class Names**       | `CamelCase`       | `DataProcessor`, `UserAccount`             |
     | **Constants**         | `ALL_CAPS`        | `MAX_SIZE`, `DEFAULT_TIMEOUT`              |
+
+- **Animation**: We can animate items separately by incrementing separate frame counters for each animated element. When an animation is active, the corresponding frame counter is incremented to create motion over time. Here's an example:
+
+    ```python
+    def animation():
+        global dice_frame, eight_ball_frame
+        if animate_dice:
+            dice_frame += 1
+        if animate_eight_ball:
+            eight_ball_frame += 1
+    ```
+
+
+
+
 
