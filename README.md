@@ -22,7 +22,7 @@ Check out our [group notion page](https://www.notion.so/Project-3-Group-page-130
 
     ```python
     def animation():
-        global dice_frame, eight_ball_frame
+        global animate_dice, dice_frame, animate_eight_ball, eight_ball_frame
         if animate_dice:
             dice_frame += 1
         if animate_eight_ball:
