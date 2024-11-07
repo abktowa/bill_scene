@@ -12,6 +12,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 from utils import *
 from basic_shapes import *
+from components import *
 from materials import *
 from preview import *
 import math
@@ -259,7 +260,9 @@ class Preview:
 
         # Preview the element
         
-        BasicShapes.draw_sphere(1) # (radius)
+        # Components.draw_intricate_leg()
+
+        # BasicShapes.draw_sphere(1) # (radius)
         # BasicShapes.draw_rectangle(3,3,3) # (length, width, height)
         # BasicShapes.draw_pyramid(3,3) # (base, height)
         # BasicShapes.draw_prism(8,1,2) # (sides, height, side_length)
