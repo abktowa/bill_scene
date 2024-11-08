@@ -259,15 +259,8 @@ class Preview:
         Materials.set_material(GL_FRONT_AND_BACK, Materials.WOOD)
 
         # Preview the element
-        
-        # Components.draw_intricate_leg()
 
-        # BasicShapes.draw_sphere(1) # (radius)
-        # BasicShapes.draw_rectangle(3,3,3) # (length, width, height)
-        # BasicShapes.draw_pyramid(3,3) # (base, height)
-        # BasicShapes.draw_prism(8,1,2) # (sides, height, side_length)
-        # BasicShapes.draw_cone(1,3) # (radius, height)
-        # BasicShapes.draw_cylinder(1,3) # (radius, height)
+        # Components.draw_elegant_table(5,3)
 
 
         
