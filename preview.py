@@ -260,7 +260,7 @@ class Preview:
 
         # Preview the element
 
-        # Components.draw_elegant_table(5,3)
+        Components.draw_elegant_table(5,3)
 
 
         
