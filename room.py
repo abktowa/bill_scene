@@ -15,9 +15,9 @@ WINDOW_HEIGHT = 800
 FPS = 60
 
 # Room dimensions
-ROOM_WIDTH = 10.0
-ROOM_HEIGHT = 4.0
-ROOM_DEPTH = 10.0
+ROOM_WIDTH = 15.0
+ROOM_HEIGHT = 8.0
+ROOM_DEPTH = 15.0
 
 # Camera settings
 CAM_ANGLE = 60.0
@@ -195,8 +195,8 @@ class Room:
         glTexCoord2f(0, 2); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
         glEnd()
 
-    def draw_components():
-        Components.draw_elegant_table
+    def draw_components(self):
+        Components.draw_elegant_table(5,3)
 
 
     def display(self):
@@ -208,6 +208,7 @@ class Room:
         
         self.setup_lights()
         self.draw_room()
+        self.draw_components()
         
         pygame.display.flip()
 

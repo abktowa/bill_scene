@@ -16,6 +16,7 @@ class Components:
     # Table functions
     #==============================
 
+    # Draws a 3 unit tall table with a given length and width
     def draw_elegant_table(length, width):
         glPushMatrix() 
 
