@@ -46,9 +46,4 @@ Check out our [group notion page](https://www.notion.so/Project-3-Group-page-130
             """
             glEnable(GL_TEXTURE_2D)  # Enable texturing
             glBindTexture(GL_TEXTURE_2D, texture_id)  # Bind the texture
-        
-        @staticmethod
-        def end_texture():
-            """Disable texturing after drawing the textured object."""
-            glDisable(GL_TEXTURE_2D)
     ```
