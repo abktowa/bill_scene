@@ -28,7 +28,7 @@ Check out our [group notion page](https://www.notion.so/Project-3-Group-page-130
         if animate_eight_ball:
             eight_ball_frame += 1
     ```
-- **Applying Materials**: Applying materials in the scene is simple. Just use a line like `Materials.set_material(GL_FRONT, Materials.COPPER)` **before drawing an object** to set its material properties. This material will be applied to all objects drawn afterward until a new material is set. You’ll find plenty of predefined materials in the `Materials` class (like `Materials.SILVER` or `Materials.GOLD`), and you can add your own custom materials there if you want.
+- **Applying Materials**: Applying materials in the scene is simple. Just use a line like `Materials.set_material(GL_FRONT, Materials.COPPER)` before drawing an object to set its material properties. This material will be applied to all objects drawn afterward until a new material is set. You’ll find plenty of predefined materials in the `Materials` class (like `Materials.SILVER` or `Materials.GOLD`), and you can add your own custom materials there if you want.
 
 - **Switching Between Textures and Materials** *(if you are not texture mapping, no need to worry about this one)*: When using both textures and materials, take care to avoid interference between the two. Use the `Textures` class to apply textures, and be sure to include `glEnable(GL_TEXTURE_2D)` to enable textures and `glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)` to make textures respond to lighting. Additionally, disable materials if they’re not required for the textured object. The `set_material` function in the `Materials` class automatically disables textures, so no further action is needed when switching to a material-only object.
 
