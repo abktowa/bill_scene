@@ -156,6 +156,14 @@ class BasicShapes:
                            
         """
 
+    def draw_cone(base_radius, height, slices=32, stacks=1):
+        glPushMatrix()
+        glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cone to be vertical along the Y-axis
+        quadric = gluNewQuadric()
+        gluCylinder(quadric, base_radius, 0.0, height, slices, stacks)  # Create the cone
+        gluDeleteQuadric(quadric)
+        glPopMatrix()
+
     def draw_cylinder(radius, height, slices=32, stacks=1):
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cylinder to be vertical along the Y-axis
@@ -164,11 +172,11 @@ class BasicShapes:
         gluDeleteQuadric(quadric)
         glPopMatrix()
 
-    def draw_cone(base_radius, height, slices=32, stacks=1):
+    def draw_adjustable_cylinder(bottom_radius, top_radius, height, slices=32, stacks=1):
         glPushMatrix()
-        glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cone to be vertical along the Y-axis
+        glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cylinder to be vertical along the Y-axis
         quadric = gluNewQuadric()
-        gluCylinder(quadric, base_radius, 0.0, height, slices, stacks)  # Create the cone
+        gluCylinder(quadric, bottom_radius, top_radius, height, slices, stacks)  # Create the cylinder
         gluDeleteQuadric(quadric)
         glPopMatrix()
 

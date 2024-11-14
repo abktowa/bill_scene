@@ -64,6 +64,13 @@ class Components:
 
         glPopMatrix()
 
+    #==============================
+    # Lamp functions
+    #==============================
+
+    def draw_lamp_shade(height):
+        BasicShapes.draw_adjustable_cylinder(height, height/2, height) # bottom_radius, top_radius, height
+
 
 
 

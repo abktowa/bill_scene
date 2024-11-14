@@ -256,7 +256,7 @@ class Preview:
         BasicShapes.draw_coordinate_frame()
 
         # Set the maerial
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.WOOD)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 

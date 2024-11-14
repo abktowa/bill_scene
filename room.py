@@ -126,6 +126,7 @@ class Room:
         if index < len(light_names):
             self.lights[light_names[index]] = not self.lights[light_names[index]]
 
+
     def create_textures(self):
         """Create all textures"""
         self.textures = {
@@ -133,6 +134,7 @@ class Room:
             'wall': Textures.create_wall_texture(),
             'ceiling': Textures.create_ceiling_texture()
         }
+
 
     def draw_room(self):
         """Draw the room with textured walls, floor, and ceiling"""
@@ -195,8 +197,14 @@ class Room:
         glTexCoord2f(0, 2); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
         glEnd()
 
+
+
     def draw_components(self):
+
+        Materials.set_material(GL_FRONT, Materials.GREEN_FELT)
+        glDisable(GL_TEXTURE_2D)  # Disable texturing
         Components.draw_elegant_table(5,3)
+        glEnable(GL_TEXTURE_2D)  # Re-enable texturing
 
 
     def display(self):
@@ -219,10 +227,12 @@ class Room:
             self.display()
             self.clock.tick(FPS)
 
+
 def main():
     room = Room()
     room.run()
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
