@@ -56,7 +56,6 @@ class Room:
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
         glEnable(GL_NORMALIZE)
-        glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_TEXTURE_2D)
         
         # Set up basic lighting
@@ -138,6 +137,9 @@ class Room:
 
     def draw_room(self):
         """Draw the room with textured walls, floor, and ceiling"""
+        glEnable(GL_TEXTURE_2D)  # Enable texture
+        glEnable(GL_COLOR_MATERIAL) # Allows glColor* to set material colors
+
         # Floor with checkerboard texture
         glBindTexture(GL_TEXTURE_2D, self.textures['floor'])
         glBegin(GL_QUADS)
@@ -197,14 +199,18 @@ class Room:
         glTexCoord2f(0, 2); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
         glEnd()
 
+        glDisable(GL_COLOR_MATERIAL) # Disable glColor* from setting material colors to allow custom materials
+        glDisable(GL_TEXTURE_2D)  # Disable texture
+
 
 
     def draw_components(self):
+        
+        Materials.set_material(GL_FRONT, Materials.WOOD)
+        Components.draw_elegant_table(5, 3)
 
-        Materials.set_material(GL_FRONT, Materials.GREEN_FELT)
-        glDisable(GL_TEXTURE_2D)  # Disable texturing
-        Components.draw_elegant_table(5,3)
-        glEnable(GL_TEXTURE_2D)  # Re-enable texturing
+
+
 
 
     def display(self):

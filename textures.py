@@ -60,7 +60,8 @@ class Textures:
             
             size = 64
             # Light gray color for walls
-            color = [192, 192, 192]  # Light gray
+            gray_level = 192
+            color = [gray_level, gray_level, gray_level]  # Light gray
             data = []
             
             # Fill the entire texture with the same color
