@@ -1,5 +1,5 @@
 """
-This class containes the textures in our projects
+This class containes the textures for our projects
 
 """
 

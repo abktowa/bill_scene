@@ -51,6 +51,7 @@ class Room:
         
         self.running = True
 
+
     def init_gl(self):
         """Initialize OpenGL settings"""
         glEnable(GL_DEPTH_TEST)
@@ -203,14 +204,10 @@ class Room:
         glDisable(GL_TEXTURE_2D)  # Disable texture
 
 
-
     def draw_components(self):
         
         Materials.set_material(GL_FRONT, Materials.WOOD)
         Components.draw_elegant_table(5, 3)
-
-
-
 
 
     def display(self):
@@ -225,6 +222,7 @@ class Room:
         self.draw_components()
         
         pygame.display.flip()
+
 
     def run(self):
         """Main game loop"""

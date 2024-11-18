@@ -1,5 +1,5 @@
 """
-This class contains all the materials required for our project and includes a setter method. 
+This class contains the materials for our project and includes a setter method. 
 It simplifies the process of assigning materials. 
 Additional materials can be looked up and added as needed.
 
