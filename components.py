@@ -79,14 +79,27 @@ class Components:
     # Ball functions
     #==============================
 
-    def draw_ball():
+    def draw_1ball():
+        glPushMatrix()
+        BasicShapes.draw_sphere(0.186)
+        glPopMatrix()
 
-        # Draws sphere in ft, appropriate size for table
-        BasicShapes.draw_sphere(.186)
-
-        glTranslatef(1, 0, 0)
-        BasicShapes.draw_sphere(.186)
-
-
-
+    def draw_4ball():
+        glPushMatrix()
+        # Move to the left for the second ball
+        glTranslatef(-0.5, 0, 0.5)
+        BasicShapes.draw_sphere(0.186)
+        
+        # Move to the right for the third ball
+        glTranslatef(1.0, 0, 0)
+        BasicShapes.draw_sphere(0.186)
+        
+        # Move to the left for the fourth ball
+        glTranslatef(-1.0, 0, 0.5)
+        BasicShapes.draw_sphere(0.186)
+        
+        # Move to the right for the fifth ball
+        glTranslatef(1.0, 0, 0)
+        BasicShapes.draw_sphere(0.186)
+        glPopMatrix()
 
