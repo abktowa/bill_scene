@@ -113,9 +113,6 @@ class Preview:
         Preview.set_light(GL_LIGHT0, Preview.light0_pos)
         Preview.set_light(GL_LIGHT1, Preview.light1_pos)
 
-
-
-
     def main_loop():
         global running, clock, animate
         while running:
@@ -267,6 +264,10 @@ class Preview:
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.DARK_SILVER)
         # Components.draw_ball()
+
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.WOOD)
+        glTranslate(0,4,0)
+        Components.draw_cue_stick()
 
 
         

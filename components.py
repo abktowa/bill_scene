@@ -71,9 +71,12 @@ class Components:
     def draw_lamp_shade(height):
         BasicShapes.draw_adjustable_cylinder(height, height/2, height) # bottom_radius, top_radius, height
 
+    #==============================
+    # Cue Sticks
+    #==============================
 
-
-
+    def draw_cue_stick():
+        BasicShapes.draw_adjustable_cylinder(0.0984, 0.0426, 4.57) # bottom_radius, top_radius, height
 
     #==============================
     # Ball functions
@@ -86,7 +89,6 @@ class Components:
 
         glTranslatef(1, 0, 0)
         BasicShapes.draw_sphere(.186)
-
 
 
 
