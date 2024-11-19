@@ -73,6 +73,7 @@ class Materials:
 		material -- Material instance (like the ones above), such as Materials.COPPER or Materials.SILVER.
 		"""
 		glDisable(GL_TEXTURE_2D)  # Ensure textures are off before setting materials
+		glEnable(GL_LIGHTING) # Ensure lighting is enabled
 
 		glMaterialfv(face, GL_AMBIENT, material.ambient)
 		glMaterialfv(face, GL_DIFFUSE, material.diffuse)
