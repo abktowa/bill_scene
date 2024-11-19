@@ -7,7 +7,7 @@ Aban Khan, Shmuel Feld, Matthew Glennon, Jose Salgado, Sai Srujan Vemula, Camryn
 Check out our [group notion page](https://www.notion.so/Project-3-Group-page-1303b34792c48004b53dc1561fd303cf?pvs=4) where we list the project details and assign jobs (Speak to Sam to get access)<br/>
 
 ## Consistency guidelines
-- **Units**: When drawing our scene, one unit in the coordanite system will correspond to one foot
+- **Units**: When drawing our scene, one unit in the coordinate system will correspond to one foot
 - **Models**: When creating hierarchical models, objects will be centered along the x and z axes, positioned above the ground level, as if they’re placed on the floor at the y = 0 plane, as shown in the image below.
 ![demopnstration](https://github.com/user-attachments/assets/562dd0e4-c9a5-4814-aefc-b15df373a29a)
 - **Style**: We'll follow standard Python style conventions. Here are some standard Python style guidelines:

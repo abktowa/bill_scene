@@ -75,4 +75,18 @@ class Components:
 
 
 
+    #==============================
+    # Ball functions
+    #==============================
+
+    def draw_ball():
+
+        # Draws sphere in ft, appropriate size for table
+        BasicShapes.draw_sphere(.186)
+
+        glTranslatef(1, 0, 0)
+        BasicShapes.draw_sphere(.186)
+
+
+
 

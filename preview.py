@@ -251,16 +251,22 @@ class Preview:
 
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE)
 
-        # Draw coordanite frame
+        # Draw coordinate frame
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
         BasicShapes.draw_coordinate_frame()
 
-        # Set the maerial
+        # Set the material
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 
         Components.draw_elegant_table(5,3)
+
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+        Components.draw_ball()
+
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.DARK_SILVER)
+        # Components.draw_ball()
 
 
         
