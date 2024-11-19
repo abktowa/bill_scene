@@ -104,10 +104,15 @@ class Components:
     # Dice functions
     #==============================
 
-    def draw_dice(): 
+    def draw_die(): 
+        glPushMatrix()
+        glTranslatef(1, 0, 0)
+        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+        glPopMatrix()
+
+    """ def draw_dice():
         glPushMatrix()
         glTranslatef(1, 0, 0)
         BasicShapes.draw_cube(0.10, 0.10, 0.10)
         glTranslatef(0.13, 0, 0)
-        BasicShapes.draw_cube(0.10, 0.10, 0.10)
-        glPopMatrix()
+        glPopMatrix() """
