@@ -72,9 +72,6 @@ class Components:
         BasicShapes.draw_adjustable_cylinder(height, height/2, height) # bottom_radius, top_radius, height
 
 
-
-
-
     #==============================
     # Ball functions
     #==============================
@@ -103,3 +100,14 @@ class Components:
         BasicShapes.draw_sphere(0.186)
         glPopMatrix()
 
+    #==============================
+    # Dice functions
+    #==============================
+
+    def draw_dice(): 
+        glPushMatrix()
+        glTranslatef(1, 0, 0)
+        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+        glTranslatef(0.13, 0, 0)
+        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+        glPopMatrix()

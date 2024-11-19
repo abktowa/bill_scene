@@ -268,9 +268,8 @@ class Preview:
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
         Components.draw_1ball()
 
-        # Materials.set_material(GL_FRONT_AND_BACK, Materials.DARK_SILVER)
-        # Components.draw_ball()
-
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
+        Components.draw_dice()
 
         
 
