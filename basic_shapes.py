@@ -91,6 +91,46 @@ class BasicShapes:
 
         """
 
+    # Function to draw a dice
+
+    def draw_cube(length, width, height):
+        glPushMatrix()
+
+        # Calculate half length and width sizes (for centering the pyramid on the x and z axes)
+        half_length = length/2
+        half_width = width/2
+
+        # Define vertices for a rectangle
+        vertices = [
+            [-half_length, 0, -half_width],       # Vertex 0
+            [half_length, 0, -half_width],        # Vertex 1
+            [half_length, height, -half_width],   # Vertex 2
+            [-half_length, height, -half_width],  # Vertex 3
+            [-half_length, 0, half_width],        # Vertex 4
+            [half_length, 0, half_width],         # Vertex 5
+            [half_length, height, half_width],    # Vertex 6
+            [-half_length, height, half_width]    # Vertex 7
+        ]
+
+        # Defines the rectangle faces created by the given vertices
+        # For example the first face is the bottom, created with vertices 0,1,2 and 3 above
+        faces = [
+            (0, 3, 2, 1), # Face 1 (bottom) #
+            (3, 7, 6, 2), # Face 2 (back) #
+            (7, 4, 5, 6), # Face 3 (top) #
+            (0, 1, 5, 4), # Face 4 (front) #
+            (0, 4, 7, 3), # Face 5 (left) 
+            (1, 2, 6, 5)  # Face 6 (right)
+        ]
+        
+        # Draw the cube
+        glBegin(GL_QUADS)
+        for face in faces:
+            for vertex in face:
+                glVertex3fv(vertices[vertex])
+        glEnd()
+
+        glPopMatrix()
         
     # Function to generate a standard pyramid
     def draw_pyramid(base_size, height):

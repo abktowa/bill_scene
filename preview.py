@@ -262,12 +262,14 @@ class Preview:
 
         Components.draw_elegant_table(5,3)
 
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
+        Components.draw_4ball()
+
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
-        Components.draw_ball()
+        Components.draw_1ball()
 
-        # Materials.set_material(GL_FRONT_AND_BACK, Materials.DARK_SILVER)
-        # Components.draw_ball()
-
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
+        Components.draw_dice()
 
         
 
