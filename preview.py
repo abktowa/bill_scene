@@ -264,9 +264,6 @@ class Preview:
         Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-    
-
-
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         # Components.draw_4ball()
 
