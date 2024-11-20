@@ -15,15 +15,15 @@ WINDOW_HEIGHT = 800
 FPS = 60
 
 # Room dimensions
-ROOM_WIDTH = 15.0
-ROOM_HEIGHT = 8.0
-ROOM_DEPTH = 15.0
+ROOM_WIDTH = 20.0
+ROOM_HEIGHT = 15.0
+ROOM_DEPTH = 20.0
 
 # Camera settings
 CAM_ANGLE = 60.0
 CAM_NEAR = 0.01
 CAM_FAR = 1000.0
-INITIAL_EYE = Point(0, 2, 8)
+INITIAL_EYE = Point(0, 5.67, 8)
 INITIAL_LOOK_ANGLE = 0
 
 class Room:
@@ -92,9 +92,17 @@ class Room:
         if keys[pygame.K_s]:
             self.camera.slide(0, 0, 0.1)
         if keys[pygame.K_a]:
-            self.camera.turn(1)
+            self.camera.slide(-0.1, 0,0)
         if keys[pygame.K_d]:
-            self.camera.turn(-1)   
+            self.camera.slide(0.1, 0,0)
+        if keys[pygame.K_LEFT]:
+            self.camera.turn(1)
+        if keys[pygame.K_RIGHT]:
+            self.camera.turn(-1) 
+        if keys[pygame.K_DOWN]:
+            self.camera.rise(-1)
+        if keys[pygame.K_UP]:
+            self.camera.rise(1)   
 
 
     def setup_lights(self):
@@ -207,11 +215,11 @@ class Room:
     def draw_components(self):
         
         Materials.set_material(GL_FRONT, Materials.WOOD)
-        Components.draw_elegant_table(5, 3)
+        Components.draw_elegant_table(8, 4)
 
          # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
-        glTranslatef(-ROOM_WIDTH/2 + 2.5, 0, -ROOM_DEPTH/2 + 1.5)  # Move to corner
+        glTranslatef(-ROOM_WIDTH/2 + 1.3, 0, -ROOM_DEPTH/2 + 1.3)  # Move to corner
         Components.draw_table_with_lamp(2, 2)  # Draw table
         glPopMatrix()  # Restore previous transformation matrix
 
