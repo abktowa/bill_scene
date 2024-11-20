@@ -22,21 +22,90 @@ import math
 class BasicShapes:
 
     def draw_sphere(radius):
-        quad = gluNewQuadric()  # Create a new quadric for the sphere
+        quadric = gluNewQuadric()  # Create a new quadric for the sphere
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
         
         glPushMatrix()  # Save the current matrix
         glTranslatef(0.0, radius, 0.0)  # Translate to place sphere on the y = 0 plane
         
         # Draw the sphere with specified radius, smooth appearance with 32 slices and stacks
-        gluSphere(quad, radius, 32, 32)
+        gluSphere(quadric, radius, 32, 32)
         
         glPopMatrix()  # Restore the previous matrix state
-        gluDeleteQuadric(quad)  # Clean up the quadric object
+        gluDeleteQuadric(quadric)  # Clean up the quadric object
 
 
     # Draws a rectangle, with the following three paramates:
     # length is the distance in the x direction, width is in the z direction, and height is in the y direction
     def draw_rectangle(length, width, height):
+        glPushMatrix()
+
+        # Calculate half length and width sizes (for centering the pyramid on the x and z axes)
+        half_length = length/2
+        half_width = width/2
+
+        # Define vertices for a rectangle
+        vertices = [
+            [-half_length, 0, -half_width],       # Vertex 0
+            [half_length, 0, -half_width],        # Vertex 1
+            [half_length, height, -half_width],   # Vertex 2
+            [-half_length, height, -half_width],  # Vertex 3
+            [-half_length, 0, half_width],        # Vertex 4
+            [half_length, 0, half_width],         # Vertex 5
+            [half_length, height, half_width],    # Vertex 6
+            [-half_length, height, half_width]    # Vertex 7
+        ]
+
+        # Defines the rectangle faces created by the given vertices
+        # For example the first face is the bottom, created with vertices 0,1,2 and 3 above
+        faces = [
+            (0, 3, 2, 1), # Face 1 (bottom) #
+            (3, 7, 6, 2), # Face 2 (back) #
+            (7, 4, 5, 6), # Face 3 (top) #
+            (0, 1, 5, 4), # Face 4 (front) #
+            (0, 4, 7, 3), # Face 5 (left) 
+            (1, 2, 6, 5)  # Face 6 (right)
+        ]
+        
+        # Map texture coordinates to vertices
+        tex_coords = [
+            (0.0, 0.0),  # Bottom-left
+            (1.0, 0.0),  # Bottom-right
+            (1.0, 1.0),  # Top-right
+            (0.0, 1.0)   # Top-left
+        ]
+
+        # Draw the cube
+        glBegin(GL_QUADS)
+        for face in faces:
+            for i, vertex in enumerate(face):
+                glTexCoord2f(*tex_coords[i])  # Map texture coordinates
+                glVertex3fv(vertices[vertex])  # Define vertex
+        glEnd()
+
+        glPopMatrix()
+
+        """
+        Visual repersentation with vertexes labled:
+
+          7 ──────── 6
+          /|        /|
+         / |       / |
+        4 ──────── 5 |
+        |  |      |  |
+        |  |      |  |
+        |  3 ─────── 2
+        | /       | /
+        |/        |/
+       0 ──────── 1
+
+        """
+
+    # Function to draw a dice
+
+    def draw_cube(length, width, height):
         glPushMatrix()
 
         # Calculate half length and width sizes (for centering the pyramid on the x and z axes)
@@ -74,32 +143,17 @@ class BasicShapes:
         glEnd()
 
         glPopMatrix()
-
-        """
-        Visual repersentation with vertexes labled:
-
-          7 ──────── 6
-          /|        /|
-         / |       / |
-        4 ──────── 5 |
-        |  |      |  |
-        |  |      |  |
-        |  3 ─────── 2
-        | /       | /
-        |/        |/
-       0 ──────── 1
-
-        """
-
         
     # Function to generate a standard pyramid
     def draw_pyramid(base_size, height):
         BasicShapes.draw_rectangular_pyramid(base_size, base_size, height)
 
 
-    # Function to generate a pyramid with a rectangular base
+    # Function to generate a pyramid with a rectangular base and texture
     def draw_rectangular_pyramid(base_width, base_length, height):
         glPushMatrix()
+        glEnable(GL_TEXTURE_2D)  # Enable texture mapping
+
         # Calculate half base size (for centering the pyramid on the x and z axes)
         half_width = base_width / 2.0
         half_length = base_length / 2.0
@@ -117,26 +171,52 @@ class BasicShapes:
         ]
         
         # Define the indices for the triangles (4 sides + base)
-        indices = [
+        side_indices = [
             # Sides (4 triangles)
             [0, 4, 1],  # Triangle 1
             [1, 4, 2],  # Triangle 2
             [2, 4, 3],  # Triangle 3
             [3, 4, 0],  # Triangle 4
-
-            # Base (1 square, 2 triangles)
+        ]
+        
+        base_indices = [
+            # Base (rectangle split into two triangles)
             [0, 1, 2],  # Triangle 5
             [0, 2, 3]   # Triangle 6
         ]
 
-        # Begin drawing triangles
+        # Define texture coordinates for the pyramid
+        side_tex_coords = [
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],  # Texture for each side
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],
+        ]
+
+        base_tex_coords = [
+            [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],  # Texture for base triangle 1
+            [0.0, 0.0], [1.0, 1.0], [0.0, 1.0],  # Texture for base triangle 2
+        ]
+
+        # Draw the sides of the pyramid
         glBegin(GL_TRIANGLES)
-        for face in indices:
-            for vertex in face:
+        for i, face in enumerate(side_indices):
+            for j, vertex in enumerate(face):
+                glTexCoord2f(side_tex_coords[i * 3 + j][0], side_tex_coords[i * 3 + j][1])
                 glVertex3fv(vertices[vertex])
         glEnd()
 
+        # Draw the base of the pyramid
+        glBegin(GL_TRIANGLES)
+        for i, face in enumerate(base_indices):
+            for j, vertex in enumerate(face):
+                glTexCoord2f(base_tex_coords[i * 3 + j][0], base_tex_coords[i * 3 + j][1])
+                glVertex3fv(vertices[vertex])
+        glEnd()
+
+        glDisable(GL_TEXTURE_2D)  # Disable texture mapping
         glPopMatrix()
+
 
         """
         Visual repersentation with vertexes labled:
@@ -160,6 +240,10 @@ class BasicShapes:
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cone to be vertical along the Y-axis
         quadric = gluNewQuadric()
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+
         gluCylinder(quadric, base_radius, 0.0, height, slices, stacks)  # Create the cone
         gluDeleteQuadric(quadric)
         glPopMatrix()
@@ -168,6 +252,10 @@ class BasicShapes:
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cylinder to be vertical along the Y-axis
         quadric = gluNewQuadric()
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+
         gluCylinder(quadric, radius, radius, height, slices, stacks)  # Create the cylinder
         gluDeleteQuadric(quadric)
         glPopMatrix()
@@ -176,6 +264,10 @@ class BasicShapes:
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cylinder to be vertical along the Y-axis
         quadric = gluNewQuadric()
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+
         gluCylinder(quadric, bottom_radius, top_radius, height, slices, stacks)  # Create the cylinder
         gluDeleteQuadric(quadric)
         glPopMatrix()

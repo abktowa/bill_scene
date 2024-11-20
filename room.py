@@ -209,6 +209,12 @@ class Room:
         Materials.set_material(GL_FRONT, Materials.WOOD)
         Components.draw_elegant_table(5, 3)
 
+         # Place the corner table in the bottom-left corner
+        glPushMatrix()  # Save current transformation matrix
+        glTranslatef(-ROOM_WIDTH/2 + 2.5, 0, -ROOM_DEPTH/2 + 1.5)  # Move to corner
+        Components.draw_table_with_lamp(2, 2)  # Draw table
+        glPopMatrix()  # Restore previous transformation matrix
+
 
     def display(self):
         """Main display function"""

@@ -5,9 +5,34 @@ This class containes the textures for our projects
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from PIL import Image
 
 class Textures:
         
+    #==============================
+    # Texture helper functions
+    #==============================
+            
+        # This method sets a texture
+        def set_texture(texture_name):
+
+            glBindTexture(GL_TEXTURE_2D, texture_name)
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) # try GL_DECAL/GL_REPLACE/GL_MODULATE
+            glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)           # try GL_NICEST/GL_FASTEST
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)  # try GL_CLAMP/GL_REPEAT/GL_CLAMP_TO_EDGE
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) # try GL_LINEAR/GL_NEAREST
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+
+            # Enable/Disable each time or OpenGL ALWAYS expects texturing!
+            glEnable(GL_LIGHTING)
+            glEnable(GL_TEXTURE_2D)
+            
+
+    #==============================
+    # Room Textures
+    #==============================
+
         def create_checkerboard_texture():
             # Professor Duncan told in the project that we need a checkerboard pattern for the floor so for that
             # First, we ask OpenGL to give us a new texture (Think of it like wallpaper or gift wrapping paper that you apply to an object.) ID (like getting a new blank canvas)
@@ -93,6 +118,31 @@ class Textures:
             data = bytes(data)
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data)
             
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+            return texture
+        
+        def create_wood_texture():
+            """Create a simple wood-like texture for the table."""
+            texture = glGenTextures(1)
+            glBindTexture(GL_TEXTURE_2D, texture)
+            
+            size = 64
+            wood_light = [222, 184, 135]  # Light brown (RGB)
+            wood_dark = [139, 69, 19]     # Dark brown (RGB)
+            checker_size = 8
+            data = []
+            
+            # Create a checkerboard-like wood pattern
+            for i in range(size):
+                for j in range(size):
+                    if ((i // checker_size) + (j // checker_size)) % 2:
+                        data.extend(wood_dark)
+                    else:
+                        data.extend(wood_light)
+            
+            data = bytes(data)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
             return texture

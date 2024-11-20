@@ -57,11 +57,12 @@ class Materials:
 	RUBBER = Material([0.02, 0.02, 0.02, 1.0], [0.01, 0.01, 0.01, 1.0], [0.4, 0.4, 0.4, 1.0], 10.0)
 	SILVER = Material([0.19225, 0.19225, 0.19225, 1.0], [0.50754, 0.50754, 0.50754, 1.0], [0.508273, 0.508273, 0.508273, 1.0], 51.2)
 	TURQUOISE = Material([0.1, 0.18725, 0.1745, 0.8], [0.396, 0.74151, 0.69102, 0.8], [0.297254, 0.30829, 0.306678, 0.8], 12.8)
+	LIGHTBULB = Material( [0.8, 0.8, 0.6, 1.0],[1.0, 1.0, 0.8, 1.0],[1.0, 1.0, 1.0, 1.0], 100.0 )
 	DARK_SILVER = Material([0.1, 0.1, 0.1, 1.0], [0.3, 0.3, 0.3, 1.0], [0.5, 0.5, 0.5, 1.0], 20.0)
 	
 	# A method for setting the material of an object
 	# Automatically disables texturing to ensure that the material properties are applied.
-	# Make sure to re-enable texturing afterward if needed.
+	# Textures are re-enabled automatically if you use the method Textures.set_texture().
 	@staticmethod
 	def set_material(face, material):
 		"""
@@ -73,6 +74,7 @@ class Materials:
 		material -- Material instance (like the ones above), such as Materials.COPPER or Materials.SILVER.
 		"""
 		glDisable(GL_TEXTURE_2D)  # Ensure textures are off before setting materials
+		glEnable(GL_LIGHTING) # Ensure lighting is enabled
 
 		glMaterialfv(face, GL_AMBIENT, material.ambient)
 		glMaterialfv(face, GL_DIFFUSE, material.diffuse)

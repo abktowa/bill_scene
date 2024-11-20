@@ -253,22 +253,25 @@ class Preview:
         BasicShapes.draw_coordinate_frame()
 
         # Set the material
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 
-        Components.draw_elegant_table(5,3)
+        # Components.draw_elegant_table(2,2)
+        Components.draw_table_with_lamp(2,2)
+        # Components.draw_light_bulb()
 
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
-        Components.draw_ball()
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
+        # Components.draw_4ball()
 
-        # Materials.set_material(GL_FRONT_AND_BACK, Materials.DARK_SILVER)
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+        # Components.draw_1ball()
+
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
+        # Components.draw_dice()
+
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
         # Components.draw_ball()
-
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.WOOD)
-        glTranslate(0,4,0)
-        Components.draw_cue_stick()
-
 
         
 
