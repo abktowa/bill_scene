@@ -44,7 +44,7 @@ class Room:
             'main': True,
             'spotlight': True,
             'desk': True,
-            'red': True,
+            'red': False,
             'green': True,
             'blue': True
         }
@@ -64,6 +64,7 @@ class Room:
         glEnable(GL_LIGHT0)
         glEnable(GL_LIGHT1)
         glEnable(GL_LIGHT2)
+        glEnable(GL_LIGHT3)
         
         glMaterialfv(GL_FRONT, GL_AMBIENT, [0.2, 0.2, 0.2, 1.0])
         glMaterialfv(GL_FRONT, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
@@ -94,7 +95,12 @@ class Room:
         if keys[pygame.K_a]:
             self.camera.turn(1)
         if keys[pygame.K_d]:
-            self.camera.turn(-1)   
+            self.camera.turn(-1)
+        if keys[pygame.K_q]:
+            self.camera.slide(0,0.1,0)
+        if keys[pygame.K_e]:
+            self.camera.slide(0,-0.1,0)
+            
 
 
     def setup_lights(self):
@@ -119,12 +125,22 @@ class Room:
         else:
             glDisable(GL_LIGHT1)
 
+        # Red Ceiling Light
+        if self.lights['red']:
+            glEnable(GL_LIGHT3)
+            #Positioned in the center hopefully
+            glLightfv(GL_LIGHT3, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
+            glLightfv(GL_LIGHT3, GL_DIFFUSE, [1.0, 0, 0, 1.0])
+            glLightfv(GL_LIGHT3, GL_SPECULAR, [1.0, 0, 0, 1.0])
+        else:
+            glDisable(GL_LIGHT3)
 
     def toggle_light(self, index):
         """Toggle specific light based on index"""
         light_names = ['main', 'spotlight', 'desk', 'red', 'green', 'blue']
         if index < len(light_names):
             self.lights[light_names[index]] = not self.lights[light_names[index]]
+            print(light_names[index]) # Prints which index is being selected
 
 
     def create_textures(self):
@@ -213,6 +229,11 @@ class Room:
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(-ROOM_WIDTH/2 + 2.5, 0, -ROOM_DEPTH/2 + 1.5)  # Move to corner
         Components.draw_table_with_lamp(2, 2)  # Draw table
+        glPopMatrix()  # Restore previous transformation matrix
+
+        glPushMatrix()  # Save current transformation matrix
+        glTranslatef(0, ROOM_HEIGHT - 0.1, 0)  # Move to Center
+        Components.draw_red_ball()
         glPopMatrix()  # Restore previous transformation matrix
 
 
