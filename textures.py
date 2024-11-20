@@ -5,13 +5,15 @@ This class containes the textures for our projects
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from PIL import Image
 
 class Textures:
         
     #==============================
     # Texture helper functions
     #==============================
-        
+            
+        # This method sets a texture
         def set_texture(texture_name):
 
             glBindTexture(GL_TEXTURE_2D, texture_name)
@@ -19,13 +21,13 @@ class Textures:
             glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)           # try GL_NICEST/GL_FASTEST
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)  # try GL_CLAMP/GL_REPEAT/GL_CLAMP_TO_EDGE
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST) # try GL_LINEAR/GL_NEAREST
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) # try GL_LINEAR/GL_NEAREST
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
             # Enable/Disable each time or OpenGL ALWAYS expects texturing!
             glEnable(GL_LIGHTING)
             glEnable(GL_TEXTURE_2D)
-        
+            
 
     #==============================
     # Room Textures

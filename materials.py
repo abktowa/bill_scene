@@ -61,7 +61,7 @@ class Materials:
 	
 	# A method for setting the material of an object
 	# Automatically disables texturing to ensure that the material properties are applied.
-	# Make sure to re-enable texturing afterward if needed.
+	# Textures are re-enabled automatically if you use the method Textures.set_texture().
 	@staticmethod
 	def set_material(face, material):
 		"""
