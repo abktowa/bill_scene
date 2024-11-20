@@ -135,6 +135,7 @@ class Room:
             glLightfv(GL_LIGHT3, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
             glLightfv(GL_LIGHT3, GL_DIFFUSE, [1.0, 0, 0, 1.0])
             glLightfv(GL_LIGHT3, GL_SPECULAR, [1.0, 0, 0, 1.0])
+            glLightfv(GL_LIGHT3, GL_AMBIENT, [1.0, 0.0, 0.0, 1.0])
         else:
             glDisable(GL_LIGHT3)
 
