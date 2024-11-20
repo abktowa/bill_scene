@@ -21,6 +21,7 @@ from components import *
 from materials import *
 from textures import *
 from preview_textures import *
+from sub_scenes import *
 
 class PreviewTextures:
 
