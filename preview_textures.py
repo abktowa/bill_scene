@@ -38,12 +38,12 @@ class PreviewTextures:
     flash_light_angle = 0.0     # Degree of rotation (about y-axis) of flashlight
 
     # Texture data
-    texture_file = "textures/wood2.jpeg"
-    boomer_file = "textures/wood1.jpeg"
+    wood_two_file = "textures/wood2.jpeg"
+    wood_one_file = "textures/wood1.jpeg"
     concrete_texture_name = None
-    boomer_texture_name = None
+    wood_one_name = None
     checkerboard_texture_name = None
-    wood_two = None
+    wood_two_name = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -85,11 +85,11 @@ class PreviewTextures:
         # Create or load the textures
         PreviewTextures.texture_array = glGenTextures(3)  # Texture names for all three textures to create
         PreviewTextures.concrete_texture_name = PreviewTextures.texture_array[0]
-        PreviewTextures.boomer_texture_name = PreviewTextures.texture_array[1]
-        PreviewTextures.wood_two = PreviewTextures.texture_array[2]
-        PreviewTextures.load_texture(PreviewTextures.concrete_texture_name, PreviewTextures.texture_file, (0,0,256,128))
-        PreviewTextures.load_texture(PreviewTextures.boomer_texture_name, PreviewTextures.boomer_file, (0,0,512,512))
-        PreviewTextures.load_texture(PreviewTextures.wood_two, PreviewTextures.texture_file, (0,0,512,512))
+        PreviewTextures.wood_one_name = PreviewTextures.texture_array[1]
+        PreviewTextures.wood_two_name = PreviewTextures.texture_array[2]
+        PreviewTextures.load_texture(PreviewTextures.concrete_texture_name, PreviewTextures.wood_two_file, (0,0,256,128))
+        PreviewTextures.load_texture(PreviewTextures.wood_one_name, PreviewTextures.wood_one_file, (0,0,512,512))
+        PreviewTextures.load_texture(PreviewTextures.wood_two_name, PreviewTextures.wood_two_file, (0,0,512,512))
 
     def main_loop():
         global running, clock, animate
@@ -215,7 +215,7 @@ class PreviewTextures:
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_texture(PreviewTextures.wood_two)
+        Textures.set_texture(PreviewTextures.wood_two_name)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)

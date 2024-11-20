@@ -21,6 +21,36 @@ class Components:
     # Table functions
     #==============================
 
+    # Draws a pool table that is 8 units long, 4 units wide, and 3.08 units tall (aprox. 3 ft 1 in)
+    def draw_pool_table():
+        glPushMatrix()
+        
+        length=8 
+        width=4
+
+        # Draw the main table
+        Components.draw_elegant_table(length, width, PreviewTextures.wood_one_name)
+        
+        Textures.set_texture(PreviewTextures.wood_one_name) # Set the texture
+        glTranslatef(0, 1.5, 0)  # Move up from the ground
+        BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
+
+        glTranslatef(0, 1.5, 0)  # Move up more
+        Materials.set_material(GL_FRONT, Materials.GREEN_FELT) # Set the material
+        BasicShapes.draw_rectangle(7.7,3.7,0.08) # Draw the felt
+
+
+        # Draw the bumper
+        Materials.set_material(GL_FRONT, Materials.RUBBER_BUMPER) # Set the material
+        glTranslatef(0, 0, (3.7/2))  # Move back
+        BasicShapes.draw_rectangle(8, 0.3, 0.2)
+        glTranslatef(0, 0, - (3.7))  # Move forward
+        BasicShapes.draw_rectangle(8, 0.3, 0.2)
+
+
+        glPopMatrix()
+
+
     def draw_elegant_table(length, width, texture=None):
         glPushMatrix() 
 
@@ -145,7 +175,7 @@ class Components:
         # Draw the table
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
         # Textures.set_texture(PreviewTextures.wood_two)
-        Components.draw_elegant_table(table_length, table_width, PreviewTextures.wood_two)
+        Components.draw_elegant_table(table_length, table_width, PreviewTextures.wood_two_name)
 
         # Position and scale the lamp
         glPushMatrix()
