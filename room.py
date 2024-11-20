@@ -143,8 +143,6 @@ class Room:
         light_names = ['main', 'spotlight', 'desk', 'red', 'green', 'blue']
         if index < len(light_names):
             self.lights[light_names[index]] = not self.lights[light_names[index]]
-            print(light_names[index]) # Prints which index is being selected
-
 
     def create_textures(self):
         """Create all textures"""
@@ -235,7 +233,7 @@ class Room:
         glPopMatrix()  # Restore previous transformation matrix
 
         glPushMatrix()  # Save current transformation matrix
-        glTranslatef(0, ROOM_HEIGHT - 0.1, 0)  # Move to Center
+        glTranslatef(0, ROOM_HEIGHT - 0.4, 0)  # Move to Center
         Components.draw_red_ball()
         glPopMatrix()  # Restore previous transformation matrix
 
