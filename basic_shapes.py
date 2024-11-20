@@ -69,11 +69,20 @@ class BasicShapes:
             (1, 2, 6, 5)  # Face 6 (right)
         ]
         
+        # Map texture coordinates to vertices
+        tex_coords = [
+            (0.0, 0.0),  # Bottom-left
+            (1.0, 0.0),  # Bottom-right
+            (1.0, 1.0),  # Top-right
+            (0.0, 1.0)   # Top-left
+        ]
+
         # Draw the cube
         glBegin(GL_QUADS)
         for face in faces:
-            for vertex in face:
-                glVertex3fv(vertices[vertex])
+            for i, vertex in enumerate(face):
+                glTexCoord2f(*tex_coords[i])  # Map texture coordinates
+                glVertex3fv(vertices[vertex])  # Define vertex
         glEnd()
 
         glPopMatrix()
@@ -140,9 +149,11 @@ class BasicShapes:
         BasicShapes.draw_rectangular_pyramid(base_size, base_size, height)
 
 
-    # Function to generate a pyramid with a rectangular base
+    # Function to generate a pyramid with a rectangular base and texture
     def draw_rectangular_pyramid(base_width, base_length, height):
         glPushMatrix()
+        glEnable(GL_TEXTURE_2D)  # Enable texture mapping
+
         # Calculate half base size (for centering the pyramid on the x and z axes)
         half_width = base_width / 2.0
         half_length = base_length / 2.0
@@ -160,26 +171,52 @@ class BasicShapes:
         ]
         
         # Define the indices for the triangles (4 sides + base)
-        indices = [
+        side_indices = [
             # Sides (4 triangles)
             [0, 4, 1],  # Triangle 1
             [1, 4, 2],  # Triangle 2
             [2, 4, 3],  # Triangle 3
             [3, 4, 0],  # Triangle 4
-
-            # Base (1 square, 2 triangles)
+        ]
+        
+        base_indices = [
+            # Base (rectangle split into two triangles)
             [0, 1, 2],  # Triangle 5
             [0, 2, 3]   # Triangle 6
         ]
 
-        # Begin drawing triangles
+        # Define texture coordinates for the pyramid
+        side_tex_coords = [
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],  # Texture for each side
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],
+            [0.0, 0.0], [0.5, 1.0], [1.0, 0.0],
+        ]
+
+        base_tex_coords = [
+            [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],  # Texture for base triangle 1
+            [0.0, 0.0], [1.0, 1.0], [0.0, 1.0],  # Texture for base triangle 2
+        ]
+
+        # Draw the sides of the pyramid
         glBegin(GL_TRIANGLES)
-        for face in indices:
-            for vertex in face:
+        for i, face in enumerate(side_indices):
+            for j, vertex in enumerate(face):
+                glTexCoord2f(side_tex_coords[i * 3 + j][0], side_tex_coords[i * 3 + j][1])
                 glVertex3fv(vertices[vertex])
         glEnd()
 
+        # Draw the base of the pyramid
+        glBegin(GL_TRIANGLES)
+        for i, face in enumerate(base_indices):
+            for j, vertex in enumerate(face):
+                glTexCoord2f(base_tex_coords[i * 3 + j][0], base_tex_coords[i * 3 + j][1])
+                glVertex3fv(vertices[vertex])
+        glEnd()
+
+        glDisable(GL_TEXTURE_2D)  # Disable texture mapping
         glPopMatrix()
+
 
         """
         Visual repersentation with vertexes labled:

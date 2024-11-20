@@ -42,6 +42,7 @@ class PreviewTextures:
     concrete_texture_name = None
     boomer_texture_name = None
     checkerboard_texture_name = None
+    wood_two = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -81,11 +82,13 @@ class PreviewTextures:
         glEnable(GL_DEPTH_TEST)   # For z-buffering!
 
         # Create or load the textures
-        PreviewTextures.texture_array = glGenTextures(2)  # Texture names for all three textures to create
+        PreviewTextures.texture_array = glGenTextures(3)  # Texture names for all three textures to create
         PreviewTextures.concrete_texture_name = PreviewTextures.texture_array[0]
         PreviewTextures.boomer_texture_name = PreviewTextures.texture_array[1]
+        PreviewTextures.wood_two = PreviewTextures.texture_array[2]
         PreviewTextures.load_texture(PreviewTextures.concrete_texture_name, PreviewTextures.texture_file, (0,0,256,128))
         PreviewTextures.load_texture(PreviewTextures.boomer_texture_name, PreviewTextures.boomer_file, (0,0,512,512))
+        PreviewTextures.load_texture(PreviewTextures.wood_two, PreviewTextures.texture_file, (0,0,512,512))
 
     def main_loop():
         global running, clock, animate
@@ -211,7 +214,7 @@ class PreviewTextures:
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_texture(PreviewTextures.boomer_texture_name)
+        Textures.set_texture(PreviewTextures.wood_two)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)

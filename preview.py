@@ -256,7 +256,7 @@ class Preview:
         BasicShapes.draw_coordinate_frame()
 
         # Set the material
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 
@@ -267,14 +267,14 @@ class Preview:
     
 
 
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
-        Components.draw_4ball()
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
+        # Components.draw_4ball()
 
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
-        Components.draw_1ball()
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+        # Components.draw_1ball()
 
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
-        Components.draw_dice()
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
+        # Components.draw_dice()
 
         
 
