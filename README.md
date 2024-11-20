@@ -30,20 +30,4 @@ Check out our [group notion page](https://www.notion.so/Project-3-Group-page-130
     ```
 - **Applying Materials**: Applying materials in the scene is simple. Just use a line like `Materials.set_material(GL_FRONT, Materials.COPPER)` before drawing an object to set its material properties. This material will be applied to all objects drawn afterward until a new material is set. You’ll find plenty of predefined materials in the `Materials` class (like `Materials.SILVER` or `Materials.GOLD`), and you can add your own custom materials there if you want.
 
-- **Switching Between Textures and Materials** *(if you are not texture mapping, no need to worry about this one)*: When using both textures and materials, take care to avoid interference between the two. Use the `Textures` class to apply textures, and be sure to include `glEnable(GL_TEXTURE_2D)` to enable textures. The `set_material` function in the `Materials` class automatically disables textures, so no further action is needed when switching to a material-only object.
-
-    #### Sample `apply_texture` Method
-
-    ```python
-    class Textures:
-        @staticmethod
-        def apply_texture(texture_id):
-            """
-            Apply a texture with basic settings.
-            
-            Parameters:
-            texture_id -- The ID of the texture to bind.
-            """
-            glEnable(GL_TEXTURE_2D)  # Enable texturing
-            glBindTexture(GL_TEXTURE_2D, texture_id)  # Bind the texture
-    ```
+- **Applying Textures**: Applying textures to objects in the scene is straightforward once the textures are loaded. Simply use a line like `Textures.set_texture(texture_name)` before drawing an object to set its texture properties. This texture will be applied to all objects drawn afterward until a new texture is set. Keep in mind that initializing and loading textures into the project can be more complex. This instruction is specifically for already loaded textures. If you want to add a new texture to the project, speak to Sam.
