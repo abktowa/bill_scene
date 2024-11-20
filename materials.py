@@ -61,7 +61,7 @@ class Materials:
 	
 	# A method for setting the material of an object
 	# Automatically disables texturing to ensure that the material properties are applied.
-	# Make sure to re-enable texturing afterward if needed.
+	# Textures are re-enabled automatically if you use the method Textures.set_texture().
 	@staticmethod
 	def set_material(face, material):
 		"""
@@ -73,6 +73,7 @@ class Materials:
 		material -- Material instance (like the ones above), such as Materials.COPPER or Materials.SILVER.
 		"""
 		glDisable(GL_TEXTURE_2D)  # Ensure textures are off before setting materials
+		glEnable(GL_LIGHTING) # Ensure lighting is enabled
 
 		glMaterialfv(face, GL_AMBIENT, material.ambient)
 		glMaterialfv(face, GL_DIFFUSE, material.diffuse)

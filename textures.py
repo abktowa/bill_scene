@@ -5,9 +5,34 @@ This class containes the textures for our projects
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from PIL import Image
 
 class Textures:
         
+    #==============================
+    # Texture helper functions
+    #==============================
+            
+        # This method sets a texture
+        def set_texture(texture_name):
+
+            glBindTexture(GL_TEXTURE_2D, texture_name)
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) # try GL_DECAL/GL_REPLACE/GL_MODULATE
+            glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)           # try GL_NICEST/GL_FASTEST
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)  # try GL_CLAMP/GL_REPEAT/GL_CLAMP_TO_EDGE
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) # try GL_LINEAR/GL_NEAREST
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+
+            # Enable/Disable each time or OpenGL ALWAYS expects texturing!
+            glEnable(GL_LIGHTING)
+            glEnable(GL_TEXTURE_2D)
+            
+
+    #==============================
+    # Room Textures
+    #==============================
+
         def create_checkerboard_texture():
             # Professor Duncan told in the project that we need a checkerboard pattern for the floor so for that
             # First, we ask OpenGL to give us a new texture (Think of it like wallpaper or gift wrapping paper that you apply to an object.) ID (like getting a new blank canvas)

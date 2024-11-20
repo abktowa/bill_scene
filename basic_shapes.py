@@ -22,16 +22,19 @@ import math
 class BasicShapes:
 
     def draw_sphere(radius):
-        quad = gluNewQuadric()  # Create a new quadric for the sphere
+        quadric = gluNewQuadric()  # Create a new quadric for the sphere
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
         
         glPushMatrix()  # Save the current matrix
         glTranslatef(0.0, radius, 0.0)  # Translate to place sphere on the y = 0 plane
         
         # Draw the sphere with specified radius, smooth appearance with 32 slices and stacks
-        gluSphere(quad, radius, 32, 32)
+        gluSphere(quadric, radius, 32, 32)
         
         glPopMatrix()  # Restore the previous matrix state
-        gluDeleteQuadric(quad)  # Clean up the quadric object
+        gluDeleteQuadric(quadric)  # Clean up the quadric object
 
 
     # Draws a rectangle, with the following three paramates:
@@ -200,6 +203,10 @@ class BasicShapes:
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cone to be vertical along the Y-axis
         quadric = gluNewQuadric()
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+
         gluCylinder(quadric, base_radius, 0.0, height, slices, stacks)  # Create the cone
         gluDeleteQuadric(quadric)
         glPopMatrix()
@@ -208,6 +215,10 @@ class BasicShapes:
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cylinder to be vertical along the Y-axis
         quadric = gluNewQuadric()
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+
         gluCylinder(quadric, radius, radius, height, slices, stacks)  # Create the cylinder
         gluDeleteQuadric(quadric)
         glPopMatrix()
@@ -216,6 +227,10 @@ class BasicShapes:
         glPushMatrix()
         glRotatef(270, 1.0, 0.0, 0.0)  # Rotate the cylinder to be vertical along the Y-axis
         quadric = gluNewQuadric()
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+
         gluCylinder(quadric, bottom_radius, top_radius, height, slices, stacks)  # Create the cylinder
         gluDeleteQuadric(quadric)
         glPopMatrix()
