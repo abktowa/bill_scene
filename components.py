@@ -7,6 +7,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 from basic_shapes import *
 from components import *
+from materials import *
 
 
 class Components:
@@ -70,6 +71,90 @@ class Components:
 
     def draw_lamp_shade(height):
         BasicShapes.draw_adjustable_cylinder(height, height/2, height) # bottom_radius, top_radius, height
+
+    def draw_lamp_base():
+        """Draws the lamp base with two stacked spheres."""
+        glPushMatrix()
+        
+        # Bottom sphere (larger)
+        BasicShapes.draw_sphere(radius=2.0)  # Radius of the larger sphere
+
+        # Top sphere (smaller, stacked above)
+        glTranslatef(0, 3, 0)  # Move up by the radius of the bottom sphere + some offset
+        BasicShapes.draw_sphere(radius=1.5)  # Radius of the smaller sphere
+
+        glPopMatrix()
+
+    def draw_lamp():
+        """Draws the complete lamp (base + shade)."""
+        glPushMatrix()
+
+        # Draw the base (two spheres)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.GOLD)
+        Components.draw_lamp_base()
+
+        # Draw the lamp shade
+        glTranslatef(0, 6, 0)  # Move above the smaller sphere (base height + offset for stacking)
+        Components.draw_lamp_shade(height=3.0)  # Adjust height as needed
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
+        Components.draw_light_bulb()
+
+        glPopMatrix()
+
+    def setup_lightbulb_lighting():
+            """Sets up a light source at the position of the lightbulb."""
+            # Define light properties
+            light_position = [0.0, 1.5, 0.0, 1.0]  # Relative to the lamp
+            diffuse_color = [2.0, 2.0, 1.8, 1.0]   # Intense warm white light (double the normal intensity)
+            ambient_color = [0.5, 0.5, 0.4, 1.0]   # Soft ambient glow
+            specular_color = [1.5, 1.5, 1.5, 1.0]  # Strong highlights for reflective surfaces
+
+
+            # Configure the light source
+            glEnable(GL_LIGHT3)  # Enable light for the bulb
+            glLightfv(GL_LIGHT3, GL_POSITION, light_position)
+            glLightfv(GL_LIGHT3, GL_DIFFUSE, diffuse_color)
+            glLightfv(GL_LIGHT3, GL_AMBIENT, ambient_color)
+            glLightfv(GL_LIGHT3, GL_SPECULAR, specular_color)
+
+
+    def draw_light_bulb():
+        """Draws a small light bulb inside the lamp shade."""
+        glPushMatrix()
+        glTranslatef(0, 1.5, 0)  # Position inside the lamp shade
+          # Set up light source at the bulb
+        Components.setup_lightbulb_lighting()
+        BasicShapes.draw_sphere(radius=0.5)  # Small sphere for the bulb
+        glPopMatrix()
+
+
+    def draw_table_with_lamp(table_length, table_width):
+        """Draws a table with a lamp placed on top, scaling the lamp down."""
+        glPushMatrix()
+
+        # Draw the table
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
+        Components.draw_elegant_table(table_length, table_width)
+
+        # Position and scale the lamp
+        glPushMatrix()
+        glTranslatef(0, 3, 0)  # Move the lamp up to the surface of the table
+        glScalef(0.3, 0.3, 0.3)  # Scale the lamp down (adjust the factors as needed)
+        Components.draw_lamp()  # Draw the lamp
+        glPopMatrix()
+
+        glPopMatrix()
+
+
+
+
+
+
+
+
+
+
+
 
 
     #==============================

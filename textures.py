@@ -121,3 +121,28 @@ class Textures:
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
             return texture
+        
+        def create_wood_texture():
+            """Create a simple wood-like texture for the table."""
+            texture = glGenTextures(1)
+            glBindTexture(GL_TEXTURE_2D, texture)
+            
+            size = 64
+            wood_light = [222, 184, 135]  # Light brown (RGB)
+            wood_dark = [139, 69, 19]     # Dark brown (RGB)
+            checker_size = 8
+            data = []
+            
+            # Create a checkerboard-like wood pattern
+            for i in range(size):
+                for j in range(size):
+                    if ((i // checker_size) + (j // checker_size)) % 2:
+                        data.extend(wood_dark)
+                    else:
+                        data.extend(wood_light)
+            
+            data = bytes(data)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+            return texture
