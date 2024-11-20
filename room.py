@@ -45,8 +45,8 @@ class Room:
             'spotlight': True,
             'desk': True,
             'red': False,
-            'green': True,
-            'blue': True
+            'green': False,
+            'blue': False
         }
         
         self.running = True
@@ -64,7 +64,9 @@ class Room:
         glEnable(GL_LIGHT0)
         glEnable(GL_LIGHT1)
         glEnable(GL_LIGHT2)
-        glEnable(GL_LIGHT3)
+        glEnable(GL_LIGHT3) # Red and intially disabled
+        glEnable(GL_LIGHT4) # Green and intially disabled
+        glEnable(GL_LIGHT5) # Blue and intially disabled
         
         glMaterialfv(GL_FRONT, GL_AMBIENT, [0.2, 0.2, 0.2, 1.0])
         glMaterialfv(GL_FRONT, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
@@ -133,11 +135,33 @@ class Room:
             glEnable(GL_LIGHT3)
             #Positioned in the center hopefully
             glLightfv(GL_LIGHT3, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
-            glLightfv(GL_LIGHT3, GL_DIFFUSE, [1.0, 0, 0, 1.0])
-            glLightfv(GL_LIGHT3, GL_SPECULAR, [1.0, 0, 0, 1.0])
+            glLightfv(GL_LIGHT3, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])
+            glLightfv(GL_LIGHT3, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])
             glLightfv(GL_LIGHT3, GL_AMBIENT, [1.0, 0.0, 0.0, 1.0])
         else:
             glDisable(GL_LIGHT3)
+
+        # Green Ceiling Light
+        if self.lights['green']:
+            glEnable(GL_LIGHT4)
+            #Positioned in the center hopefully
+            glLightfv(GL_LIGHT4, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
+            glLightfv(GL_LIGHT4, GL_DIFFUSE, [0.0, 1.0, 0.0, 1.0])
+            glLightfv(GL_LIGHT4, GL_SPECULAR, [0.0, 1.0, 0.0, 1.0])
+            glLightfv(GL_LIGHT4, GL_AMBIENT, [0.0, 1.0, 0.0, 1.0])
+        else:
+            glDisable(GL_LIGHT4)
+
+        # Blue Ceiling Light
+        if self.lights['blue']:
+            glEnable(GL_LIGHT5)
+            #Positioned in the center hopefully
+            glLightfv(GL_LIGHT5, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
+            glLightfv(GL_LIGHT5, GL_DIFFUSE, [0.0, 0.0, 1.0, 1.0])
+            glLightfv(GL_LIGHT5, GL_SPECULAR, [0.0, 0.0, 1.0, 1.0])
+            glLightfv(GL_LIGHT5, GL_AMBIENT, [0.0, 0.0, 1.0, 1.0])
+        else:
+            glDisable(GL_LIGHT5)
 
     def toggle_light(self, index):
         """Toggle specific light based on index"""
