@@ -23,6 +23,14 @@ from textures import *
 from preview_textures import *
 
 class PreviewTextures:
+    textures = [
+        "textures/1side.png",  # Texture for face 1 (bottom)
+        "textures/2side.png",  # Texture for face 2 (back)
+        "textures/3side.png",  # Texture for face 3 (top)
+        "textures/4side.png",  # Texture for face 4 (front)
+        "textures/5side.png",  # Texture for face 5 (left)
+        "textures/6side.png"   # Texture for face 6 (right)
+    ]
 
     # These parameters describe window properties
     window_dimensions = (1200, 800)
@@ -37,8 +45,8 @@ class PreviewTextures:
     flash_light_angle = 0.0     # Degree of rotation (about y-axis) of flashlight
 
     # Texture data
-    texture_file = "textures/wood2.jpeg"
-    boomer_file = "textures/wood1.jpeg"
+    texture_file = "textures/1side.png"
+    boomer_file = "textures/2side.png"
     concrete_texture_name = None
     boomer_texture_name = None
     checkerboard_texture_name = None
@@ -217,6 +225,11 @@ class PreviewTextures:
         glTranslate(0,-1.5,0)
         glRotate(270,1,0,0)
         BasicShapes.draw_cylinder(1,3)
+        glPopMatrix()
+
+        glPushMatrix()
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
+        Components.draw_die(0.10, 0.10, 0.10, PreviewTextures.textures)
         glPopMatrix()
 
 

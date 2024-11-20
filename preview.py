@@ -269,7 +269,7 @@ class Preview:
         Components.draw_1ball()
 
         Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
-        Components.draw_dice()
+        Components.draw_die()
 
         
 

@@ -7,7 +7,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 from basic_shapes import *
 from components import *
-
+from textures import *
 
 class Components:
 	
@@ -104,15 +104,72 @@ class Components:
     # Dice functions
     #==============================
 
-    def draw_die(): 
+    def draw_die(length, width, height, textures): 
+        """
+        Draw a textured cube.
+        
+        Parameters:
+        length - Length of the cube.
+        width - Width of the cube.
+        height - Height of the cube.
+        textures - A list of 6 texture names, one for each face of the cube.
+        """
         glPushMatrix()
-        glTranslatef(1, 0, 0)
-        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+
+        half_length = length / 2.0
+        half_width = width / 2.0
+
+        # Define vertices for a rectangular prism (cube)
+        vertices = [
+            [-half_length, 0, -half_width],        # Vertex 0
+            [half_length, 0, -half_width],         # Vertex 1
+            [half_length, height, -half_width],    # Vertex 2
+            [-half_length, height, -half_width],   # Vertex 3
+            [-half_length, 0, half_width],         # Vertex 4
+            [half_length, 0, half_width],          # Vertex 5
+            [half_length, height, half_width],     # Vertex 6
+            [-half_length, height, half_width]     # Vertex 7
+        ]
+
+        # Defines the rectangle faces created by the given vertices
+        faces = [
+            (0, 3, 2, 1),  # Face 1 (bottom)
+            (3, 7, 6, 2),  # Face 2 (back)
+            (7, 4, 5, 6),  # Face 3 (top)
+            (0, 1, 5, 4),  # Face 4 (front)
+            (0, 4, 7, 3),  # Face 5 (left)
+            (1, 2, 6, 5)   # Face 6 (right)
+        ]
+
+        # Texture coordinates for mapping the full texture to a rectangular face
+        tex_coords = [
+            (0.0, 0.0),  # Bottom left
+            (1.0, 0.0),  # Bottom right
+            (1.0, 1.0),  # Top right
+            (0.0, 1.0)   # Top left
+        ]
+
+        # Enable texturing
+        glEnable(GL_TEXTURE_2D)
+
+        # Draw each face of the cube with a different texture
+        for i, face in enumerate(faces):
+            Textures.set_texture(textures[i])  # Set the texture for the current face
+
+            glBegin(GL_QUADS)
+            for j, vertex in enumerate(face):
+                glTexCoord2f(tex_coords[j][0], tex_coords[j][1])  # Set texture coordinate for each vertex
+                glVertex3fv(vertices[vertex])  # Draw the vertex
+            glEnd()
+
+        # Disable texturing
+        glDisable(GL_TEXTURE_2D)
+    
         glPopMatrix()
 
-    """ def draw_dice():
-        glPushMatrix()
-        glTranslatef(1, 0, 0)
-        BasicShapes.draw_cube(0.10, 0.10, 0.10)
-        glTranslatef(0.13, 0, 0)
-        glPopMatrix() """
+        """ def draw_dice():
+            glPushMatrix()
+            glTranslatef(1, 0, 0)
+            BasicShapes.draw_cube(0.10, 0.10, 0.10)
+            glTranslatef(0.13, 0, 0)
+            glPopMatrix() """
