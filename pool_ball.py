@@ -18,8 +18,8 @@ class PoolBall:
 
         self.power = 0
 
-        # This needs to be fixed, the vector class does not initiliaze a vector this way
-        # self.direction = Vector(0,0,0) 
+        point = Point(0,0,0)
+        self.direction = Vector(point,point) 
 
         # Confine the ball to our table (Our table is 7.7 units long, 3.7 units wide, and centered at the origin)
         self.max_x = 7.7/2
@@ -74,10 +74,12 @@ class PoolBall:
 
         # move to the edge of the ball
         glTranslate(cue_ball.radius, 0, 0) 
-
+        
+        # Line is confined to the table space of 7.7 * 3.7
+        
         # Draw the dashed line
         space = 0.167 # aprox 2 in
-        glTranslate(1.5 * space, 0, 0)
+        glTranslate(space, 0, 0)
         Materials.set_material(GL_FRONT, Materials.REDDISH_WOOD)
         BasicShapes.draw_rectangle(space, 0.0125, 0.04) # line is 1.5 in wide, 0.5 in tall
         

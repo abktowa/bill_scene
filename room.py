@@ -33,7 +33,7 @@ collisionList = []
 class Room:
 
     # pool shooting variables
-    in_shooting_mode = False
+    in_shooting_mode = True
     shooting_angle = 0
 
     def __init__(self):
