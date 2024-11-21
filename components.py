@@ -171,6 +171,18 @@ class Components:
         glPopMatrix()
 
     #==============================
+    # Colored Light functions
+    #==============================
+    
+    def draw_red_ball():
+        glPushMatrix()
+        glMaterialfv(GL_FRONT, GL_AMBIENT, [1.0, 0.0, 0.0, 1.0])
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])
+        glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])
+        BasicShapes.draw_sphere(0.2)
+        glPopMatrix()
+
+    #==============================
     # Help Message
     #==============================    
 
