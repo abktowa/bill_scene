@@ -41,10 +41,10 @@ class InitializeTextures:
     wood_two_file = "textures/wood2.jpeg"
     wood_one_file = "textures/wood1.jpeg"
     eight_ball_file = "textures/eight_ball.jpeg"
-    eight_ball_texture_name = None
-    wood_one_name = None
+    eight_ball_texture = None
+    wood_one_texture = None
     checkerboard_texture_name = None
-    wood_two_name = None
+    wood_two_texture = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -85,12 +85,12 @@ class InitializeTextures:
 
         # Create or load the textures
         InitializeTextures.texture_array = glGenTextures(3)  # Texture names for all three textures to create
-        InitializeTextures.eight_ball_texture_name = InitializeTextures.texture_array[0]
-        InitializeTextures.wood_one_name = InitializeTextures.texture_array[1]
-        InitializeTextures.wood_two_name = InitializeTextures.texture_array[2]
-        InitializeTextures.load_texture(InitializeTextures.eight_ball_texture_name, InitializeTextures.eight_ball_file, (0,0,512,512))
-        InitializeTextures.load_texture(InitializeTextures.wood_one_name, InitializeTextures.wood_one_file, (0,0,512,512))
-        InitializeTextures.load_texture(InitializeTextures.wood_two_name, InitializeTextures.wood_two_file, (0,0,512,512))
+        InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
+        InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]
+        InitializeTextures.wood_two_texture = InitializeTextures.texture_array[2]
+        InitializeTextures.load_texture(InitializeTextures.eight_ball_texture, InitializeTextures.eight_ball_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.wood_one_texture, InitializeTextures.wood_one_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.wood_two_texture, InitializeTextures.wood_two_file, (0,0,512,512))
 
     def main_loop():
         global running, clock, animate
@@ -216,7 +216,7 @@ class InitializeTextures:
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_texture(InitializeTextures.wood_two_name)
+        Textures.set_texture(InitializeTextures.wood_two_texture)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)
