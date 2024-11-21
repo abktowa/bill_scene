@@ -158,10 +158,12 @@ class Components:
         glPopMatrix()
 
     def help_message():
-        print("Hi! The controls are as follows\nPress \"W\" to move forward\nPress \"S\" to move backward")
+        print("Hi! The controls are as follows:\nPress \"W\" to move forward\nPress \"S\" to move backward")
         print("Press \"A\" to move to the left\nPress \"D\" to move to the right")
         print("Press the Up Arrow key to look up\nPress the Down Arrow key to look down\nPress the Left Arrow key to look left")
-        print("Press the Right Arrow key to look right\n")
+        print("Press the Right Arrow key to look right\nPress \"TBD\" to reset to starting position\nPress \"TBD\" to reset camera")
+        print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
+        print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
 
     #==============================
     # Cue Sticks
