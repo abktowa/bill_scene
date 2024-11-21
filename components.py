@@ -114,9 +114,10 @@ class Components:
 
     def draw_hanging_spotlight():
         glPushMatrix()
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
 
         # Ceiling attachment
-        BasicShapes.draw_cylinder(1/12, 4) #radius, height
+        BasicShapes.draw_cylinder(1/12, 6) #radius, height
 
         #Spotlight shade
         glTranslate(0,-2,0)

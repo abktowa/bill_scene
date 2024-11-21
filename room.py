@@ -218,11 +218,17 @@ class Room:
         
         Components.draw_pool_table_with_abans_children()
 
-         # Place the corner table in the bottom-left corner
+        # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(-ROOM_WIDTH/2 + 1.3, 0, -ROOM_DEPTH/2 + 1.3)  # Move to corner
         Components.draw_table_with_lamp(2, 2)  # Draw table
         glPopMatrix()  # Restore previous transformation matrix
+
+        glPushMatrix()  # Save current transformation matrix
+        glTranslatef(0 , ROOM_HEIGHT - 6, 0)  # Move to ceiling
+        Components.draw_hanging_spotlight()
+        glPopMatrix()  # Restore previous transformation matrix
+
 
 
     def display(self):
