@@ -232,7 +232,22 @@ class Components:
     #==============================
 
     # Draws the pool table with the billiard balls on it
-    def draw_pool_table_scene():
+    def draw_animated_pool_table_scene():
+        glPushMatrix()
+        
+        Components.draw_pool_table()
+
+        glTranslatef(0, 3.08, 0)  # Move up from the ground
+        
+        # Draw a ball
+        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
+        glTranslatef(1.5, 0, 0)
+        BasicShapes.draw_animated_sphere(0.186, 0, 0, 0, 0)
+
+        glPopMatrix()
+
+
+    def draw_static_pool_table_scene():
         glPushMatrix()
         
         Components.draw_pool_table()
@@ -259,11 +274,6 @@ class Components:
         Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
         glTranslatef(4, 0, 0)
         Components.draw_rotated_1ball(100,0,0)
-
-        # Draw another ball
-        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
-        glTranslatef(1.5, 0, 0)
-        BasicShapes.draw_animated_sphere(0.186, 0, 0, 0, 0)
 
         glPopMatrix()
 

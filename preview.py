@@ -261,7 +261,7 @@ class Preview:
         # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-        Components.draw_pool_table_scene()
+        Components.draw_animated_pool_table_scene()
 
 
 
