@@ -112,6 +112,11 @@ class Components:
 
         glPopMatrix()
 
+    def draw_hanging_spotlight():
+
+        
+        BasicShapes.draw_adjustable_cylinder(2, 1/12, 2) # bottom_radius, top_radius, height
+
     def setup_lightbulb_lighting():
             """Sets up a light source at the position of the lightbulb."""
             # Define light properties

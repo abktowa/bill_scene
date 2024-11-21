@@ -253,7 +253,7 @@ class Preview:
         BasicShapes.draw_coordinate_frame()
 
         # Set the material
-        # Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 
@@ -261,9 +261,10 @@ class Preview:
         # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-        Components.draw_pool_table_with_abans_children()
+        # Components.draw_pool_table_with_abans_children()
 
-
+        glTranslate(0, 3, 0)
+        Components.draw_hanging_spotlight()
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         # Components.draw_4ball()
