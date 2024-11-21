@@ -158,6 +158,18 @@ class Components:
         glPopMatrix()
 
     #==============================
+<<<<<<< HEAD
+    # Colored Light functions
+    #==============================
+    
+    def draw_red_ball():
+        glPushMatrix()
+        glMaterialfv(GL_FRONT, GL_AMBIENT, [1.0, 0.0, 0.0, 1.0])
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])
+        glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])
+        BasicShapes.draw_sphere(0.2)
+        glPopMatrix()
+=======
     # Help Message
     #==============================    
 
@@ -175,6 +187,7 @@ class Components:
 
     def draw_cue_stick():
         BasicShapes.draw_adjustable_cylinder(0.0984, 0.0426, 4.57) # bottom_radius, top_radius, height
+>>>>>>> cd2d63f63c3da842346b6d57741370162627f930
 
     #==============================
     # Ball functions
