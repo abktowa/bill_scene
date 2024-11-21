@@ -36,6 +36,24 @@ class BasicShapes:
         glPopMatrix()  # Restore the previous matrix state
         gluDeleteQuadric(quadric)  # Clean up the quadric object
 
+    def draw_rotated_sphere(radius, rotate_x, rotate_y, rotate_z):
+        quadric = gluNewQuadric()  # Create a new quadric for the sphere
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+        
+        glPushMatrix()  # Save the current matrix
+        glTranslatef(0.0, radius, 0.0)  # Translate to place sphere on the y = 0 plane
+        glRotate(rotate_x, 0,0,0)
+        glRotate(rotate_y, 0,1,0)
+        glRotate(rotate_z, 0,0,1)
+        
+        # Draw the sphere with specified radius, smooth appearance with 32 slices and stacks
+        gluSphere(quadric, radius, 32, 32)
+        
+        glPopMatrix()  # Restore the previous matrix state
+        gluDeleteQuadric(quadric)  # Clean up the quadric object
+
 
     # Draws a rectangle, with the following three paramates:
     # length is the distance in the x direction, width is in the z direction, and height is in the y direction

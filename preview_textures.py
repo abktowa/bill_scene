@@ -40,7 +40,8 @@ class PreviewTextures:
     # Texture data
     wood_two_file = "textures/wood2.jpeg"
     wood_one_file = "textures/wood1.jpeg"
-    concrete_texture_name = None
+    eight_ball_file = "textures/eight_ball.jpeg"
+    eight_ball_texture_name = None
     wood_one_name = None
     checkerboard_texture_name = None
     wood_two_name = None
@@ -84,10 +85,10 @@ class PreviewTextures:
 
         # Create or load the textures
         PreviewTextures.texture_array = glGenTextures(3)  # Texture names for all three textures to create
-        PreviewTextures.concrete_texture_name = PreviewTextures.texture_array[0]
+        PreviewTextures.eight_ball_texture_name = PreviewTextures.texture_array[0]
         PreviewTextures.wood_one_name = PreviewTextures.texture_array[1]
         PreviewTextures.wood_two_name = PreviewTextures.texture_array[2]
-        PreviewTextures.load_texture(PreviewTextures.concrete_texture_name, PreviewTextures.wood_two_file, (0,0,256,128))
+        PreviewTextures.load_texture(PreviewTextures.eight_ball_texture_name, PreviewTextures.eight_ball_file, (0,0,512,512))
         PreviewTextures.load_texture(PreviewTextures.wood_one_name, PreviewTextures.wood_one_file, (0,0,512,512))
         PreviewTextures.load_texture(PreviewTextures.wood_two_name, PreviewTextures.wood_two_file, (0,0,512,512))
 

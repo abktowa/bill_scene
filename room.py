@@ -214,7 +214,7 @@ class Room:
 
     def draw_components(self):
         
-        Components.draw_pool_table()
+        Components.draw_pool_table_with_abans_children()
 
          # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
