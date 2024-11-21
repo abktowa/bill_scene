@@ -157,6 +157,10 @@ class Components:
 
         glPopMatrix()
 
+    #==============================
+    # Help Message
+    #==============================    
+
     def help_message():
         print("Hi! The controls are as follows:\nPress \"W\" to move forward\nPress \"S\" to move backward")
         print("Press \"A\" to move to the left\nPress \"D\" to move to the right")
