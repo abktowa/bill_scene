@@ -157,17 +157,12 @@ class Components:
 
         glPopMatrix()
 
+    #==============================
+    # Cue Sticks
+    #==============================
 
-
-
-
-
-
-
-
-
-
-
+    def draw_cue_stick():
+        BasicShapes.draw_adjustable_cylinder(0.0984, 0.0426, 4.57) # bottom_radius, top_radius, height
 
     #==============================
     # Ball functions
