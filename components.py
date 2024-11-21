@@ -9,17 +9,18 @@ from basic_shapes import *
 from components import *
 from materials import *
 from textures import *
-from preview_textures import *
+from initialize_textures import *
 
 
 class Components:
 	
-    PreviewTextures.init()  # Ensure textures are loaded
+    InitializeTextures.init()  # Ensure textures are loaded
 
     
     #==============================
     # Table functions
     #==============================
+
 
     def draw_elegant_table(length, width, texture=None):
         glPushMatrix() 
@@ -144,8 +145,8 @@ class Components:
 
         # Draw the table
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
-        # Textures.set_texture(PreviewTextures.wood_two)
-        Components.draw_elegant_table(table_length, table_width, PreviewTextures.wood_two)
+        # Textures.set_texture(InitializeTextures.wood_two)
+        Components.draw_elegant_table(table_length, table_width, InitializeTextures.wood_two_name)
 
         # Position and scale the lamp
         glPushMatrix()
@@ -156,17 +157,12 @@ class Components:
 
         glPopMatrix()
 
+    #==============================
+    # Cue Sticks
+    #==============================
 
-
-
-
-
-
-
-
-
-
-
+    def draw_cue_stick():
+        BasicShapes.draw_adjustable_cylinder(0.0984, 0.0426, 4.57) # bottom_radius, top_radius, height
 
     #==============================
     # Ball functions
@@ -175,6 +171,11 @@ class Components:
     def draw_1ball():
         glPushMatrix()
         BasicShapes.draw_sphere(0.186)
+        glPopMatrix()
+
+    def draw_rotated_1ball(rotate_x, rotate_y, rotate_z):
+        glPushMatrix()
+        BasicShapes.draw_rotated_sphere(0.186, rotate_x, rotate_y, rotate_z)
         glPopMatrix()
 
     def draw_4ball():
@@ -212,3 +213,77 @@ class Components:
         BasicShapes.draw_cube(0.10, 0.10, 0.10)
         glTranslatef(0.13, 0, 0)
         glPopMatrix() """
+    
+       
+    #==============================
+    # Pool table functions
+    #==============================
+
+    # Draws the pool table with the billiard balls on it
+    def draw_pool_table_with_abans_children():
+        glPushMatrix()
+        
+        Components.draw_pool_table()
+
+        glTranslatef(0, 3.08, 0)  # Move up from the ground
+
+        # Draw the balls
+        Materials.set_material(GL_FRONT, Materials.SILVER) # Set the material
+        glTranslatef(-1.2, 0, 1.2)
+        Components.draw_1ball()
+        glTranslatef(1.6, 0, -1.1)
+        Components.draw_1ball()
+        glTranslatef(1.3, 0, -1.5)
+        Components.draw_1ball()
+        glTranslatef(-1.9, 0, 0.8)
+        Components.draw_1ball()
+
+        # Draw the Q balls
+        Materials.set_material(GL_FRONT, Materials.BALL_RESIN) # Set the material
+        glTranslatef(-2.2, 0, 0.2)
+        Components.draw_1ball()
+
+        # Draw the 8 ball
+        Textures.set_texture(InitializeTextures.eight_ball_texture_name) # Set the texture
+        glTranslatef(4, 0, 0)
+        Components.draw_rotated_1ball(100,0,0)
+
+        glPopMatrix()
+
+
+
+    # Draws a pool table that is 8 units long, 4 units wide, and 3.08 units tall (aprox. 3 ft 1 in)
+    def draw_pool_table():
+        glPushMatrix()
+        
+        length=8 
+        width=4
+
+        # Draw the main table
+        Components.draw_elegant_table(length, width, InitializeTextures.wood_one_name)
+        
+        Textures.set_texture(InitializeTextures.wood_one_name) # Set the texture
+        glTranslatef(0, 1.5, 0)  # Move up from the ground
+        BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
+
+        glTranslatef(0, 1.5, 0)  # Move up more
+        Materials.set_material(GL_FRONT, Materials.GREEN_FELT) # Set the material
+        BasicShapes.draw_rectangle(7.7,3.7,0.08) # Draw the felt
+
+
+        # Draw the bumper
+        Materials.set_material(GL_FRONT, Materials.RUBBER_BUMPER) # Set the material
+
+        glPushMatrix()
+        glTranslatef(-7.7/2, 0, 0)  # Move to the side
+        BasicShapes.draw_rectangle(0.3, 4, 0.2)
+        glTranslatef(7.7, 0, 0)  # Move to the other side
+        BasicShapes.draw_rectangle(0.3, 4, 0.2)
+        glPopMatrix()
+        glTranslatef(0, 0, (3.7/2))  # Move back
+        BasicShapes.draw_rectangle(8, 0.3, 0.2)
+        glTranslatef(0, 0, - (3.7))  # Move forward
+        BasicShapes.draw_rectangle(8, 0.3, 0.2)
+
+
+        glPopMatrix()

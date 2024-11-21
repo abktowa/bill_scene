@@ -113,9 +113,6 @@ class Preview:
         Preview.set_light(GL_LIGHT0, Preview.light0_pos)
         Preview.set_light(GL_LIGHT1, Preview.light1_pos)
 
-
-
-
     def main_loop():
         global running, clock, animate
         while running:
@@ -261,10 +258,11 @@ class Preview:
         # Preview the element
 
         # Components.draw_elegant_table(2,2)
-        Components.draw_table_with_lamp(2,2)
+        # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-    
+        Components.draw_pool_table_with_abans_children()
+
 
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
@@ -275,6 +273,9 @@ class Preview:
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
         # Components.draw_dice()
+
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+        # Components.draw_ball()
 
         
 
