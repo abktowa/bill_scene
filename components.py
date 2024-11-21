@@ -146,7 +146,7 @@ class Components:
         # Draw the table
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
         # Textures.set_texture(InitializeTextures.wood_two)
-        Components.draw_elegant_table(table_length, table_width, InitializeTextures.wood_two_name)
+        Components.draw_elegant_table(table_length, table_width, InitializeTextures.wood_two_texture)
 
         # Position and scale the lamp
         glPushMatrix()
@@ -232,7 +232,7 @@ class Components:
     #==============================
 
     # Draws the pool table with the billiard balls on it
-    def draw_pool_table_with_abans_children():
+    def draw_pool_table_scene():
         glPushMatrix()
         
         Components.draw_pool_table()
@@ -256,9 +256,14 @@ class Components:
         Components.draw_1ball()
 
         # Draw the 8 ball
-        Textures.set_texture(InitializeTextures.eight_ball_texture_name) # Set the texture
+        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
         glTranslatef(4, 0, 0)
         Components.draw_rotated_1ball(100,0,0)
+
+        # Draw another ball
+        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
+        glTranslatef(1.5, 0, 0)
+        BasicShapes.draw_animated_sphere(0.186, 0, 0, 0, 0)
 
         glPopMatrix()
 
@@ -272,9 +277,9 @@ class Components:
         width=4
 
         # Draw the main table
-        Components.draw_elegant_table(length, width, InitializeTextures.wood_one_name)
+        Components.draw_elegant_table(length, width, InitializeTextures.wood_one_texture)
         
-        Textures.set_texture(InitializeTextures.wood_one_name) # Set the texture
+        Textures.set_texture(InitializeTextures.wood_one_texture) # Set the texture
         glTranslatef(0, 1.5, 0)  # Move up from the ground
         BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
 

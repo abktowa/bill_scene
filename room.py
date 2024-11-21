@@ -262,7 +262,7 @@ class Room:
 
     def draw_components(self):
         
-        Components.draw_pool_table_with_abans_children()
+        Components.draw_pool_table_scene()
         collisionList.append(Collision(8,4,0,0)) #Create collision box for pool table
 
          # Place the corner table in the bottom-left corner
