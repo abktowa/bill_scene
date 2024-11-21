@@ -263,8 +263,8 @@ class Preview:
 
         # Components.draw_pool_table_with_abans_children()
 
-        glTranslate(0, 3, 0)
-        Components.draw_hanging_spotlight()
+        # glTranslate(0, 3, 0)
+        # Components.draw_hanging_spotlight()
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         # Components.draw_4ball()
