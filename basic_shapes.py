@@ -17,6 +17,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 from utils import *
 import math
+from textures import *
 
 
 class BasicShapes:
@@ -46,6 +47,26 @@ class BasicShapes:
         glTranslatef(0.0, radius, 0.0)  # Translate to place sphere on the y = 0 plane
         glRotate(rotate_x, 0,0,0)
         glRotate(rotate_y, 0,1,0)
+        glRotate(rotate_z, 0,0,1)
+        
+        # Draw the sphere with specified radius, smooth appearance with 32 slices and stacks
+        gluSphere(quadric, radius, 32, 32)
+        
+        glPopMatrix()  # Restore the previous matrix state
+        gluDeleteQuadric(quadric)  # Clean up the quadric object
+
+    def draw_animated_sphere(radius, position_x, position_z, rotate_x, rotate_z):
+        quadric = gluNewQuadric()  # Create a new quadric for the sphere
+        gluQuadricDrawStyle(quadric, GLU_FILL)
+        gluQuadricNormals(quadric, GLU_SMOOTH)
+        gluQuadricTexture(quadric, GL_TRUE)
+        
+        glPushMatrix()  # Save the current matrix
+        glTranslatef(0.0, radius, 0.0)  # Translate to place sphere on the y = 0 plane
+        
+        # Place in the correct postion/rotation
+        glTranslate(position_x, 0, position_z)
+        glRotate(rotate_x, 0,0,0)
         glRotate(rotate_z, 0,0,1)
         
         # Draw the sphere with specified radius, smooth appearance with 32 slices and stacks
@@ -122,15 +143,24 @@ class BasicShapes:
         """
 
     # Function to draw a dice
+    def draw_cube(length, width, height, face_textures=None):
+        """
+        Draws a cube with optional unique textures for each face.
 
-    def draw_cube(length, width, height):
+        Parameters:
+        - length: Length of the cube (X-axis)
+        - width: Width of the cube (Z-axis)
+        - height: Height of the cube (Y-axis)
+        - face_textures: Optional list of texture IDs, one for each face in the order:
+        [bottom, back, top, front, left, right]. If None, no textures are applied.
+        """
         glPushMatrix()
 
-        # Calculate half length and width sizes (for centering the pyramid on the x and z axes)
-        half_length = length/2
-        half_width = width/2
+        # Calculate half length and width sizes (for centering the cube)
+        half_length = length / 2
+        half_width = width / 2
 
-        # Define vertices for a rectangle
+        # Define vertices for the cube
         vertices = [
             [-half_length, 0, -half_width],       # Vertex 0
             [half_length, 0, -half_width],        # Vertex 1
@@ -143,24 +173,35 @@ class BasicShapes:
         ]
 
         # Defines the rectangle faces created by the given vertices
-        # For example the first face is the bottom, created with vertices 0,1,2 and 3 above
         faces = [
-            (0, 3, 2, 1), # Face 1 (bottom) #
-            (3, 7, 6, 2), # Face 2 (back) #
-            (7, 4, 5, 6), # Face 3 (top) #
-            (0, 1, 5, 4), # Face 4 (front) #
-            (0, 4, 7, 3), # Face 5 (left) 
+            (0, 3, 2, 1), # Face 1 (bottom)
+            (3, 7, 6, 2), # Face 2 (back)
+            (7, 4, 5, 6), # Face 3 (top)
+            (0, 1, 5, 4), # Face 4 (front)
+            (0, 4, 7, 3), # Face 5 (left)
             (1, 2, 6, 5)  # Face 6 (right)
         ]
-        
-        # Draw the cube
-        glBegin(GL_QUADS)
-        for face in faces:
-            for vertex in face:
-                glVertex3fv(vertices[vertex])
-        glEnd()
+
+        # Define texture coordinates for a face
+        tex_coords = [
+            (0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)
+        ]
+
+       # Draw the cube with optional textures for each face
+        for i, face in enumerate(faces):
+            # Bind the texture for the current face
+            if face_textures and i < len(face_textures):
+              Textures.set_texture(face_textures[i])
+
+            glBegin(GL_QUADS)
+            for j, vertex in enumerate(face):
+                glTexCoord2f(*tex_coords[j])  # Texture coordinates for the vertex
+                glVertex3fv(vertices[vertex])  # Vertex position
+            glEnd()
+
 
         glPopMatrix()
+
         
     # Function to generate a standard pyramid
     def draw_pyramid(base_size, height):

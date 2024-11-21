@@ -41,10 +41,22 @@ class InitializeTextures:
     wood_two_file = "textures/wood2.jpeg"
     wood_one_file = "textures/wood1.jpeg"
     eight_ball_file = "textures/eight_ball.jpeg"
-    eight_ball_texture_name = None
-    wood_one_name = None
+    die_one = "textures/1side.jpg"
+    die_two = "textures/2side.jpg"
+    die_three = "textures/3side.jpg"
+    die_four = "textures/4side.jpg"
+    die_five = "textures/5side.jpg"
+    die_six = "textures/6side.jpg"
+    eight_ball_texture = None
+    wood_one_texture = None
     checkerboard_texture_name = None
-    wood_two_name = None
+    wood_two_texture = None
+    die_one_name = None
+    die_two_name = None
+    die_three_name = None
+    die_four_name = None
+    die_five_name = None
+    die_six_name = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -84,13 +96,26 @@ class InitializeTextures:
         glEnable(GL_DEPTH_TEST)   # For z-buffering!
 
         # Create or load the textures
-        InitializeTextures.texture_array = glGenTextures(3)  # Texture names for all three textures to create
-        InitializeTextures.eight_ball_texture_name = InitializeTextures.texture_array[0]
-        InitializeTextures.wood_one_name = InitializeTextures.texture_array[1]
-        InitializeTextures.wood_two_name = InitializeTextures.texture_array[2]
-        InitializeTextures.load_texture(InitializeTextures.eight_ball_texture_name, InitializeTextures.eight_ball_file, (0,0,512,512))
-        InitializeTextures.load_texture(InitializeTextures.wood_one_name, InitializeTextures.wood_one_file, (0,0,512,512))
-        InitializeTextures.load_texture(InitializeTextures.wood_two_name, InitializeTextures.wood_two_file, (0,0,512,512))
+        InitializeTextures.texture_array = glGenTextures(9)  # Texture names for all three textures to create
+        InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
+        InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]
+        InitializeTextures.wood_two_texture = InitializeTextures.texture_array[2]
+        InitializeTextures.die_one_name = InitializeTextures.texture_array[3]
+        InitializeTextures.die_two_name = InitializeTextures.texture_array[4]
+        InitializeTextures.die_three_name = InitializeTextures.texture_array[5]
+        InitializeTextures.die_four_name = InitializeTextures.texture_array[6]
+        InitializeTextures.die_five_name = InitializeTextures.texture_array[7]
+        InitializeTextures.die_six_name = InitializeTextures.texture_array[8]
+        InitializeTextures.load_texture(InitializeTextures.eight_ball_texture, InitializeTextures.eight_ball_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.wood_one_texture, InitializeTextures.wood_one_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.wood_two_texture, InitializeTextures.wood_two_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.die_one_name, InitializeTextures.die_one)
+        InitializeTextures.load_texture(InitializeTextures.die_two_name, InitializeTextures.die_two)
+        InitializeTextures.load_texture(InitializeTextures.die_three_name, InitializeTextures.die_three)
+        InitializeTextures.load_texture(InitializeTextures.die_four_name, InitializeTextures.die_four)
+        InitializeTextures.load_texture(InitializeTextures.die_five_name, InitializeTextures.die_five)
+        InitializeTextures.load_texture(InitializeTextures.die_six_name, InitializeTextures.die_six)
+
 
     def main_loop():
         global running, clock, animate
@@ -216,7 +241,7 @@ class InitializeTextures:
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_texture(InitializeTextures.wood_two_name)
+        Textures.set_dice_texture(InitializeTextures.die_one_texture)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)
@@ -292,10 +317,15 @@ class InitializeTextures:
         if crop_dimensions != None:
             # We are asked to crop the texture
             im = im.crop(crop_dimensions)
+        
+        if im.mode != "RGB":
+         im = im.convert("RGB")
+
 
         dimX = im.size[0]
         dimY = im.size[1]
-        texture = im.tobytes("raw")   # The cropped texture
+        texture = im.tobytes("raw", "RGB")
+
         glBindTexture(GL_TEXTURE_2D, texture_name)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dimX, dimY, 0, GL_RGB,
                     GL_UNSIGNED_BYTE, texture)

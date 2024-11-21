@@ -24,10 +24,8 @@ class Camera:
         self.eye = eye
         self.lookAngle = lookAngle
         self.heightAngle = heightAngle
-        self.collisionPoints = []
-        for i in range (6):
-            self.collisionPoints.append(Point(self.eye.x + (.5 * math.cos(math.radians(i * (360/6)))), 3 , self.eye.z + (.5 *math.sin(math.radians(i * (360/6))))))
-
+        self.collisionPoint = Point(self.eye.x,self.eye.y,self.eye.z)
+        
     def __str__(self):
         """Basic string representation of this Camera"""
         return "Camera Eye at %s with angle (%f)" % (self.eye, self.lookAngle)
@@ -56,6 +54,15 @@ class Camera:
                   lookX, lookY, lookZ,                   # Camera's look at point
                   0, 1, 0)                              # Camera is always oriented vertically
         
+    
+    def slideCollision(self, du, dv, dn):
+        rad = math.radians(self.lookAngle)
+        lookDX = math.sin(rad)
+        lookDZ = math.cos(rad)
+
+        self.collisionPoint.x += dn*lookDX + du*lookDZ
+        self.collisionPoint.z += dn*lookDZ - du*lookDX
+
     def slide(self, du, dv, dn):
         rad = math.radians(self.lookAngle)
         lookDX = math.sin(rad)
@@ -64,10 +71,6 @@ class Camera:
         self.eye.x += dn*lookDX + du*lookDZ
         self.eye.y += dv
         self.eye.z += dn*lookDZ - du*lookDX
-
-        for i in range(6):
-            self.collisionPoints[i].x += dn*lookDX + du*lookDZ
-            self.collisionPoints[i].z += dn*lookDZ - du*lookDX
     
     def turn(self, angle):
         """Turn the camera by the given angle"""
