@@ -18,7 +18,7 @@ from preview import *
 import math
 
 class Preview:
-
+ 
     # These parameters define the camera's lens shape
     CAM_NEAR = 0.01
     CAM_FAR = 1000.0
@@ -261,7 +261,8 @@ class Preview:
         # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-        Components.draw_animated_pool_table_scene()
+        # Components.draw_animated_pool_table_scene()
+        Components.draw_die()
 
 
 

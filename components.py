@@ -214,9 +214,18 @@ class Components:
     #==============================
 
     def draw_die(): 
+        face_textures = [ 
+            PreviewTextures.die_one_name,
+            PreviewTextures.die_two_name,
+            PreviewTextures.die_three_name,
+            PreviewTextures.die_four_name,
+            PreviewTextures.die_five_name,
+            PreviewTextures.die_six_name
+        ]
         glPushMatrix()
         glTranslatef(1, 0, 0)
-        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+        # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        BasicShapes.draw_cube(3, 3, 3, face_textures)
         glPopMatrix()
 
     """ def draw_dice():
