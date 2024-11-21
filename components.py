@@ -9,12 +9,12 @@ from basic_shapes import *
 from components import *
 from materials import *
 from textures import *
-from preview_textures import *
+from initialize_textures import *
 
 
 class Components:
 	
-    PreviewTextures.init()  # Ensure textures are loaded
+    InitializeTextures.init()  # Ensure textures are loaded
 
     
     #==============================
@@ -145,8 +145,8 @@ class Components:
 
         # Draw the table
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
-        # Textures.set_texture(PreviewTextures.wood_two)
-        Components.draw_elegant_table(table_length, table_width, PreviewTextures.wood_two_name)
+        # Textures.set_texture(InitializeTextures.wood_two)
+        Components.draw_elegant_table(table_length, table_width, InitializeTextures.wood_two_texture)
 
         # Position and scale the lamp
         glPushMatrix()
@@ -158,6 +158,7 @@ class Components:
         glPopMatrix()
 
     #==============================
+<<<<<<< HEAD
     # Colored Light functions
     #==============================
     
@@ -168,6 +169,25 @@ class Components:
         glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])
         BasicShapes.draw_sphere(0.2)
         glPopMatrix()
+=======
+    # Help Message
+    #==============================    
+
+    def help_message():
+        print("Hi! The controls are as follows:\nPress \"W\" to move forward\nPress \"S\" to move backward")
+        print("Press \"A\" to move to the left\nPress \"D\" to move to the right")
+        print("Press the Up Arrow key to look up\nPress the Down Arrow key to look down\nPress the Left Arrow key to look left")
+        print("Press the Right Arrow key to look right\nPress \"TBD\" to reset to starting position\nPress \"TBD\" to reset camera")
+        print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
+        print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
+
+    #==============================
+    # Cue Sticks
+    #==============================
+
+    def draw_cue_stick():
+        BasicShapes.draw_adjustable_cylinder(0.0984, 0.0426, 4.57) # bottom_radius, top_radius, height
+>>>>>>> cd2d63f63c3da842346b6d57741370162627f930
 
     #==============================
     # Ball functions
@@ -207,9 +227,18 @@ class Components:
     #==============================
 
     def draw_die(): 
+        face_textures = [ 
+            InitializeTextures.die_one_name,
+            InitializeTextures.die_two_name,
+            InitializeTextures.die_three_name,
+            InitializeTextures.die_four_name,
+            InitializeTextures.die_five_name,
+            InitializeTextures.die_six_name
+        ]
         glPushMatrix()
         glTranslatef(1, 0, 0)
-        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+        # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        BasicShapes.draw_cube(3, 3, 3, face_textures)
         glPopMatrix()
 
     """ def draw_dice():
@@ -225,7 +254,22 @@ class Components:
     #==============================
 
     # Draws the pool table with the billiard balls on it
-    def draw_pool_table_with_abans_children():
+    def draw_animated_pool_table_scene():
+        glPushMatrix()
+        
+        Components.draw_pool_table()
+
+        glTranslatef(0, 3.08, 0)  # Move up from the ground
+        
+        # Draw a ball
+        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
+        glTranslatef(1.5, 0, 0)
+        BasicShapes.draw_animated_sphere(0.186, 0, 0, 0, 0)
+
+        glPopMatrix()
+
+
+    def draw_static_pool_table_scene():
         glPushMatrix()
         
         Components.draw_pool_table()
@@ -249,7 +293,7 @@ class Components:
         Components.draw_1ball()
 
         # Draw the 8 ball
-        Textures.set_texture(PreviewTextures.eight_ball_texture_name) # Set the texture
+        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
         glTranslatef(4, 0, 0)
         Components.draw_rotated_1ball(100,0,0)
 
@@ -265,9 +309,9 @@ class Components:
         width=4
 
         # Draw the main table
-        Components.draw_elegant_table(length, width, PreviewTextures.wood_one_name)
+        Components.draw_elegant_table(length, width, InitializeTextures.wood_one_texture)
         
-        Textures.set_texture(PreviewTextures.wood_one_name) # Set the texture
+        Textures.set_texture(InitializeTextures.wood_one_texture) # Set the texture
         glTranslatef(0, 1.5, 0)  # Move up from the ground
         BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
 

@@ -20,10 +20,10 @@ from basic_shapes import *
 from components import *
 from materials import *
 from textures import *
-from preview_textures import *
+from initialize_textures import *
 from sub_scenes import *
 
-class PreviewTextures:
+class InitializeTextures:
 
     # These parameters describe window properties
     window_dimensions = (1200, 800)
@@ -41,10 +41,22 @@ class PreviewTextures:
     wood_two_file = "textures/wood2.jpeg"
     wood_one_file = "textures/wood1.jpeg"
     eight_ball_file = "textures/eight_ball.jpeg"
-    eight_ball_texture_name = None
-    wood_one_name = None
+    die_one = "textures/1side.jpg"
+    die_two = "textures/2side.jpg"
+    die_three = "textures/3side.jpg"
+    die_four = "textures/4side.jpg"
+    die_five = "textures/5side.jpg"
+    die_six = "textures/6side.jpg"
+    eight_ball_texture = None
+    wood_one_texture = None
     checkerboard_texture_name = None
-    wood_two_name = None
+    wood_two_texture = None
+    die_one_name = None
+    die_two_name = None
+    die_three_name = None
+    die_four_name = None
+    die_five_name = None
+    die_six_name = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -62,11 +74,11 @@ class PreviewTextures:
     camera = Camera(CAM_ANGLE, window_dimensions[0]/window_dimensions[1], CAM_NEAR, CAM_FAR, INITIAL_EYE, INITIAL_LOOK_ANGLE)
 
     def main():
-        PreviewTextures.init()
+        InitializeTextures.init()
 
         # Enters the main loop.   
         # Displays the window and starts listening for events.
-        PreviewTextures.main_loop()
+        InitializeTextures.main_loop()
         return
 
     def init():
@@ -75,7 +87,7 @@ class PreviewTextures:
 
         # pygame setup
         pygame.init()
-        screen = pygame.display.set_mode(PreviewTextures.window_dimensions, pygame.DOUBLEBUF|pygame.OPENGL)
+        screen = pygame.display.set_mode(InitializeTextures.window_dimensions, pygame.DOUBLEBUF|pygame.OPENGL)
         clock = pygame.time.Clock()
         pygame.key.set_repeat(300, 50)  # Key repeat rate
         running = True
@@ -84,13 +96,26 @@ class PreviewTextures:
         glEnable(GL_DEPTH_TEST)   # For z-buffering!
 
         # Create or load the textures
-        PreviewTextures.texture_array = glGenTextures(3)  # Texture names for all three textures to create
-        PreviewTextures.eight_ball_texture_name = PreviewTextures.texture_array[0]
-        PreviewTextures.wood_one_name = PreviewTextures.texture_array[1]
-        PreviewTextures.wood_two_name = PreviewTextures.texture_array[2]
-        PreviewTextures.load_texture(PreviewTextures.eight_ball_texture_name, PreviewTextures.eight_ball_file, (0,0,512,512))
-        PreviewTextures.load_texture(PreviewTextures.wood_one_name, PreviewTextures.wood_one_file, (0,0,512,512))
-        PreviewTextures.load_texture(PreviewTextures.wood_two_name, PreviewTextures.wood_two_file, (0,0,512,512))
+        InitializeTextures.texture_array = glGenTextures(9)  # Texture names for all three textures to create
+        InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
+        InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]
+        InitializeTextures.wood_two_texture = InitializeTextures.texture_array[2]
+        InitializeTextures.die_one_name = InitializeTextures.texture_array[3]
+        InitializeTextures.die_two_name = InitializeTextures.texture_array[4]
+        InitializeTextures.die_three_name = InitializeTextures.texture_array[5]
+        InitializeTextures.die_four_name = InitializeTextures.texture_array[6]
+        InitializeTextures.die_five_name = InitializeTextures.texture_array[7]
+        InitializeTextures.die_six_name = InitializeTextures.texture_array[8]
+        InitializeTextures.load_texture(InitializeTextures.eight_ball_texture, InitializeTextures.eight_ball_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.wood_one_texture, InitializeTextures.wood_one_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.wood_two_texture, InitializeTextures.wood_two_file, (0,0,512,512))
+        InitializeTextures.load_texture(InitializeTextures.die_one_name, InitializeTextures.die_one)
+        InitializeTextures.load_texture(InitializeTextures.die_two_name, InitializeTextures.die_two)
+        InitializeTextures.load_texture(InitializeTextures.die_three_name, InitializeTextures.die_three)
+        InitializeTextures.load_texture(InitializeTextures.die_four_name, InitializeTextures.die_four)
+        InitializeTextures.load_texture(InitializeTextures.die_five_name, InitializeTextures.die_five)
+        InitializeTextures.load_texture(InitializeTextures.die_six_name, InitializeTextures.die_six)
+
 
     def main_loop():
         global running, clock, animate
@@ -101,37 +126,37 @@ class PreviewTextures:
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.KEYDOWN:
-                    PreviewTextures.keyboard(event)
+                    InitializeTextures.keyboard(event)
 
-            if PreviewTextures.animate:
+            if InitializeTextures.animate:
                 # Advance the scene one frame
-                PreviewTextures.advance()
+                InitializeTextures.advance()
 
             # (Re)draw the scene (should only do this when necessary!)
-            PreviewTextures.display()
+            InitializeTextures.display()
 
             # Flipping causes the current image to be seen. (Double-Buffering)
             pygame.display.flip()
 
-            clock.tick(PreviewTextures.FPS)  # delays to keep it at FPS frame rate
+            clock.tick(InitializeTextures.FPS)  # delays to keep it at FPS frame rate
 
     def advance():
         global rotation_angle
-        PreviewTextures.rotation_angle += PreviewTextures.angle_step
-        if PreviewTextures.rotation_angle >= 360:
-            PreviewTextures.rotation_angle -= 360   # So doesn't get too large
-        elif PreviewTextures.rotation_angle < 0:
-            PreviewTextures.rotation_angle += 360    
+        InitializeTextures.rotation_angle += InitializeTextures.angle_step
+        if InitializeTextures.rotation_angle >= 360:
+            InitializeTextures.rotation_angle -= 360   # So doesn't get too large
+        elif InitializeTextures.rotation_angle < 0:
+            InitializeTextures.rotation_angle += 360    
 
     def display():
         """Display the current scene."""
         # Set the viewport to the full screen.
-        win_width = PreviewTextures.window_dimensions[0]
-        win_height = PreviewTextures.window_dimensions[1]
+        win_width = InitializeTextures.window_dimensions[0]
+        win_height = InitializeTextures.window_dimensions[1]
         glViewport(0, 0, win_width, win_height)
 
-        PreviewTextures.camera.setProjection()
-        PreviewTextures.adjust_navigation_position()
+        InitializeTextures.camera.setProjection()
+        InitializeTextures.adjust_navigation_position()
         # Clear the Screen.
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -141,7 +166,7 @@ class PreviewTextures:
         glShadeModel(GL_SMOOTH)
 
         # Draw and show the "Scene".
-        PreviewTextures.draw_scene()
+        InitializeTextures.draw_scene()
         glFlush()
 
 
@@ -153,47 +178,47 @@ class PreviewTextures:
         if key == 27:  # ASCII code 27 = ESC-key
             running = False
         elif key == ord(' '):
-            PreviewTextures.animate = not PreviewTextures.animate
+            InitializeTextures.animate = not InitializeTextures.animate
         elif key == pygame.K_LEFT:
             # Move left
-            PreviewTextures.view_x += 1
+            InitializeTextures.view_x += 1
         elif key == pygame.K_RIGHT:
             # Move right
-            PreviewTextures.view_x -= 1
+            InitializeTextures.view_x -= 1
         elif key == pygame.K_UP:
             # Go up
-            PreviewTextures.view_y -= 1
+            InitializeTextures.view_y -= 1
         elif key == pygame.K_DOWN:
             # Go down
-            PreviewTextures.view_y += 1            
+            InitializeTextures.view_y += 1            
         elif key == ord('w'):
             # Zoom in
-            PreviewTextures.view_z += 1
+            InitializeTextures.view_z += 1
         elif key == ord('s'):
             # Zoom out
-            PreviewTextures.view_z -= 1
+            InitializeTextures.view_z -= 1
         elif key == ord('a'):
             # tilt left
-            PreviewTextures.turn_degree_x +=1
+            InitializeTextures.turn_degree_x +=1
         elif key == ord('d'):
             # tilt right
-            PreviewTextures.turn_degree_x -= 1
+            InitializeTextures.turn_degree_x -= 1
         elif key == ord('i'):
             # Tilt forward
-            PreviewTextures.turn_degree_y += 1
+            InitializeTextures.turn_degree_y += 1
         elif key == ord('k'):
             # Tilt backward
-            PreviewTextures.turn_degree_y -= 1
+            InitializeTextures.turn_degree_y -= 1
 
         # Adjust the navigation bsed on the keyboard input
     def adjust_navigation_position():
         moveSpeed = 0.2
-        glTranslatef(PreviewTextures.view_x*moveSpeed,PreviewTextures.view_y*moveSpeed,PreviewTextures.view_z*moveSpeed)
+        glTranslatef(InitializeTextures.view_x*moveSpeed,InitializeTextures.view_y*moveSpeed,InitializeTextures.view_z*moveSpeed)
 
     def adjust_navigation_tilt():
         tiltSpeed = 1
-        glRotated(PreviewTextures.turn_degree_x*tiltSpeed,0,1,0)
-        glRotated(PreviewTextures.turn_degree_y*tiltSpeed,1,0,0)
+        glRotated(InitializeTextures.turn_degree_x*tiltSpeed,0,1,0)
+        glRotated(InitializeTextures.turn_degree_y*tiltSpeed,1,0,0)
 
     def draw_scene():
         """Draws a simple scene with a few shapes."""
@@ -201,22 +226,22 @@ class PreviewTextures:
         glEnable(GL_LIGHTING)
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE)
 
-        PreviewTextures.camera.placeCamera()
+        InitializeTextures.camera.placeCamera()
 
-        PreviewTextures.place_backlight(GL_LIGHT0)
+        InitializeTextures.place_backlight(GL_LIGHT0)
         glColor3f(0.5, 0.5, 0.5)
 
-        PreviewTextures.adjust_navigation_tilt()
+        InitializeTextures.adjust_navigation_tilt()
 
         # Draw a textured sphere
-        glRotated(PreviewTextures.rotation_angle, 0, 1, 0)   # Spin around y-axis
+        glRotated(InitializeTextures.rotation_angle, 0, 1, 0)   # Spin around y-axis
         glPushMatrix()
         glRotate(-90,1,0,0)
         Materials.set_material(GL_FRONT, Materials.GOLD)
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_texture(PreviewTextures.wood_two_name)
+        Textures.set_dice_texture(InitializeTextures.die_one_texture)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)
@@ -232,7 +257,7 @@ class PreviewTextures:
         glPushMatrix()
         glLoadIdentity()
         light_position = [ 0.2, -0.5, 0.0, 1.0 ]
-        rad = math.radians(PreviewTextures.flash_light_angle)
+        rad = math.radians(InitializeTextures.flash_light_angle)
         light_direction = [ math.sin(rad), 0.0, -math.cos(rad), 0.0]
         light_ambient = [ 1.0, 1.0, 1.0, 1.0 ]
         light_diffuse = [ 1.0, 1.0, 1.0, 1.0 ]
@@ -261,7 +286,7 @@ class PreviewTextures:
         glPushMatrix()
         glLoadIdentity()
         light_position = [ 0.2, -0.5, 0.0, 1.0 ]
-        rad = math.radians(PreviewTextures.flash_light_angle)
+        rad = math.radians(InitializeTextures.flash_light_angle)
         light_direction = [ math.sin(rad), 0.0, -math.cos(rad), 0.0]
         light_ambient = [ 1.0, 1.0, 1.0, 1.0 ]
         light_diffuse = [ 1.0, 1.0, 1.0, 1.0 ]
@@ -292,10 +317,15 @@ class PreviewTextures:
         if crop_dimensions != None:
             # We are asked to crop the texture
             im = im.crop(crop_dimensions)
+        
+        if im.mode != "RGB":
+         im = im.convert("RGB")
+
 
         dimX = im.size[0]
         dimY = im.size[1]
-        texture = im.tobytes("raw")   # The cropped texture
+        texture = im.tobytes("raw", "RGB")
+
         glBindTexture(GL_TEXTURE_2D, texture_name)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dimX, dimY, 0, GL_RGB,
                     GL_UNSIGNED_BYTE, texture)

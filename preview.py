@@ -18,7 +18,7 @@ from preview import *
 import math
 
 class Preview:
-
+ 
     # These parameters define the camera's lens shape
     CAM_NEAR = 0.01
     CAM_FAR = 1000.0
@@ -112,9 +112,6 @@ class Preview:
     def light_setup():
         Preview.set_light(GL_LIGHT0, Preview.light0_pos)
         Preview.set_light(GL_LIGHT1, Preview.light1_pos)
-
-
-
 
     def main_loop():
         global running, clock, animate
@@ -264,7 +261,8 @@ class Preview:
         # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-        Components.draw_pool_table_with_abans_children()
+        # Components.draw_animated_pool_table_scene()
+        Components.draw_die()
 
 
 
@@ -276,6 +274,9 @@ class Preview:
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
         # Components.draw_dice()
+
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+        # Components.draw_ball()
 
         
 

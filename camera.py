@@ -24,7 +24,8 @@ class Camera:
         self.eye = eye
         self.lookAngle = lookAngle
         self.heightAngle = heightAngle
-
+        self.collisionPoint = Point(self.eye.x,self.eye.y,self.eye.z)
+        
     def __str__(self):
         """Basic string representation of this Camera"""
         return "Camera Eye at %s with angle (%f)" % (self.eye, self.lookAngle)
@@ -46,11 +47,22 @@ class Camera:
         lookY = self.eye.y - math.sin(up)
         lookZ = self.eye.z - math.cos(rad)
 
+        
+
         # Place the camera
         gluLookAt(self.eye.x, self.eye.y, self.eye.z,  # Camera's origin
                   lookX, lookY, lookZ,                   # Camera's look at point
                   0, 1, 0)                              # Camera is always oriented vertically
         
+    
+    def slideCollision(self, du, dv, dn):
+        rad = math.radians(self.lookAngle)
+        lookDX = math.sin(rad)
+        lookDZ = math.cos(rad)
+
+        self.collisionPoint.x += dn*lookDX + du*lookDZ
+        self.collisionPoint.z += dn*lookDZ - du*lookDX
+
     def slide(self, du, dv, dn):
         rad = math.radians(self.lookAngle)
         lookDX = math.sin(rad)
