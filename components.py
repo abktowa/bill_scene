@@ -215,12 +215,12 @@ class Components:
 
     def draw_die(): 
         face_textures = [ 
-            PreviewTextures.die_one_name,
-            PreviewTextures.die_two_name,
-            PreviewTextures.die_three_name,
-            PreviewTextures.die_four_name,
-            PreviewTextures.die_five_name,
-            PreviewTextures.die_six_name
+            InitializeTextures.die_one_name,
+            InitializeTextures.die_two_name,
+            InitializeTextures.die_three_name,
+            InitializeTextures.die_four_name,
+            InitializeTextures.die_five_name,
+            InitializeTextures.die_six_name
         ]
         glPushMatrix()
         glTranslatef(1, 0, 0)

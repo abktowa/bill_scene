@@ -100,21 +100,21 @@ class InitializeTextures:
         InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
         InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]
         InitializeTextures.wood_two_texture = InitializeTextures.texture_array[2]
-        PreviewTextures.die_one_name = PreviewTextures.texture_array[3]
-        PreviewTextures.die_two_name = PreviewTextures.texture_array[4]
-        PreviewTextures.die_three_name = PreviewTextures.texture_array[5]
-        PreviewTextures.die_four_name = PreviewTextures.texture_array[6]
-        PreviewTextures.die_five_name = PreviewTextures.texture_array[7]
-        PreviewTextures.die_six_name = PreviewTextures.texture_array[8]
+        InitializeTextures.die_one_name = InitializeTextures.texture_array[3]
+        InitializeTextures.die_two_name = InitializeTextures.texture_array[4]
+        InitializeTextures.die_three_name = InitializeTextures.texture_array[5]
+        InitializeTextures.die_four_name = InitializeTextures.texture_array[6]
+        InitializeTextures.die_five_name = InitializeTextures.texture_array[7]
+        InitializeTextures.die_six_name = InitializeTextures.texture_array[8]
         InitializeTextures.load_texture(InitializeTextures.eight_ball_texture, InitializeTextures.eight_ball_file, (0,0,512,512))
         InitializeTextures.load_texture(InitializeTextures.wood_one_texture, InitializeTextures.wood_one_file, (0,0,512,512))
         InitializeTextures.load_texture(InitializeTextures.wood_two_texture, InitializeTextures.wood_two_file, (0,0,512,512))
-        PreviewTextures.load_texture(PreviewTextures.die_one_name, PreviewTextures.die_one)
-        PreviewTextures.load_texture(PreviewTextures.die_two_name, PreviewTextures.die_two)
-        PreviewTextures.load_texture(PreviewTextures.die_three_name, PreviewTextures.die_three)
-        PreviewTextures.load_texture(PreviewTextures.die_four_name, PreviewTextures.die_four)
-        PreviewTextures.load_texture(PreviewTextures.die_five_name, PreviewTextures.die_five)
-        PreviewTextures.load_texture(PreviewTextures.die_six_name, PreviewTextures.die_six)
+        InitializeTextures.load_texture(InitializeTextures.die_one_name, InitializeTextures.die_one)
+        InitializeTextures.load_texture(InitializeTextures.die_two_name, InitializeTextures.die_two)
+        InitializeTextures.load_texture(InitializeTextures.die_three_name, InitializeTextures.die_three)
+        InitializeTextures.load_texture(InitializeTextures.die_four_name, InitializeTextures.die_four)
+        InitializeTextures.load_texture(InitializeTextures.die_five_name, InitializeTextures.die_five)
+        InitializeTextures.load_texture(InitializeTextures.die_six_name, InitializeTextures.die_six)
 
 
     def main_loop():
