@@ -113,6 +113,19 @@ class Components:
 
         glPopMatrix()
 
+    def draw_hanging_spotlight():
+        glPushMatrix()
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+
+        # Ceiling attachment
+        BasicShapes.draw_cylinder(1/12, 6) #radius, height
+
+        #Spotlight shade
+        glTranslate(0,-2,0)
+        BasicShapes.draw_adjustable_cylinder(2, 1/12, 2) # bottom_radius, top_radius, height
+
+        glPopMatrix()
+
     def setup_lightbulb_lighting():
             """Sets up a light source at the position of the lightbulb."""
             # Define light properties
@@ -156,6 +169,18 @@ class Components:
         Components.draw_lamp()  # Draw the lamp
         glPopMatrix()
 
+        glPopMatrix()
+
+    #==============================
+    # Colored Light functions
+    #==============================
+    
+    def draw_red_ball():
+        glPushMatrix()
+        glMaterialfv(GL_FRONT, GL_AMBIENT, [1.0, 0.0, 0.0, 1.0])
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])
+        glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])
+        BasicShapes.draw_sphere(0.2)
         glPopMatrix()
 
     #==============================
@@ -215,9 +240,18 @@ class Components:
     #==============================
 
     def draw_die(): 
+        face_textures = [ 
+            InitializeTextures.die_one_name,
+            InitializeTextures.die_two_name,
+            InitializeTextures.die_three_name,
+            InitializeTextures.die_four_name,
+            InitializeTextures.die_five_name,
+            InitializeTextures.die_six_name
+        ]
         glPushMatrix()
         glTranslatef(1, 0, 0)
-        BasicShapes.draw_cube(0.10, 0.10, 0.10)
+        # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        BasicShapes.draw_cube(3, 3, 3, face_textures)
         glPopMatrix()
 
     """ def draw_dice():

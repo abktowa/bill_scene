@@ -18,7 +18,7 @@ from preview import *
 import math
 
 class Preview:
-
+ 
     # These parameters define the camera's lens shape
     CAM_NEAR = 0.01
     CAM_FAR = 1000.0
@@ -253,7 +253,7 @@ class Preview:
         BasicShapes.draw_coordinate_frame()
 
         # Set the material
-        # Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 
@@ -261,9 +261,16 @@ class Preview:
         # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
+<<<<<<< HEAD
         Components.draw_animated_pool_table_scene(True, 30)
 
+=======
+        # Components.draw_animated_pool_table_scene()
+        Components.draw_die()
+>>>>>>> caa0dbcc2125dccb52b529efc21a407c232c9894
 
+        # glTranslate(0, 3, 0)
+        # Components.draw_hanging_spotlight()
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         # Components.draw_4ball()
