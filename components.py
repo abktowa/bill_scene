@@ -9,6 +9,7 @@ from basic_shapes import *
 from components import *
 from materials import *
 from textures import *
+from pool_ball import *
 from initialize_textures import *
 
 
@@ -231,54 +232,6 @@ class Components:
     # Pool table functions
     #==============================
 
-    # Draws the pool table with the billiard balls on it
-    def draw_animated_pool_table_scene():
-        glPushMatrix()
-        
-        Components.draw_pool_table()
-
-        glTranslatef(0, 3.08, 0)  # Move up from the ground
-        
-        # Draw a ball
-        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
-        glTranslatef(1.5, 0, 0)
-        BasicShapes.draw_animated_sphere(0.186, 0, 0, 0, 0)
-
-        glPopMatrix()
-
-
-    def draw_static_pool_table_scene():
-        glPushMatrix()
-        
-        Components.draw_pool_table()
-
-        glTranslatef(0, 3.08, 0)  # Move up from the ground
-
-        # Draw the balls
-        Materials.set_material(GL_FRONT, Materials.SILVER) # Set the material
-        glTranslatef(-1.2, 0, 1.2)
-        Components.draw_1ball()
-        glTranslatef(1.6, 0, -1.1)
-        Components.draw_1ball()
-        glTranslatef(1.3, 0, -1.5)
-        Components.draw_1ball()
-        glTranslatef(-1.9, 0, 0.8)
-        Components.draw_1ball()
-
-        # Draw the Q balls
-        Materials.set_material(GL_FRONT, Materials.BALL_RESIN) # Set the material
-        glTranslatef(-2.2, 0, 0.2)
-        Components.draw_1ball()
-
-        # Draw the 8 ball
-        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
-        glTranslatef(4, 0, 0)
-        Components.draw_rotated_1ball(100,0,0)
-
-        glPopMatrix()
-
-
-
     # Draws a pool table that is 8 units long, 4 units wide, and 3.08 units tall (aprox. 3 ft 1 in)
     def draw_pool_table():
         glPushMatrix()
@@ -312,5 +265,74 @@ class Components:
         glTranslatef(0, 0, - (3.7))  # Move forward
         BasicShapes.draw_rectangle(8, 0.3, 0.2)
 
+
+        glPopMatrix()
+
+    
+    def draw_static_pool_table_scene():
+        glPushMatrix()
+        
+        Components.draw_pool_table()
+
+        glTranslatef(0, 3.08, 0)  # Move up from the ground
+
+        # Draw the balls
+        Materials.set_material(GL_FRONT, Materials.SILVER) # Set the material
+        glTranslatef(-1.2, 0, 1.2)
+        Components.draw_1ball()
+        glTranslatef(1.6, 0, -1.1)
+        Components.draw_1ball()
+        glTranslatef(1.3, 0, -1.5)
+        Components.draw_1ball()
+        glTranslatef(-1.9, 0, 0.8)
+        Components.draw_1ball()
+
+        # Draw the Q balls
+        Materials.set_material(GL_FRONT, Materials.BALL_RESIN) # Set the material
+        glTranslatef(-2.2, 0, 0.2)
+        Components.draw_1ball()
+
+        # Draw the 8 ball
+        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
+        glTranslatef(4, 0, 0)
+        Components.draw_rotated_1ball(100,0,0)
+
+        glPopMatrix()
+
+    
+    def draw_animated_pool_table_scene(in_shooting_mode, shooting_angle):
+
+        glPushMatrix()
+        
+        Components.draw_pool_table()
+
+        glTranslatef(0, 3.08, 0)  # Move up from the ground
+
+        # Create the balls
+        ball_1 = PoolBall(False, None, False) # has_texture, texture_name, is_cue
+        ball_2 = PoolBall(False, None, False) 
+        ball_3 = PoolBall(False, None, False) 
+        ball_4 = PoolBall(False, None, False)
+        eight_ball = PoolBall(True, InitializeTextures.eight_ball_texture, False)
+        cue_ball = PoolBall(False, None, True)
+
+        # Configarate the balls
+        ball_1.set_config(0.5, 0.3, 0, 0) # position_x, position_z, rotation_x, rotation_z
+        ball_2.set_config(-0.3, 1, 0, 0)
+        ball_3.set_config(1, 0.8, 0, 0)
+        ball_4.set_config(-0.6, -1.2, 0, 0)
+        eight_ball.set_config(0.3, 0.7, 100, 0)
+        cue_ball.set_config(-2, 0, 0, 0)
+
+        # Draw the balls
+        ball_1.draw()
+        ball_2.draw()
+        ball_3.draw()
+        ball_4.draw()
+        eight_ball.draw()
+        cue_ball.draw()
+
+        if in_shooting_mode:
+            PoolBall.draw_dash(cue_ball, shooting_angle)
 
         glPopMatrix()

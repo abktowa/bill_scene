@@ -1,11 +1,15 @@
 
 from materials import *
+from textures import *
+from basic_shapes import *
 from utils import Vector
 
 class PoolBall:
 
     def __init__(self, has_texture, texture_name, is_cue):
         
+        self.radius = 0.186 # Standard radius (in feet) for a pool ball
+
         self.position_x = 0
         self.position_z = 0
 
@@ -13,15 +17,27 @@ class PoolBall:
         self.rotation_z = 0
 
         self.power = 0
-        self.direction = Vector(0,0,0)
 
+        # This needs to be fixed, the vector class does not initiliaze a vector this way
+        # self.direction = Vector(0,0,0) 
+
+        # Confine the ball to our table (Our table is 7.7 units long, 3.7 units wide, and centered at the origin)
+        self.max_x = 7.7/2
+        self.min_x = -7.7/2
+
+        self.max_z = 3.7/2
+        self.min_z = -3.7/2
+
+
+        self.has_texture = has_texture
+    
         if has_texture:
-            texture = texture_name
+            self.texture = texture_name
 
         if is_cue or has_texture:
-            material = Materials.BALL_RESIN
+            self.material = Materials.BALL_RESIN
         else:
-            material = Materials.SILVER
+           self.material = Materials.SILVER
 
 
     def set_config(self, position_x, position_z, rotation_x, rotation_z):
@@ -32,7 +48,38 @@ class PoolBall:
         self.rotation_x = rotation_x
         self.rotation_z = rotation_z
 
+
     def draw(self):
+
+        # Set the materials/texture
+
+        Materials.set_material(GL_FRONT, self.material)
+        if self.has_texture:
+            Textures.set_texture(self.texture)
+
+        BasicShapes.draw_animated_sphere(self.radius, self.position_x, self.position_z, self.rotation_x, self.rotation_z)
 
         if self.power != 0:
             i = 1 + 2
+
+    @staticmethod
+    def draw_dash(cue_ball, angle):
+        glPushMatrix()
+
+        # Go to the center of the ball
+        glTranslate(cue_ball.position_x, 0, cue_ball.position_z)
+        
+        # Rotate the aim
+        glRotate(angle, 0, 1, 0)
+
+        # move to the edge of the ball
+        glTranslate(cue_ball.radius, 0, 0) 
+
+        # Draw the dashed line
+        space = 0.167 # aprox 2 in
+        glTranslate(1.5 * space, 0, 0)
+        Materials.set_material(GL_FRONT, Materials.REDDISH_WOOD)
+        BasicShapes.draw_rectangle(space, 0.0125, 0.04) # line is 1.5 in wide, 0.5 in tall
+        
+
+        glPopMatrix()

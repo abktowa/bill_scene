@@ -32,6 +32,10 @@ collisionList = []
 
 class Room:
 
+    # pool shooting variables
+    in_shooting_mode = False
+    shooting_angle = 0
+
     def __init__(self):
         pygame.init()
         pygame.display.set_mode(window_dimensions, pygame.DOUBLEBUF | pygame.OPENGL)
@@ -262,7 +266,7 @@ class Room:
 
     def draw_components(self):
         
-        Components.draw_static_pool_table_scene()
+        Components.draw_animated_pool_table_scene(Room.in_shooting_mode, Room.shooting_angle)
         collisionList.append(Collision(8,4,0,0)) #Create collision box for pool table
 
          # Place the corner table in the bottom-left corner
