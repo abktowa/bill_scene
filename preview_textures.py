@@ -229,10 +229,8 @@ class PreviewTextures:
 
         glPushMatrix()
         Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
-        Components.draw_die(0.10, 0.10, 0.10, PreviewTextures.textures)
+        Components.draw_die(0.10, 0.10, 0.10)
         glPopMatrix()
-
-
 
     def place_backlight(light_num):
         """ This creates a (spotlight) flashlight near the viewer/camera"""
