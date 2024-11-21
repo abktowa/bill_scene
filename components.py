@@ -11,7 +11,6 @@ from textures import *
 
 
 class Components:
-	
     
     #==============================
     # Table functions
@@ -106,6 +105,16 @@ class Components:
     #==============================
 
     def draw_die(length, width, height): 
+
+        die_textures = [
+            "textures/1side.png",
+            "textures/2side.png",
+            "textures/3side.png",
+            "textures/4side.png",
+            "textures/5side.png",
+            "textures/6side.png"
+        ]
+
         glPushMatrix()
         glTranslatef(1, 0, 0)
 
