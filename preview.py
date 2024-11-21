@@ -113,9 +113,6 @@ class Preview:
         Preview.set_light(GL_LIGHT0, Preview.light0_pos)
         Preview.set_light(GL_LIGHT1, Preview.light1_pos)
 
-
-
-
     def main_loop():
         global running, clock, animate
         while running:
@@ -276,6 +273,9 @@ class Preview:
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.EMERALD)
         # Components.draw_dice()
+
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
+        # Components.draw_ball()
 
         
 

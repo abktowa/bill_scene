@@ -24,6 +24,9 @@ class Camera:
         self.eye = eye
         self.lookAngle = lookAngle
         self.heightAngle = heightAngle
+        self.collisionPoints = []
+        for i in range (6):
+            self.collisionPoints.append(Point(self.eye.x + (.5 * math.cos(math.radians(i * (360/6)))), 3 , self.eye.z + (.5 *math.sin(math.radians(i * (360/6))))))
 
     def __str__(self):
         """Basic string representation of this Camera"""
@@ -46,6 +49,8 @@ class Camera:
         lookY = self.eye.y - math.sin(up)
         lookZ = self.eye.z - math.cos(rad)
 
+        
+
         # Place the camera
         gluLookAt(self.eye.x, self.eye.y, self.eye.z,  # Camera's origin
                   lookX, lookY, lookZ,                   # Camera's look at point
@@ -59,6 +64,10 @@ class Camera:
         self.eye.x += dn*lookDX + du*lookDZ
         self.eye.y += dv
         self.eye.z += dn*lookDZ - du*lookDX
+
+        for i in range(6):
+            self.collisionPoints[i].x += dn*lookDX + du*lookDZ
+            self.collisionPoints[i].z += dn*lookDZ - du*lookDX
     
     def turn(self, angle):
         """Turn the camera by the given angle"""
