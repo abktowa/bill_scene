@@ -261,8 +261,12 @@ class Preview:
         # Preview the element
 
         # Components.draw_elegant_table(2,2)
-        Components.draw_table_with_lamp(2,2)
+        # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
+
+        Components.draw_pool_table_with_abans_children()
+
+
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         # Components.draw_4ball()

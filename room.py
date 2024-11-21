@@ -214,8 +214,7 @@ class Room:
 
     def draw_components(self):
         
-        Materials.set_material(GL_FRONT, Materials.WOOD)
-        Components.draw_elegant_table(8, 4)
+        Components.draw_pool_table_with_abans_children()
 
          # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
