@@ -7,6 +7,7 @@ from camera import Camera
 from textures import *
 from materials import *
 from components import *
+from collision import Collision
 
 # Window settings
 window_dimensions = (1200, 800)
@@ -25,6 +26,9 @@ CAM_NEAR = 0.01
 CAM_FAR = 1000.0
 INITIAL_EYE = Point(0, 5.67, 8)
 INITIAL_LOOK_ANGLE = 0
+
+# List for collision boxes
+collisionList = []
 
 class Room:
 
@@ -87,14 +91,56 @@ class Room:
                     self.toggle_light(light_index)
 
         keys = pygame.key.get_pressed()
+        moveBack = False
         if keys[pygame.K_w]:
-            self.camera.slide(0, 0, -0.1)
+            self.camera.slideCollision(0,0,-0.1)
+            for i in range(len(collisionList)):
+                if collisionList[i].pointInside(self.camera.collisionPoint):
+                    moveBack = True
+            if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
+                moveBack = True
+            
+            if moveBack == True:
+                self.camera.slideCollision(0,0,.1)
+            else:
+                self.camera.slide(0, 0, -0.1)
+
         if keys[pygame.K_s]:
-            self.camera.slide(0, 0, 0.1)
+            self.camera.slideCollision(0,0,0.1)
+            for i in range(len(collisionList)):
+                if collisionList[i].pointInside(self.camera.collisionPoint):
+                    moveBack = True
+            if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
+                moveBack = True
+
+            if moveBack == True:
+                self.camera.slideCollision(0,0,-.1)
+            else:
+                self.camera.slide(0, 0, 0.1)
         if keys[pygame.K_a]:
-            self.camera.slide(-0.1, 0,0)
+            self.camera.slideCollision(-.1,0,0)
+            for i in range(len(collisionList)):
+                if collisionList[i].pointInside(self.camera.collisionPoint):
+                    moveBack = True
+            if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
+                moveBack = True
+            if moveBack == True:
+                self.camera.slideCollision(.1,0,0)
+            else:
+                self.camera.slide(-.1, 0, 0)
         if keys[pygame.K_d]:
-            self.camera.slide(0.1, 0,0)
+            
+            self.camera.slideCollision(.1,0,0)
+            for i in range(len(collisionList)):
+                if collisionList[i].pointInside(self.camera.collisionPoint):
+                    moveBack = True
+            if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
+                moveBack = True
+
+            if moveBack == True:
+                self.camera.slideCollision(-.1,0,0)
+            else:
+                self.camera.slide(.1, 0, 0)
         if keys[pygame.K_LEFT]:
             self.camera.turn(1)
         if keys[pygame.K_RIGHT]:
@@ -215,11 +261,13 @@ class Room:
     def draw_components(self):
         
         Components.draw_pool_table_with_abans_children()
+        collisionList.append(Collision(8,4,0,0)) #Create collision box for pool table
 
          # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(-ROOM_WIDTH/2 + 1.3, 0, -ROOM_DEPTH/2 + 1.3)  # Move to corner
         Components.draw_table_with_lamp(2, 2)  # Draw table
+        collisionList.append(Collision(2,2,-ROOM_WIDTH/2 +1.3,-ROOM_DEPTH/2 + 1.3)) #Create collision box for table
         glPopMatrix()  # Restore previous transformation matrix
 
 
