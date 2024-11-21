@@ -86,7 +86,7 @@ class Room:
                     light_index = event.key - pygame.K_0
                     self.toggle_light(light_index)
                 elif event.key == pygame.K_h: # Prints to console help message
-                    print("Hi! The controls are as follows\nPress \"W\" to move forward")
+                    Components.help_message()
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:

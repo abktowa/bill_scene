@@ -157,6 +157,12 @@ class Components:
 
         glPopMatrix()
 
+    def help_message():
+        print("Hi! The controls are as follows\nPress \"W\" to move forward\nPress \"S\" to move backward")
+        print("Press \"A\" to move to the left\nPress \"D\" to move to the right")
+        print("Press the Up Arrow key to look up\nPress the Down Arrow key to look down\nPress the Left Arrow key to look left")
+        print("Press the Right Arrow key to look right\n")
+
     #==============================
     # Cue Sticks
     #==============================
