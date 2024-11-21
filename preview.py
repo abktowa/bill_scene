@@ -253,7 +253,7 @@ class Preview:
         BasicShapes.draw_coordinate_frame()
 
         # Set the material
-        # Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
 
         # Preview the element
 
@@ -264,7 +264,8 @@ class Preview:
         # Components.draw_animated_pool_table_scene()
         Components.draw_die()
 
-
+        # glTranslate(0, 3, 0)
+        # Components.draw_hanging_spotlight()
 
         # Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         # Components.draw_4ball()

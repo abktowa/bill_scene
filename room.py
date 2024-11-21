@@ -299,7 +299,7 @@ class Room:
         Components.draw_static_pool_table_scene()
         collisionList.append(Collision(8,4,0,0)) #Create collision box for pool table
 
-         # Place the corner table in the bottom-left corner
+        # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(-ROOM_WIDTH/2 + 1.3, 0, -ROOM_DEPTH/2 + 1.3)  # Move to corner
         Components.draw_table_with_lamp(2, 2)  # Draw table
@@ -311,6 +311,10 @@ class Room:
         Components.draw_red_ball()
         glPopMatrix()  # Restore previous transformation matrix
 
+        glPushMatrix()  # Save current transformation matrix
+        glTranslatef(0 , ROOM_HEIGHT - 6, 0)  # Move to ceiling
+        Components.draw_hanging_spotlight()
+        glPopMatrix()  # Restore previous transformation matrix
 
     def display(self):
         """Main display function"""
