@@ -41,6 +41,7 @@ class InitializeTextures:
     die_four = "textures/4side.jpg"
     die_five = "textures/5side.jpg"
     die_six = "textures/6side.jpg"
+    wall_photo = "textures/teapot.jpg"
     eight_ball_texture = None
     wood_one_texture = None
     checkerboard_texture_name = None
@@ -51,6 +52,7 @@ class InitializeTextures:
     die_four_name = None
     die_five_name = None
     die_six_name = None
+    wall_photo_name = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -90,7 +92,7 @@ class InitializeTextures:
         glEnable(GL_DEPTH_TEST)   # For z-buffering!
 
         # Create or load the textures
-        InitializeTextures.texture_array = glGenTextures(9)  # Texture names for all three textures to create
+        InitializeTextures.texture_array = glGenTextures(10)  # Texture names for all three textures to create
         InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
         InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]
         InitializeTextures.wood_two_texture = InitializeTextures.texture_array[2]
@@ -100,6 +102,7 @@ class InitializeTextures:
         InitializeTextures.die_four_name = InitializeTextures.texture_array[6]
         InitializeTextures.die_five_name = InitializeTextures.texture_array[7]
         InitializeTextures.die_six_name = InitializeTextures.texture_array[8]
+        InitializeTextures.wall_photo_name = InitializeTextures.texture_array[9]
         InitializeTextures.load_texture(InitializeTextures.eight_ball_texture, InitializeTextures.eight_ball_file, (0,0,512,512))
         InitializeTextures.load_texture(InitializeTextures.wood_one_texture, InitializeTextures.wood_one_file, (0,0,512,512))
         InitializeTextures.load_texture(InitializeTextures.wood_two_texture, InitializeTextures.wood_two_file, (0,0,512,512))
@@ -109,6 +112,7 @@ class InitializeTextures:
         InitializeTextures.load_texture(InitializeTextures.die_four_name, InitializeTextures.die_four)
         InitializeTextures.load_texture(InitializeTextures.die_five_name, InitializeTextures.die_five)
         InitializeTextures.load_texture(InitializeTextures.die_six_name, InitializeTextures.die_six)
+        InitializeTextures.load_texture(InitializeTextures.wall_photo_name, InitializeTextures.wall_photo)
 
 
     def main_loop():
@@ -235,7 +239,7 @@ class InitializeTextures:
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_dice_texture(InitializeTextures.die_one_texture)
+        Textures.set_texture(InitializeTextures.wall_photo_name)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)

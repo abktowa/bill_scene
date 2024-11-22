@@ -366,6 +366,16 @@ class Room:
         Components.draw_animated_hanging_spotlight(hanging_light_equation)
         glPopMatrix()  # Restore previous transformation matrix
 
+     
+        # Add a frame to the back wall
+        glPushMatrix()
+        glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.1)  # Center frame on the back wall and move slightly forward
+        glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
+        Components.draw_frame(3, 0.1, 3)  # Frame size: 3x3
+        glPopMatrix()
+
+
+
     def display(self):
         """Main display function"""
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)

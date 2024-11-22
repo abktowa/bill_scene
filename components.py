@@ -418,3 +418,17 @@ class Components:
             PoolBall.draw_dash(cue_ball, shooting_angle)
 
         glPopMatrix()
+
+    def draw_frame(length, width, height):
+        face_textures = [ 
+            InitializeTextures.wall_photo_name
+        ]
+        glPushMatrix()
+        glTranslatef(1, 0, 0)
+        # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        BasicShapes.draw_cube(length,width, height, face_textures)
+        glPopMatrix()
+
+
+
+

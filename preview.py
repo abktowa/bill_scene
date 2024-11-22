@@ -262,7 +262,7 @@ class Preview:
         # Components.draw_light_bulb()
 
         Components.draw_animated_pool_table_scene(True, 0)
-        # Components.draw_die()
+        # Components.draw_frame(3, 0.1, 3)
 
         # Components.draw_hanging_spotlight()
 
