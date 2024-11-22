@@ -114,6 +114,20 @@ class Components:
 
         glPopMatrix()
 
+    def draw_animated_hanging_spotlight(angle):
+        glPushMatrix()
+
+        glTranslate(0,6,0) # Go to the top of the light
+        glRotate(angle, 0, 0, 1)
+        glTranslate(0,-6,0) # Go back down
+
+        Components.draw_hanging_spotlight()
+
+        glPopMatrix()
+
+
+
+
     def draw_hanging_spotlight():
         glPushMatrix()
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
@@ -204,7 +218,7 @@ class Components:
         print("Press the Right Arrow key to look right\nPress \"TBD\" to reset to starting position\nPress \"TBD\" to reset camera")
         print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
         print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
-        print("Press \"X\" to spin the dice")
+        print("Press \"X\" to spin the dice\nPress \"C\" to swing the lamp and press again for it to slow to a stop")
         print("Press \"P\" to enter Pool mode\nOnce in Pool mode, press \"J\" and \"L\" to aim the ball \nPress the space bar to shoot the ball")
 
     #==============================
@@ -359,6 +373,18 @@ class Components:
     def draw_animated_pool_table_scene(in_shooting_mode, shooting_angle):
 
         glPushMatrix()
+
+        # Set the material for the table and cue stick
+        Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
+
+        # Place and draw the cue stick
+        glPushMatrix()
+        glTranslate(0,-1.5,0)
+        glRotate(-17.7,0,0,1)
+        glTranslate(-5.3,0,-1)
+        Textures.set_texture(InitializeTextures.wood_one_texture)
+        Components.draw_cue_stick()
+        glPopMatrix()
         
         Components.draw_pool_table()
 

@@ -40,9 +40,15 @@ class Room:
     global_frame = 0 # Used to keep track of time
     dice_frame = 0
     initial_dice_frame = 0
+    hanging_light_frame = 0
+    initial_hanging_light_frame = 0
 
     # Animation booleans
     animate_dice = False
+    animate_hanging_light = False
+
+    # other animation variables
+    swing_factor = 0
 
 
     def __init__(self):
@@ -172,8 +178,9 @@ class Room:
         
         if keys[pygame.K_x]:
             Room.initial_dice_frame =  Room.global_frame
-            Room.animate_dice = not Room.animate_dice
-            
+            Room.animate_dice = True
+        if keys[pygame.K_c]:
+            Room.animate_hanging_light = not Room.animate_hanging_light
 
     def animate(self):
 
@@ -182,6 +189,19 @@ class Room:
             Room.dice_frame += 1
             if Room.global_frame - Room.initial_dice_frame > 200:
                 Room.animate_dice = False
+        
+        if Room.animate_hanging_light:
+            Room.swing_factor = 8
+            Room.hanging_light_frame += 1
+        else:
+            if 0 < Room.swing_factor:
+                Room.hanging_light_frame += 1
+                Room.swing_factor -= 0.03
+            else:
+                Room.hanging_light_frame = 0
+                    
+                
+        
            
 
 
@@ -342,7 +362,8 @@ class Room:
 
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(0 , ROOM_HEIGHT - 6, 0)  # Move to ceiling
-        Components.draw_hanging_spotlight()
+        hanging_light_equation = Room.swing_factor * math.sin(0.03 * Room.hanging_light_frame)
+        Components.draw_animated_hanging_spotlight(hanging_light_equation)
         glPopMatrix()  # Restore previous transformation matrix
 
     def display(self):
