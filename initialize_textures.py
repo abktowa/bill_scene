@@ -1,12 +1,7 @@
 """""
-Unlike the other preview program, this one has textures set up and features a strong backlight
+We use this class to initialize the textures in our project
 
-This program can be used to preview an element
-It has basic lighting, navigation, and aniamtion set up
-
-
-Navigation: The 'W' and 'S' keys zoom in and out. The 'D' and 'A' keys rotate side to side. 
-The 'I' and 'K' keys rotate up and down. The arrow keys move up or down and side to side.
+(There's a bunch of unused code in here)
 """""
 
 import sys
