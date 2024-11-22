@@ -50,6 +50,9 @@ class Room:
     # other animation variables
     swing_factor = 0
 
+    # Picture boolean
+    show_picture = False
+
 
     def __init__(self):
         pygame.init()
@@ -74,7 +77,11 @@ class Room:
         
         self.running = True
 
-
+    def should_we_show_picture(self):
+        a_light_is_on = False
+        for light in self.lights.values():
+            a_light_is_on = a_light_is_on or light
+        return not a_light_is_on
 
     def init_gl(self):
         """Initialize OpenGL settings"""
@@ -366,13 +373,13 @@ class Room:
         Components.draw_animated_hanging_spotlight(hanging_light_equation)
         glPopMatrix()  # Restore previous transformation matrix
 
-     
-        # Add a frame to the back wall
-        glPushMatrix()
-        glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.1)  # Center frame on the back wall and move slightly forward
-        glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
-        Components.draw_frame(3, 0.1, 3)  # Frame size: 3x3
-        glPopMatrix()
+        if self.show_picture:
+            # Add a frame to the back wall
+            glPushMatrix()
+            glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2)  # Center frame on the back wall and move aout a little
+            glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
+            Components.draw_frame(3, 1, 3)  # Frame size: 3x3
+            glPopMatrix()
 
 
 
@@ -380,10 +387,12 @@ class Room:
         """Main display function"""
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
+
         self.camera.setProjection()
         self.camera.placeCamera()
         
         self.setup_lights()
+        Room.show_picture = self.should_we_show_picture()
         self.draw_room()
 
         self.animate()

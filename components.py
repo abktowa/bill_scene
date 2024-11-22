@@ -426,6 +426,7 @@ class Components:
         glPushMatrix()
         glTranslatef(1, 0, 0)
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
         BasicShapes.draw_cube(length,width, height, face_textures)
         glPopMatrix()
 
