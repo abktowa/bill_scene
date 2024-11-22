@@ -376,9 +376,9 @@ class Room:
         if self.show_picture:
             # Add a frame to the back wall
             glPushMatrix()
-            glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2)  # Center frame on the back wall and move aout a little
+            glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.25)  # Center frame on the back wall and move aout a little
             glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
-            Components.draw_frame(3, 1, 3)  # Frame size: 3x3
+            Components.draw_framed_picture(3, 1.2, 3)  # Frame size: 3x3   
             glPopMatrix()
 
 
@@ -392,7 +392,7 @@ class Room:
         self.camera.placeCamera()
         
         self.setup_lights()
-        Room.show_picture = self.should_we_show_picture()
+        self.show_picture = self.should_we_show_picture()
         self.draw_room()
 
         self.animate()

@@ -276,6 +276,7 @@ class Components:
         ]
         glPushMatrix()
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
         BasicShapes.draw_cube(0.167, 0.167, 0.167, face_textures) # 2 inch length
         glPopMatrix()
 
@@ -375,7 +376,7 @@ class Components:
         glPushMatrix()
 
         # Set the material for the table and cue stick
-        Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
 
         # Place and draw the cue stick
         glPushMatrix()
@@ -419,16 +420,38 @@ class Components:
 
         glPopMatrix()
 
-    def draw_frame(length, width, height):
+    def draw_picture(length, width, height):
         face_textures = [ 
             InitializeTextures.wall_photo_name
         ]
         glPushMatrix()
         glTranslatef(1, 0, 0)
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
-        Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
         BasicShapes.draw_cube(length,width, height, face_textures)
         glPopMatrix()
+
+    def draw_framed_picture(length, width, height):
+        glPushMatrix()
+
+        Components.draw_picture(length, width, height)
+
+        glTranslate(1,0,0)
+
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+        Textures.set_texture(InitializeTextures.wood_two_texture)
+        glTranslate(0, -0.25, 0) # Go to bottom of picture
+        BasicShapes.draw_rectangle(height, width, 0.25)
+        glTranslate(0, length + 0.25, 0) # Go to top
+        BasicShapes.draw_rectangle(height, width, 0.25)
+        glTranslate(0, -(length+0.25), 0) # Go to bottom
+        glTranslate(-(length/2 + 0.125), 0, 0) # Go to left
+        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+        glTranslate(length + 0.25, 0, 0) # Go to right
+        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+
+        glPopMatrix()
+
 
 
 
