@@ -33,8 +33,17 @@ collisionList = []
 class Room:
 
     # pool shooting variables
-    in_shooting_mode = True
+    in_shooting_mode = False
     shooting_angle = 0
+
+    # Animation frames
+    global_frame = 0 # Used to keep track of time
+    dice_frame = 0
+    initial_dice_frame = 0
+
+    # Animation booleans
+    animate_dice = False
+
 
     def __init__(self):
         pygame.init()
@@ -60,6 +69,7 @@ class Room:
         self.running = True
 
 
+
     def init_gl(self):
         """Initialize OpenGL settings"""
         glEnable(GL_DEPTH_TEST)
@@ -83,6 +93,7 @@ class Room:
 
 
     def handle_input(self):
+        
         """Handle keyboard and mouse input"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -157,7 +168,21 @@ class Room:
         if keys[pygame.K_DOWN]:
             self.camera.rise(-1)
         if keys[pygame.K_UP]:
-            self.camera.rise(1)   
+            self.camera.rise(1) 
+        
+        if keys[pygame.K_x]:
+            Room.initial_dice_frame =  Room.global_frame
+            Room.animate_dice = not Room.animate_dice
+            
+
+    def animate(self):
+
+        Room.global_frame += 1
+        if Room.animate_dice:
+            Room.dice_frame += 1
+            if Room.global_frame - Room.initial_dice_frame > 200:
+                Room.animate_dice = False
+           
 
 
     def setup_lights(self):
@@ -306,7 +331,7 @@ class Room:
         # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(-ROOM_WIDTH/2 + 1.3, 0, -ROOM_DEPTH/2 + 1.3)  # Move to corner
-        Components.draw_table_with_lamp(2, 2)  # Draw table
+        Components.draw_table_with_lamp(2, 2, Room.dice_frame)  # Draw table
         collisionList.append(Collision(2,2,-ROOM_WIDTH/2 +1.3,-ROOM_DEPTH/2 + 1.3)) #Create collision box for table
         glPopMatrix()  # Restore previous transformation matrix
 
@@ -329,6 +354,8 @@ class Room:
         
         self.setup_lights()
         self.draw_room()
+
+        self.animate()
         self.draw_components()
         
         pygame.display.flip()

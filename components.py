@@ -11,6 +11,7 @@ from materials import *
 from textures import *
 from pool_ball import *
 from initialize_textures import *
+from room import *
 
 
 class Components:
@@ -153,7 +154,7 @@ class Components:
         glPopMatrix()
 
 
-    def draw_table_with_lamp(table_length, table_width):
+    def draw_table_with_lamp(table_length, table_width, dice_frame):
         """Draws a table with a lamp placed on top, scaling the lamp down."""
         glPushMatrix()
 
@@ -169,6 +170,15 @@ class Components:
         Components.draw_lamp()  # Draw the lamp
         glPopMatrix()
 
+        # Position and draw the dice
+        glPushMatrix()
+        glTranslate(0.6,3,0.3)
+        Components.draw_animated_die(dice_frame)
+        glTranslate(-0.1,0,0.3)
+        glRotate(30, 0,1,0)
+        Components.draw_animated_die(dice_frame)
+        glPopMatrix()
+        
         glPopMatrix()
 
     #==============================
@@ -194,6 +204,8 @@ class Components:
         print("Press the Right Arrow key to look right\nPress \"TBD\" to reset to starting position\nPress \"TBD\" to reset camera")
         print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
         print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
+        print("Press \"X\" to spin the dice")
+        print("Press \"P\" to enter Pool mode\nOnce in Pool mode, press \"J\" and \"L\" to aim the ball \nPress the space bar to shoot the ball")
 
     #==============================
     # Cue Sticks
@@ -249,10 +261,20 @@ class Components:
             InitializeTextures.die_six_name
         ]
         glPushMatrix()
-        glTranslatef(1, 0, 0)
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
-        BasicShapes.draw_cube(3, 3, 3, face_textures)
+        BasicShapes.draw_cube(0.167, 0.167, 0.167, face_textures) # 2 inch length
         glPopMatrix()
+
+    def draw_animated_die(frame):
+        glPushMatrix()
+
+        
+        glRotate(frame,0,1,0)
+        Components.draw_die()
+
+        glPopMatrix()
+
+       
 
     """ def draw_dice():
         glPushMatrix()

@@ -21,7 +21,6 @@ from components import *
 from materials import *
 from textures import *
 from initialize_textures import *
-from sub_scenes import *
 
 class InitializeTextures:
 
