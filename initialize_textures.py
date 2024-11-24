@@ -1,12 +1,7 @@
 """""
-Unlike the other preview program, this one has textures set up and features a strong backlight
+We use this class to initialize the textures in our project
 
-This program can be used to preview an element
-It has basic lighting, navigation, and aniamtion set up
-
-
-Navigation: The 'W' and 'S' keys zoom in and out. The 'D' and 'A' keys rotate side to side. 
-The 'I' and 'K' keys rotate up and down. The arrow keys move up or down and side to side.
+(There's a bunch of unused code in here)
 """""
 
 import sys
@@ -21,7 +16,6 @@ from components import *
 from materials import *
 from textures import *
 from initialize_textures import *
-from sub_scenes import *
 
 class InitializeTextures:
 
@@ -47,6 +41,11 @@ class InitializeTextures:
     die_four = "textures/4side.jpg"
     die_five = "textures/5side.jpg"
     die_six = "textures/6side.jpg"
+    wall_photo = "textures/teapot.jpg"
+    wood_panel_file = "textures/wood_panel.jpeg"
+    ceiling_file = "textures/ceiling.jpeg"
+    wall_file = "textures/wall.jpeg"
+
     eight_ball_texture = None
     wood_one_texture = None
     checkerboard_texture_name = None
@@ -57,6 +56,10 @@ class InitializeTextures:
     die_four_name = None
     die_five_name = None
     die_six_name = None
+    wall_photo_name = None
+    wood_panel_name = None
+    ceiling_name = None
+    wall_name = None
 
     # Navigation variables
     turn_degree_x = 0
@@ -96,7 +99,7 @@ class InitializeTextures:
         glEnable(GL_DEPTH_TEST)   # For z-buffering!
 
         # Create or load the textures
-        InitializeTextures.texture_array = glGenTextures(9)  # Texture names for all three textures to create
+        InitializeTextures.texture_array = glGenTextures(13)  # Texture names for all textures to create
         InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
         InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]
         InitializeTextures.wood_two_texture = InitializeTextures.texture_array[2]
@@ -106,6 +109,11 @@ class InitializeTextures:
         InitializeTextures.die_four_name = InitializeTextures.texture_array[6]
         InitializeTextures.die_five_name = InitializeTextures.texture_array[7]
         InitializeTextures.die_six_name = InitializeTextures.texture_array[8]
+        InitializeTextures.wall_photo_name = InitializeTextures.texture_array[9]
+        InitializeTextures.wood_panel_name = InitializeTextures.texture_array[10]
+        InitializeTextures.ceiling_name = InitializeTextures.texture_array[11]
+        InitializeTextures.wall_name = InitializeTextures.texture_array[12]
+
         InitializeTextures.load_texture(InitializeTextures.eight_ball_texture, InitializeTextures.eight_ball_file, (0,0,512,512))
         InitializeTextures.load_texture(InitializeTextures.wood_one_texture, InitializeTextures.wood_one_file, (0,0,512,512))
         InitializeTextures.load_texture(InitializeTextures.wood_two_texture, InitializeTextures.wood_two_file, (0,0,512,512))
@@ -115,6 +123,10 @@ class InitializeTextures:
         InitializeTextures.load_texture(InitializeTextures.die_four_name, InitializeTextures.die_four)
         InitializeTextures.load_texture(InitializeTextures.die_five_name, InitializeTextures.die_five)
         InitializeTextures.load_texture(InitializeTextures.die_six_name, InitializeTextures.die_six)
+        InitializeTextures.load_texture(InitializeTextures.wall_photo_name, InitializeTextures.wall_photo)
+        InitializeTextures.load_texture(InitializeTextures.wood_panel_name, InitializeTextures.wood_panel_file)
+        InitializeTextures.load_texture(InitializeTextures.ceiling_name, InitializeTextures.ceiling_file)
+        InitializeTextures.load_texture(InitializeTextures.wall_name, InitializeTextures.wall_file)
 
 
     def main_loop():
@@ -241,7 +253,7 @@ class InitializeTextures:
         BasicShapes.draw_sphere(2)
         glPopMatrix()
 
-        Textures.set_dice_texture(InitializeTextures.die_one_texture)
+        Textures.set_texture(InitializeTextures.wall_photo_name)
         glPushMatrix()
         glTranslated(3, 0, 0)
         glTranslate(0,-1.5,0)
@@ -309,11 +321,31 @@ class InitializeTextures:
         glEnable(light_num)
         glPopMatrix()
 
+    def load_rotate_and_stretch_texture(texture_name, file_name, rotation, new_width, new_height):
+        # Load the image. Crop if requested (should be a 4-tuple: e.g. (0,0,128,128)
+        im = Image.open(file_name)
+        # print("Image dimensions: {0}".format(im.size))  # If you want to see the image's original dimensions
+        
+        im = im.rotate(rotation)
 
+        im = im.resize((new_width, new_height))
+        
+        if im.mode != "RGB":
+         im = im.convert("RGB")
+
+
+        dimX = im.size[0]
+        dimY = im.size[1]
+        texture = im.tobytes("raw", "RGB")
+
+        glBindTexture(GL_TEXTURE_2D, texture_name)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dimX, dimY, 0, GL_RGB,
+                    GL_UNSIGNED_BYTE, texture)
+        
     def load_texture(texture_name, file_name, crop_dimensions=None):
         # Load the image. Crop if requested (should be a 4-tuple: e.g. (0,0,128,128)
         im = Image.open(file_name)
-        print("Image dimensions: {0}".format(im.size))  # If you want to see the image's original dimensions
+        # print("Image dimensions: {0}".format(im.size))  # If you want to see the image's original dimensions
         if crop_dimensions != None:
             # We are asked to crop the texture
             im = im.crop(crop_dimensions)

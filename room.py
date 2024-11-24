@@ -33,8 +33,26 @@ collisionList = []
 class Room:
 
     # pool shooting variables
-    in_shooting_mode = True
+    in_shooting_mode = False
     shooting_angle = 0
+
+    # Animation frames
+    global_frame = 0 # Used to keep track of time
+    dice_frame = 0
+    initial_dice_frame = 0
+    hanging_light_frame = 0
+    initial_hanging_light_frame = 0
+
+    # Animation booleans
+    animate_dice = False
+    animate_hanging_light = False
+
+    # other animation variables
+    swing_factor = 0
+
+    # Picture boolean
+    show_picture = False
+
 
     def __init__(self):
         pygame.init()
@@ -59,6 +77,11 @@ class Room:
         
         self.running = True
 
+    def should_we_show_picture(self):
+        a_light_is_on = False
+        for light in self.lights.values():
+            a_light_is_on = a_light_is_on or light
+        return not a_light_is_on
 
     def init_gl(self):
         """Initialize OpenGL settings"""
@@ -83,6 +106,7 @@ class Room:
 
 
     def handle_input(self):
+        
         """Handle keyboard and mouse input"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -157,7 +181,35 @@ class Room:
         if keys[pygame.K_DOWN]:
             self.camera.rise(-1)
         if keys[pygame.K_UP]:
-            self.camera.rise(1)   
+            self.camera.rise(1) 
+        
+        if keys[pygame.K_x]:
+            Room.initial_dice_frame =  Room.global_frame
+            Room.animate_dice = True
+        if keys[pygame.K_c]:
+            Room.animate_hanging_light = not Room.animate_hanging_light
+
+    def animate(self):
+
+        Room.global_frame += 1
+        if Room.animate_dice:
+            Room.dice_frame += 1
+            if Room.global_frame - Room.initial_dice_frame > 200:
+                Room.animate_dice = False
+        
+        if Room.animate_hanging_light:
+            Room.swing_factor = 8
+            Room.hanging_light_frame += 1
+        else:
+            if 0 < Room.swing_factor:
+                Room.hanging_light_frame += 1
+                Room.swing_factor -= 0.03
+            else:
+                Room.hanging_light_frame = 0
+                    
+                
+        
+           
 
 
     def setup_lights(self):
@@ -306,7 +358,7 @@ class Room:
         # Place the corner table in the bottom-left corner
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(-ROOM_WIDTH/2 + 1.3, 0, -ROOM_DEPTH/2 + 1.3)  # Move to corner
-        Components.draw_table_with_lamp(2, 2)  # Draw table
+        Components.draw_table_with_lamp(2, 2, Room.dice_frame)  # Draw table
         collisionList.append(Collision(2,2,-ROOM_WIDTH/2 +1.3,-ROOM_DEPTH/2 + 1.3)) #Create collision box for table
         glPopMatrix()  # Restore previous transformation matrix
 
@@ -317,18 +369,33 @@ class Room:
 
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(0 , ROOM_HEIGHT - 6, 0)  # Move to ceiling
-        Components.draw_hanging_spotlight()
+        hanging_light_equation = Room.swing_factor * math.sin(0.03 * Room.hanging_light_frame)
+        Components.draw_animated_hanging_spotlight(hanging_light_equation)
         glPopMatrix()  # Restore previous transformation matrix
+
+        if self.show_picture:
+            # Add a frame to the back wall
+            glPushMatrix()
+            glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.25)  # Center frame on the back wall and move aout a little
+            glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
+            Components.draw_framed_picture(3, 1.2, 3)  # Frame size: 3x3   
+            glPopMatrix()
+
+
 
     def display(self):
         """Main display function"""
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
+
         self.camera.setProjection()
         self.camera.placeCamera()
         
         self.setup_lights()
+        self.show_picture = self.should_we_show_picture()
         self.draw_room()
+
+        self.animate()
         self.draw_components()
         
         pygame.display.flip()

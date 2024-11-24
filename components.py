@@ -11,6 +11,7 @@ from materials import *
 from textures import *
 from pool_ball import *
 from initialize_textures import *
+from room import *
 
 
 class Components:
@@ -113,6 +114,20 @@ class Components:
 
         glPopMatrix()
 
+    def draw_animated_hanging_spotlight(angle):
+        glPushMatrix()
+
+        glTranslate(0,6,0) # Go to the top of the light
+        glRotate(angle, 0, 0, 1)
+        glTranslate(0,-6,0) # Go back down
+
+        Components.draw_hanging_spotlight()
+
+        glPopMatrix()
+
+
+
+
     def draw_hanging_spotlight():
         glPushMatrix()
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
@@ -153,7 +168,7 @@ class Components:
         glPopMatrix()
 
 
-    def draw_table_with_lamp(table_length, table_width):
+    def draw_table_with_lamp(table_length, table_width, dice_frame):
         """Draws a table with a lamp placed on top, scaling the lamp down."""
         glPushMatrix()
 
@@ -169,6 +184,15 @@ class Components:
         Components.draw_lamp()  # Draw the lamp
         glPopMatrix()
 
+        # Position and draw the dice
+        glPushMatrix()
+        glTranslate(0.6,3,0.3)
+        Components.draw_animated_die(dice_frame)
+        glTranslate(-0.1,0,0.3)
+        glRotate(30, 0,1,0)
+        Components.draw_animated_die(dice_frame)
+        glPopMatrix()
+        
         glPopMatrix()
 
     #==============================
@@ -194,6 +218,8 @@ class Components:
         print("Press the Right Arrow key to look right\nPress \"TBD\" to reset to starting position\nPress \"TBD\" to reset camera")
         print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
         print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
+        print("Press \"X\" to spin the dice\nPress \"C\" to swing the lamp and press again for it to slow to a stop")
+        print("Press \"P\" to enter Pool mode\nOnce in Pool mode, press \"J\" and \"L\" to aim the ball \nPress the space bar to shoot the ball")
 
     #==============================
     # Cue Sticks
@@ -249,10 +275,21 @@ class Components:
             InitializeTextures.die_six_name
         ]
         glPushMatrix()
-        glTranslatef(1, 0, 0)
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
-        BasicShapes.draw_cube(3, 3, 3, face_textures)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
+        BasicShapes.draw_cube(0.167, 0.167, 0.167, face_textures) # 2 inch length
         glPopMatrix()
+
+    def draw_animated_die(frame):
+        glPushMatrix()
+
+        
+        glRotate(frame,0,1,0)
+        Components.draw_die()
+
+        glPopMatrix()
+
+       
 
     """ def draw_dice():
         glPushMatrix()
@@ -337,6 +374,18 @@ class Components:
     def draw_animated_pool_table_scene(in_shooting_mode, shooting_angle):
 
         glPushMatrix()
+
+        # Set the material for the table and cue stick
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+
+        # Place and draw the cue stick
+        glPushMatrix()
+        glTranslate(0,-1.5,0)
+        glRotate(-17.7,0,0,1)
+        glTranslate(-5.3,0,-1)
+        Textures.set_texture(InitializeTextures.wood_one_texture)
+        Components.draw_cue_stick()
+        glPopMatrix()
         
         Components.draw_pool_table()
 
@@ -370,3 +419,40 @@ class Components:
             PoolBall.draw_dash(cue_ball, shooting_angle)
 
         glPopMatrix()
+
+    def draw_picture(length, width, height):
+        face_textures = [ 
+            InitializeTextures.wall_photo_name
+        ]
+        glPushMatrix()
+        glTranslatef(1, 0, 0)
+        # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+        BasicShapes.draw_cube(length,width, height, face_textures)
+        glPopMatrix()
+
+    def draw_framed_picture(length, width, height):
+        glPushMatrix()
+
+        Components.draw_picture(length, width, height)
+
+        glTranslate(1,0,0)
+
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+        Textures.set_texture(InitializeTextures.wood_two_texture)
+        glTranslate(0, -0.25, 0) # Go to bottom of picture
+        BasicShapes.draw_rectangle(height, width, 0.25)
+        glTranslate(0, length + 0.25, 0) # Go to top
+        BasicShapes.draw_rectangle(height, width, 0.25)
+        glTranslate(0, -(length+0.25), 0) # Go to bottom
+        glTranslate(-(length/2 + 0.125), 0, 0) # Go to left
+        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+        glTranslate(length + 0.25, 0, 0) # Go to right
+        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+
+        glPopMatrix()
+
+
+
+
+
