@@ -287,11 +287,13 @@ class Room:
 
     def draw_room(self):
         """Draw the room with textured walls, floor, and ceiling"""
-        glEnable(GL_TEXTURE_2D)  # Enable texture
-        glEnable(GL_COLOR_MATERIAL) # Allows glColor* to set material colors
-
+        
+        # Set the material to be combined with the textures
+        Materials.set_material(GL_FRONT, Materials.BALL_RESIN)
+        
         # Floor with checkerboard texture
-        glBindTexture(GL_TEXTURE_2D, self.textures['floor'])
+        Textures.set_texture(self.textures['floor'])
+
         glBegin(GL_QUADS)
         glNormal3f(0, 1, 0)
         glTexCoord2f(0, 0); glVertex3f(-ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
@@ -300,58 +302,51 @@ class Room:
         glTexCoord2f(4, 0); glVertex3f(ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
         glEnd()
 
+
         # Walls
-        glBindTexture(GL_TEXTURE_2D, self.textures['wall'])
+        Textures.set_texture(InitializeTextures.wall_name)
         
         # Back wall
-        glBegin(GL_QUADS)
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 0); glVertex3f(-ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
-        glTexCoord2f(2, 0); glVertex3f(ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
-        glTexCoord2f(2, 1); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, -ROOM_DEPTH/2)
-        glTexCoord2f(0, 1); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, -ROOM_DEPTH/2)
-        glEnd()
+        glPushMatrix()
+        glTranslate(0,0,ROOM_DEPTH/2 + 0.5) # Move back
+        glRotate(270,0,1,0)
+        glRotate(180,1,0,0)
+        glTranslate(0,-ROOM_HEIGHT,0)
+        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glPopMatrix()
 
         # Front wall
-        glBegin(GL_QUADS)
-        glNormal3f(0, 0, -1)
-        glTexCoord2f(0, 0); glVertex3f(-ROOM_WIDTH/2, 0, ROOM_DEPTH/2)
-        glTexCoord2f(2, 0); glVertex3f(ROOM_WIDTH/2, 0, ROOM_DEPTH/2)
-        glTexCoord2f(2, 1); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
-        glTexCoord2f(0, 1); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
-        glEnd()
+        glPushMatrix()
+        glTranslate(0,0,-(ROOM_DEPTH/2 + 0.5)) # Move forward
+        glRotate(90,0,1,0)
+        glRotate(180,1,0,0)
+        glTranslate(0,-ROOM_HEIGHT,0)
+        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glPopMatrix()
 
         # Left wall
-        glBegin(GL_QUADS)
-        glNormal3f(1, 0, 0)
-        glTexCoord2f(0, 0); glVertex3f(-ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
-        glTexCoord2f(2, 0); glVertex3f(-ROOM_WIDTH/2, 0, ROOM_DEPTH/2)
-        glTexCoord2f(2, 1); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
-        glTexCoord2f(0, 1); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, -ROOM_DEPTH/2)
-        glEnd()
+        glPushMatrix()
+        glTranslate(-(ROOM_WIDTH/2 + 0.5),0,0) # Move left
+        glRotate(180,0,0,1)
+        glTranslate(0,-ROOM_HEIGHT,0)
+        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glPopMatrix()
+
 
         # Right wall
-        glBegin(GL_QUADS)
-        glNormal3f(-1, 0, 0)
-        glTexCoord2f(0, 0); glVertex3f(ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
-        glTexCoord2f(2, 0); glVertex3f(ROOM_WIDTH/2, 0, ROOM_DEPTH/2)
-        glTexCoord2f(2, 1); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
-        glTexCoord2f(0, 1); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, -ROOM_DEPTH/2)
-        glEnd()
+        glPushMatrix()
+        glTranslate(ROOM_WIDTH/2 + 0.5,0,0) # Move right
+        glRotate(180,0,1,0)
+        glRotate(180,0,0,1)
+        glTranslate(0,-ROOM_HEIGHT,0)
+        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glPopMatrix()
 
         # Ceiling
-        glBindTexture(GL_TEXTURE_2D, self.textures['ceiling'])
-        glBegin(GL_QUADS)
-        glNormal3f(0, -1, 0)
-        glTexCoord2f(0, 0); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, -ROOM_DEPTH/2)
-        glTexCoord2f(2, 0); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, -ROOM_DEPTH/2)
-        glTexCoord2f(2, 2); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
-        glTexCoord2f(0, 2); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
-        glEnd()
-
-        glDisable(GL_COLOR_MATERIAL) # Disable glColor* from setting material colors to allow custom materials
-        glDisable(GL_TEXTURE_2D)  # Disable texture
-
+        glPushMatrix()
+        glTranslate(0, ROOM_HEIGHT, 0) # Move right
+        BasicShapes.draw_rectangle(ROOM_WIDTH, ROOM_DEPTH, 1)
+        glPopMatrix()
 
     def draw_components(self):
         
