@@ -114,9 +114,12 @@ class Room:
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
-                elif event.key == pygame.K_r:  # Reset Horizontal Camera position
-                    self.camera.eye = INITIAL_EYE
-                    self.camera.lookAngle = INITIAL_LOOK_ANGLE
+                elif event.key == pygame.K_r: #Reset Camera to starting point
+                    self.camera.eye.x = 0
+                    self.camera.eye.y = 5.67
+                    self.camera.eye.z = 8
+                elif event.key == pygame.K_t:  # Reset Vertical Camera position
+                    self.camera.heightAngle = INITIAL_LOOK_ANGLE
                 elif event.key in [pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]:
                     light_index = event.key - pygame.K_0
                     self.toggle_light(light_index)
