@@ -160,15 +160,29 @@ class Components:
         """
         light_num = GL_LIGHT3
 
-        # Flicker logic: Change target intensity occasionally
-        if frame_count % 30 == 0:  # Update intensity every 30 frames
-            Room.spotlight_state["target_intensity"] = 0.0 if random.random() < 0.1 else 0.5  # 10% chance to turn off
+
+        if frame_count % 60 == 0:  # Update every second
+            if random.random() < 0.3:  # 30% chance to turn off completely
+                Room.spotlight_state["target_intensity"] = 0.0
+            else:
+                Room.spotlight_state["target_intensity"] = 0.5  # Fully on after a reset
+
+        # Uniform flickering logic
+        if Room.spotlight_state["target_intensity"] != 0.0:
+            if frame_count % 30 < 15:  # On for 15 frames, off for 15 frames (flickers once per second at 60 FPS)
+                Room.spotlight_state["current_intensity"] = 0.5  # Fully on
+            else:
+                Room.spotlight_state["current_intensity"] = 0.2  # Dimmer
+        else:
+            Room.spotlight_state["current_intensity"] = 0.0  # Stay off when "target_intensity" is 0.0
 
         # Smooth transition to target intensity
         Room.spotlight_state["current_intensity"] += (
             Room.spotlight_state["target_intensity"] - Room.spotlight_state["current_intensity"]
         ) * 0.1
         Room.spotlight_state["current_intensity"] = max(0.0, min(Room.spotlight_state["current_intensity"], 0.5))  # Clamp to [0, 0.5]
+
+
 
         # Set the light properties
         if is_on and Room.spotlight_state["current_intensity"] > 0.0:
