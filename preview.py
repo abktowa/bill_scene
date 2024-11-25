@@ -261,13 +261,10 @@ class Preview:
         # Components.draw_table_with_lamp(2,2)
         # Components.draw_light_bulb()
 
-<<<<<<< HEAD
-        Components.draw_animated_pool_table_scene(True, 30)
+        Components.draw_animated_pool_table_scene(True, 0)
+        # Components.draw_frame(3, 0.1, 3)
 
-=======
-        # Components.draw_animated_pool_table_scene()
-        Components.draw_die()
->>>>>>> caa0dbcc2125dccb52b529efc21a407c232c9894
+        # Components.draw_hanging_spotlight()
 
         # glTranslate(0, 3, 0)
         # Components.draw_hanging_spotlight()

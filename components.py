@@ -8,14 +8,15 @@ from OpenGL.GL import *
 from basic_shapes import *
 from components import *
 from materials import *
-from textures import *
 from pool_ball import *
-from initialize_textures import *
+from textures import *
+from room import *
+import random
 
 
 class Components:
 	
-    InitializeTextures.init()  # Ensure textures are loaded
+    Textures.initialize_textures()  # Ensure textures are loaded
 
     
     #==============================
@@ -108,13 +109,36 @@ class Components:
         # Draw the lamp shade
         glTranslatef(0, 6, 0)  # Move above the smaller sphere (base height + offset for stacking)
         Components.draw_lamp_shade(height=3.0)  # Adjust height as needed
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
-        Components.draw_light_bulb()
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
+        # Components.draw_light_bulb()
 
         glPopMatrix()
 
-    def draw_hanging_spotlight():
+    def draw_animated_hanging_spotlight(angle, is_on, frame_count):
         glPushMatrix()
+
+        glTranslate(0,6,0) # Go to the top of the light
+        glRotate(angle, 0, 0, 1)
+        glTranslate(0,-6,0) # Go back down
+
+        Components.draw_hanging_spotlight(is_on, frame_count)
+
+        glPopMatrix()
+
+
+
+
+    def draw_hanging_spotlight(is_on, frame_count):
+        glPushMatrix()
+
+        Components.setup_spotlight_lighting(is_on, frame_count)
+
+        # Draw lightbulb
+        glTranslate(0,-0.5,0)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
+        BasicShapes.draw_sphere(radius=0.15)  # Small sphere for the bulb
+        glTranslate(0,0.5,0)
+
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
 
         # Ceiling attachment
@@ -126,22 +150,63 @@ class Components:
 
         glPopMatrix()
 
-    def setup_lightbulb_lighting():
-            """Sets up a light source at the position of the lightbulb."""
-            # Define light properties
-            light_position = [0.0, 1.5, 0.0, 1.0]  # Relative to the lamp
-            diffuse_color = [2.0, 2.0, 1.8, 1.0]   # Intense warm white light (double the normal intensity)
-            ambient_color = [0.5, 0.5, 0.4, 1.0]   # Soft ambient glow
-            specular_color = [1.5, 1.5, 1.5, 1.0]  # Strong highlights for reflective surfaces
+
+    def setup_spotlight_lighting(is_on, frame_count):
+        """
+        Set up the spotlight with smoother flickering and occasional darkness.
+        :param is_on: Whether the spotlight is initially enabled.
+        :param frame_count: The current frame count (used to control flickering).
+        """
+        light_num = GL_LIGHT3
 
 
-            # Configure the light source
-            glEnable(GL_LIGHT3)  # Enable light for the bulb
-            glLightfv(GL_LIGHT3, GL_POSITION, light_position)
-            glLightfv(GL_LIGHT3, GL_DIFFUSE, diffuse_color)
-            glLightfv(GL_LIGHT3, GL_AMBIENT, ambient_color)
-            glLightfv(GL_LIGHT3, GL_SPECULAR, specular_color)
+        if frame_count % 60 == 0:  # Update every second
+            if random.random() < 0.3:  # 30% chance to turn off completely
+                Room.spotlight_state["target_intensity"] = 0.0
+            else:
+                Room.spotlight_state["target_intensity"] = 0.5  # Fully on after a reset
 
+        # Uniform flickering logic
+        if Room.spotlight_state["target_intensity"] != 0.0:
+            if frame_count % 30 < 15:  # On for 15 frames, off for 15 frames (flickers once per second at 60 FPS)
+                Room.spotlight_state["current_intensity"] = 0.5  # Fully on
+            else:
+                Room.spotlight_state["current_intensity"] = 0.2  # Dimmer
+        else:
+            Room.spotlight_state["current_intensity"] = 0.0  # Stay off when "target_intensity" is 0.0
+
+        # Smooth transition to target intensity
+        Room.spotlight_state["current_intensity"] += (
+            Room.spotlight_state["target_intensity"] - Room.spotlight_state["current_intensity"]
+        ) * 0.1
+        Room.spotlight_state["current_intensity"] = max(0.0, min(Room.spotlight_state["current_intensity"], 0.5))  # Clamp to [0, 0.5]
+
+
+
+        # Set the light properties
+        if is_on and Room.spotlight_state["current_intensity"] > 0.0:
+            glEnable(light_num)
+            glLightfv(light_num, GL_POSITION, [0, ROOM_HEIGHT - 8, 0, 1])
+            glLightfv(light_num, GL_DIFFUSE, [
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"] / 2,
+                1.0
+            ])
+            glLightfv(light_num, GL_SPECULAR, [
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"] / 2,
+                1.0
+            ])
+            glLightfv(light_num, GL_SPOT_DIRECTION, [0, -1, 0])
+            glLightf(light_num, GL_SPOT_CUTOFF, 9.0)
+            glLightf(light_num, GL_SPOT_EXPONENT, 0.0)
+            glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+            glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
+            glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.00)
+        else:
+            glDisable(light_num)
 
     def draw_light_bulb():
         """Draws a small light bulb inside the lamp shade."""
@@ -153,14 +218,14 @@ class Components:
         glPopMatrix()
 
 
-    def draw_table_with_lamp(table_length, table_width):
+    def draw_table_with_lamp(table_length, table_width, dice_frame):
         """Draws a table with a lamp placed on top, scaling the lamp down."""
         glPushMatrix()
 
         # Draw the table
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
-        # Textures.set_texture(InitializeTextures.wood_two)
-        Components.draw_elegant_table(table_length, table_width, InitializeTextures.wood_two_texture)
+        # Textures.set_texture(Textures.wood_two)
+        Components.draw_elegant_table(table_length, table_width, Textures.wood_two_texture)
 
         # Position and scale the lamp
         glPushMatrix()
@@ -169,6 +234,15 @@ class Components:
         Components.draw_lamp()  # Draw the lamp
         glPopMatrix()
 
+        # Position and draw the dice
+        glPushMatrix()
+        glTranslate(0.6,3,0.3)
+        Components.draw_animated_die(dice_frame)
+        glTranslate(-0.1,0,0.3)
+        glRotate(30, 0,1,0)
+        Components.draw_animated_die(dice_frame)
+        glPopMatrix()
+        
         glPopMatrix()
 
     #==============================
@@ -191,9 +265,11 @@ class Components:
         print("Hi! The controls are as follows:\nPress \"W\" to move forward\nPress \"S\" to move backward")
         print("Press \"A\" to move to the left\nPress \"D\" to move to the right")
         print("Press the Up Arrow key to look up\nPress the Down Arrow key to look down\nPress the Left Arrow key to look left")
-        print("Press the Right Arrow key to look right\nPress \"TBD\" to reset to starting position\nPress \"TBD\" to reset camera")
-        print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
-        print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
+        print("Press the Right Arrow key to look right\nPress \"R\" to reset to starting position\nPress \"T\" to reset camera's vertical position")
+        print("Press 0 to turn the red light on/off\nPress 1 to turn the green light on/off\nPress 2 to turn the blue light on/off")
+        print("Press 3 to turn the spotlight light on/off\nPress 4 to turn the desk light on/off\nPress 5 to turn the flashlight on/off")
+        print("Press \"X\" to spin the dice\nPress \"C\" to swing the lamp and press again for it to slow to a stop")
+        print("Press \"P\" to enter Pool mode\nOnce in Pool mode, press \"J\" and \"L\" to aim the ball \nPress the space bar to shoot the ball")
 
     #==============================
     # Cue Sticks
@@ -241,18 +317,29 @@ class Components:
 
     def draw_die(): 
         face_textures = [ 
-            InitializeTextures.die_one_name,
-            InitializeTextures.die_two_name,
-            InitializeTextures.die_three_name,
-            InitializeTextures.die_four_name,
-            InitializeTextures.die_five_name,
-            InitializeTextures.die_six_name
+            Textures.die_one_name,
+            Textures.die_two_name,
+            Textures.die_three_name,
+            Textures.die_four_name,
+            Textures.die_five_name,
+            Textures.die_six_name
         ]
         glPushMatrix()
-        glTranslatef(1, 0, 0)
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
-        BasicShapes.draw_cube(3, 3, 3, face_textures)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.BALL_PLASTIC)
+        BasicShapes.draw_cube(0.167, 0.167, 0.167, face_textures) # 2 inch length
         glPopMatrix()
+
+    def draw_animated_die(frame):
+        glPushMatrix()
+
+        
+        glRotate(frame,0,1,0)
+        Components.draw_die()
+
+        glPopMatrix()
+
+       
 
     """ def draw_dice():
         glPushMatrix()
@@ -274,9 +361,9 @@ class Components:
         width=4
 
         # Draw the main table
-        Components.draw_elegant_table(length, width, InitializeTextures.wood_one_texture)
+        Components.draw_elegant_table(length, width, Textures.wood_one_texture)
         
-        Textures.set_texture(InitializeTextures.wood_one_texture) # Set the texture
+        Textures.set_texture(Textures.wood_one_texture) # Set the texture
         glTranslatef(0, 1.5, 0)  # Move up from the ground
         BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
 
@@ -327,7 +414,7 @@ class Components:
         Components.draw_1ball()
 
         # Draw the 8 ball
-        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
+        Textures.set_texture(Textures.eight_ball_texture) # Set the texture
         glTranslatef(4, 0, 0)
         Components.draw_rotated_1ball(100,0,0)
 
@@ -337,6 +424,18 @@ class Components:
     def draw_animated_pool_table_scene(in_shooting_mode, shooting_angle):
 
         glPushMatrix()
+
+        # Set the material for the table and cue stick
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+
+        # Place and draw the cue stick
+        glPushMatrix()
+        glTranslate(0,-1.5,0)
+        glRotate(-17.7,0,0,1)
+        glTranslate(-5.3,0,-1)
+        Textures.set_texture(Textures.wood_one_texture)
+        Components.draw_cue_stick()
+        glPopMatrix()
         
         Components.draw_pool_table()
 
@@ -347,7 +446,7 @@ class Components:
         ball_2 = PoolBall(False, None, False) 
         ball_3 = PoolBall(False, None, False) 
         ball_4 = PoolBall(False, None, False)
-        eight_ball = PoolBall(True, InitializeTextures.eight_ball_texture, False)
+        eight_ball = PoolBall(True, Textures.eight_ball_texture, False)
         cue_ball = PoolBall(False, None, True)
 
         # Configarate the balls
@@ -370,3 +469,38 @@ class Components:
             PoolBall.draw_dash(cue_ball, shooting_angle, 1)
 
         glPopMatrix()
+
+    def draw_picture(length, width, height):
+        face_textures = [ 
+            Textures.wall_photo_name
+        ]
+        glPushMatrix()
+        # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+        BasicShapes.draw_cube(length,width, height, face_textures)
+        glPopMatrix()
+
+    def draw_framed_picture(length, width, height):
+        glPushMatrix()
+
+        Components.draw_picture(length, width, height)
+
+
+        Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
+        Textures.set_texture(Textures.wood_two_texture)
+        glTranslate(0, -0.25, 0) # Go to bottom of picture
+        BasicShapes.draw_rectangle(height, width, 0.25)
+        glTranslate(0, length + 0.25, 0) # Go to top
+        BasicShapes.draw_rectangle(height, width, 0.25)
+        glTranslate(0, -(length+0.25), 0) # Go to bottom
+        glTranslate(-(length/2 + 0.125), 0, 0) # Go to left
+        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+        glTranslate(length + 0.25, 0, 0) # Go to right
+        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+
+        glPopMatrix()
+
+
+
+
+

@@ -3,10 +3,10 @@
 ## Authors
 Aban Khan, Shmuel Feld, Matthew Glennon, Jose Salgado, Sai Srujan Vemula, Camryn Keller
 
-## Task assignment
-Check out our [group notion page](https://www.notion.so/Project-3-Group-page-1303b34792c48004b53dc1561fd303cf?pvs=4) where we list the project details and assign jobs (Speak to Sam to get access)<br/>
+## How to run
+The main code is run from the `Room` class in `room.py`
 
-## Consistency guidelines
+## Consistency guidelines that we followed during development
 - **Units**: When drawing our scene, one unit in the coordinate system will correspond to one foot
 - **Models**: When creating hierarchical models, objects will be centered along the x and z axes, positioned above the ground level, as if they’re placed on the floor at the y = 0 plane, as shown in the image below.
 ![demopnstration](https://github.com/user-attachments/assets/562dd0e4-c9a5-4814-aefc-b15df373a29a)
@@ -30,4 +30,4 @@ Check out our [group notion page](https://www.notion.so/Project-3-Group-page-130
     ```
 - **Applying Materials**: Applying materials in the scene is simple. Just use a line like `Materials.set_material(GL_FRONT, Materials.COPPER)` before drawing an object to set its material properties. This material will be applied to all objects drawn afterward until a new material is set. You’ll find plenty of predefined materials in the `Materials` class (like `Materials.SILVER` or `Materials.GOLD`), and you can add your own custom materials there if you want.
 
-- **Applying Textures**: Applying textures to objects in the scene is straightforward once the textures are loaded. Simply use a line like `Textures.set_texture(texture_name)` before drawing an object to set its texture properties. This texture will be applied to all objects drawn afterward until a new texture is set. Keep in mind that initializing and loading textures into the project can be more complex. This instruction is specifically for already loaded textures. If you want to add a new texture to the project, speak to Sam.
+- **Applying Textures**: Applying textures to objects in the scene is straightforward once the textures are loaded. Simply use a line like `Textures.set_texture(texture_name)` before drawing an object to set its texture properties. This texture will be applied to all objects drawn afterward until a new texture is set. Keep in mind that initializing and loading textures into the project can be more complex. This instruction is specifically for already loaded textures. If you want to add a new texture to the project, speak to Sam or Jay.

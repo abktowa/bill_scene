@@ -52,7 +52,7 @@ class Camera:
         # Place the camera
         gluLookAt(self.eye.x, self.eye.y, self.eye.z,  # Camera's origin
                   lookX, lookY, lookZ,                   # Camera's look at point
-                  0, 1, 0)                              # Camera is always oriented vertically
+                  0, 1, 0)                             # Camera is always oriented vertically
         
     
     def slideCollision(self, du, dv, dn):
@@ -84,6 +84,6 @@ class Camera:
         """Raise or lower the angle the camera is looking at""" 
         self.heightAngle -= angle
         if self.heightAngle < -90:
-            self.heightAngle = 0
+            self.heightAngle = -90
         elif self.heightAngle > 90:
             self.heightAngle = 90
