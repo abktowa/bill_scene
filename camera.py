@@ -84,6 +84,6 @@ class Camera:
         """Raise or lower the angle the camera is looking at""" 
         self.heightAngle -= angle
         if self.heightAngle < -90:
-            self.heightAngle = 0
+            self.heightAngle = -90
         elif self.heightAngle > 90:
             self.heightAngle = 90
