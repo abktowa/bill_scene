@@ -61,6 +61,8 @@ class InitializeTextures:
     ceiling_name = None
     wall_name = None
 
+    checkerboard_floor_name = None
+
     # Navigation variables
     turn_degree_x = 0
     turn_degree_y = 0
@@ -83,7 +85,7 @@ class InitializeTextures:
         # Displays the window and starts listening for events.
         InitializeTextures.main_loop()
         return
-
+    
     def init():
         """Perform basic OpenGL initialization."""
         global concrete_texture_name, boomer_texture_name, running, clock, ball, can
@@ -98,7 +100,10 @@ class InitializeTextures:
         # Set up depth-test
         glEnable(GL_DEPTH_TEST)   # For z-buffering!
 
-        # Create or load the textures
+        # Create a texture
+        InitializeTextures.checkerboard_floor_name = Textures.create_checkerboard_texture()
+
+        # Load the rest of the textures froms images
         InitializeTextures.texture_array = glGenTextures(13)  # Texture names for all textures to create
         InitializeTextures.eight_ball_texture = InitializeTextures.texture_array[0]
         InitializeTextures.wood_one_texture = InitializeTextures.texture_array[1]

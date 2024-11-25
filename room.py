@@ -72,7 +72,6 @@ class Room:
                            INITIAL_EYE, INITIAL_LOOK_ANGLE)
         
         self.init_gl()
-        self.create_textures()
         
         # Light states
         self.light_states = {
@@ -323,14 +322,6 @@ class Room:
         if index < len(light_names):
             self.light_states[light_names[index]] = not self.light_states[light_names[index]]
 
-    def create_textures(self):
-        """Create all textures"""
-        self.textures = {
-            'floor': Textures.create_checkerboard_texture(),
-            'wall': Textures.create_wall_texture(),
-            'ceiling': Textures.create_ceiling_texture()
-        }
-
 
     def draw_room(self):
         """Draw the room with textured walls, floor, and ceiling"""
@@ -339,7 +330,7 @@ class Room:
         Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
         
         # Floor with checkerboard texture
-        Textures.set_texture(self.textures['floor'])
+        Textures.set_texture(InitializeTextures.checkerboard_floor_name)
 
         glBegin(GL_QUADS)
         glNormal3f(0, 1, 0)
