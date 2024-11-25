@@ -253,8 +253,8 @@ class Components:
         print("Press \"A\" to move to the left\nPress \"D\" to move to the right")
         print("Press the Up Arrow key to look up\nPress the Down Arrow key to look down\nPress the Left Arrow key to look left")
         print("Press the Right Arrow key to look right\nPress \"R\" to reset to starting position\nPress \"T\" to reset camera's vertical position")
-        print("Press 0 to turn the main light on/off\nPress 1 to turn the spotlight on/off\nPress 2 to turn the desk light on/off")
-        print("Press 3 to turn the red light on/off\nPress 4 to turn the green light on/off\nPress 5 to turn the blue light on/off")
+        print("Press 0 to turn the red light on/off\nPress 1 to turn the green light on/off\nPress 2 to turn the blue light on/off")
+        print("Press 3 to turn the spotlight light on/off\nPress 4 to turn the desk light on/off\nPress 5 to turn the flashlight on/off")
         print("Press \"X\" to spin the dice\nPress \"C\" to swing the lamp and press again for it to slow to a stop")
         print("Press \"P\" to enter Pool mode\nOnce in Pool mode, press \"J\" and \"L\" to aim the ball \nPress the space bar to shoot the ball")
 
