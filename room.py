@@ -201,7 +201,16 @@ class Room:
             self.camera.rise(-1)
         if keys[pygame.K_UP]:
             self.camera.rise(1)   
-
+        if keys[pygame.K_p]:
+            if Room.toggleHold != True:
+                Room.in_shooting_mode = not Room.in_shooting_mode
+                Room.toggleHold = True
+        else:
+            Room.toggleHold = False
+        if keys[pygame.K_j] and Room.in_shooting_mode:
+            Room.shooting_angle += 1
+        if keys[pygame.K_l] and Room.in_shooting_mode:
+            Room.shooting_angle -= 1
 
         if keys[pygame.K_x]:
                 Room.initial_dice_frame =  Room.global_frame
