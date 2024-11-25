@@ -30,11 +30,15 @@ INITIAL_LOOK_ANGLE = 0
 # List for collision boxes
 collisionList = []
 
+
+
+
 class Room:
 
     # pool shooting variables
-    in_shooting_mode = True
+    in_shooting_mode = False
     shooting_angle = 0
+    toggleHold = False
 
     def __init__(self):
         pygame.init()
@@ -158,6 +162,18 @@ class Room:
             self.camera.rise(-1)
         if keys[pygame.K_UP]:
             self.camera.rise(1)   
+        if keys[pygame.K_p]:
+            if Room.toggleHold != True:
+                Room.in_shooting_mode = not Room.in_shooting_mode
+                Room.toggleHold = True
+        else:
+            Room.toggleHold = False
+        if keys[pygame.K_j] and Room.in_shooting_mode:
+            Room.shooting_angle += 1
+        if keys[pygame.K_l] and Room.in_shooting_mode:
+            Room.shooting_angle -= 1
+        
+            
 
 
     def setup_lights(self):
@@ -265,7 +281,7 @@ class Room:
         glTexCoord2f(2, 1); glVertex3f(ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
         glTexCoord2f(0, 1); glVertex3f(-ROOM_WIDTH/2, ROOM_HEIGHT, ROOM_DEPTH/2)
         glEnd()
-
+ 
         # Left wall
         glBegin(GL_QUADS)
         glNormal3f(1, 0, 0)

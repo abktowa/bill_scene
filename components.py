@@ -367,6 +367,6 @@ class Components:
         cue_ball.draw()
 
         if in_shooting_mode:
-            PoolBall.draw_dash(cue_ball, shooting_angle)
+            PoolBall.draw_dash(cue_ball, shooting_angle, 1)
 
         glPopMatrix()

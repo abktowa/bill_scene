@@ -63,25 +63,34 @@ class PoolBall:
             i = 1 + 2
 
     @staticmethod
-    def draw_dash(cue_ball, angle):
+    def draw_dash(cue_ball, angle, dashNum):
+        dashX = cue_ball.position_x + ((.48) * dashNum) * math.cos(math.radians(angle))
+        dashZ = cue_ball.position_z + ((.48) * dashNum) * math.sin(math.radians(angle))
         glPushMatrix()
 
         # Go to the center of the ball
-        glTranslate(cue_ball.position_x, 0, cue_ball.position_z)
+        if dashNum == 1:
+            glTranslate(cue_ball.position_x, .075, cue_ball.position_z)
+            glRotate(angle, 0, 1, 0)
+        else:
+            glTranslate(.4, 0, 0)
         
-        # Rotate the aim
-        glRotate(angle, 0, 1, 0)
+        
 
         # move to the edge of the ball
-        glTranslate(cue_ball.radius, 0, 0) 
+        # glTranslate(cue_ball.radius * 2, 0, 0) 
         
         # Line is confined to the table space of 7.7 * 3.7
         
         # Draw the dashed line
-        space = 0.167 # aprox 2 in
-        glTranslate(space, 0, 0)
-        Materials.set_material(GL_FRONT, Materials.REDDISH_WOOD)
-        BasicShapes.draw_rectangle(space, 0.0125, 0.04) # line is 1.5 in wide, 0.5 in tall
+        space = 1.2  # aprox 2 in
+        # glTranslate(space, 0, 0)
+        # Rotate the aim
         
-
+        Materials.set_material(GL_FRONT, Materials.BALL_RESIN)
+        BasicShapes.draw_rectangle(.08, 0.125, 0.04) # line is 1.5 in wide, 0.5 in tall
+        if dashNum == 10:
+            print(cue_ball.position_x + ((.48) * dashNum) * math.cos(math.radians(angle)))
+        if (dashX < 4.6 and  dashX > -4 and dashZ < 2 and dashZ > -2):
+            PoolBall.draw_dash(cue_ball,angle, dashNum + 1)
         glPopMatrix()

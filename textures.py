@@ -15,7 +15,7 @@ class Textures:
             
         # This method sets a texture
         def set_texture(texture_name):
-            print(f"Binding texture {texture_name}")
+            # print(f"Binding texture {texture_name}")
 
             glBindTexture(GL_TEXTURE_2D, texture_name)
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) # try GL_DECAL/GL_REPLACE/GL_MODULATE
