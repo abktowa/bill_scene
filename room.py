@@ -66,7 +66,7 @@ class Room:
         self.create_textures()
         
         # Light states
-        self.lights = {
+        self.light_states = {
             'main': True,
             'spotlight': True,
             'desk': True,
@@ -77,10 +77,18 @@ class Room:
         
         self.running = True
 
+    # This method returns True only if no lights are on
     def should_we_show_picture(self):
-        a_light_is_on = False
-        for light in self.lights.values():
-            a_light_is_on = a_light_is_on or light
+        
+        a_light_is_on = False # Assume there are no lights on
+
+        # Iterates through the light states
+        for this_light_is_on in self.light_states.values(): 
+
+            # If a light is on, "a_light_is_on" becomes true and stays true throughout the iteration
+            a_light_is_on = a_light_is_on or this_light_is_on 
+
+        # Method returns false if there's a light on (because we don't want to show the picture)
         return not a_light_is_on
 
     def init_gl(self):
@@ -218,7 +226,7 @@ class Room:
     def setup_lights(self):
         """Setup all lights in the scene"""
         # Main ceiling light
-        if self.lights['main']:
+        if self.light_states['main']:
             glEnable(GL_LIGHT0)
             glLightfv(GL_LIGHT0, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1])
             glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
@@ -227,7 +235,7 @@ class Room:
             glDisable(GL_LIGHT0)
 
         # Spotlight over pool table
-        if self.lights['spotlight']:
+        if self.light_states['spotlight']:
             glEnable(GL_LIGHT1)
             glLightfv(GL_LIGHT1, GL_POSITION, [0, ROOM_HEIGHT-0.5, 0, 1])
             glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, [0, -1, 0])
@@ -238,7 +246,7 @@ class Room:
             glDisable(GL_LIGHT1)
 
         # Red Ceiling Light
-        if self.lights['red']:
+        if self.light_states['red']:
             glEnable(GL_LIGHT3)
             #Positioned in the center hopefully
             glLightfv(GL_LIGHT3, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
@@ -249,7 +257,7 @@ class Room:
             glDisable(GL_LIGHT3)
 
         # Green Ceiling Light
-        if self.lights['green']:
+        if self.light_states['green']:
             glEnable(GL_LIGHT4)
             #Positioned in the center hopefully
             glLightfv(GL_LIGHT4, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
@@ -260,7 +268,7 @@ class Room:
             glDisable(GL_LIGHT4)
 
         # Blue Ceiling Light
-        if self.lights['blue']:
+        if self.light_states['blue']:
             glEnable(GL_LIGHT5)
             #Positioned in the center hopefully
             glLightfv(GL_LIGHT5, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
@@ -274,7 +282,7 @@ class Room:
         """Toggle specific light based on index"""
         light_names = ['main', 'spotlight', 'desk', 'red', 'green', 'blue']
         if index < len(light_names):
-            self.lights[light_names[index]] = not self.lights[light_names[index]]
+            self.light_states[light_names[index]] = not self.light_states[light_names[index]]
 
     def create_textures(self):
         """Create all textures"""
