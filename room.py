@@ -1,3 +1,4 @@
+
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -8,7 +9,8 @@ from textures import *
 from materials import *
 from components import *
 from collision import Collision
-from light import *
+from light import Light
+import random
 
 # Window settings
 window_dimensions = (1200, 800)
@@ -54,6 +56,12 @@ class Room:
     # Picture boolean
     show_picture = False
 
+    # spotlight variable
+    spot_light_is_enabled = False
+    spotlight_state = {
+            "current_intensity": 0.5,  # Default starting intensity
+            "target_intensity": 0.5   # Default target intensity
+        }
 
     def __init__(self):
         pygame.init()
@@ -220,55 +228,107 @@ class Room:
             else:
                 Room.hanging_light_frame = 0
                     
-                
-        
-           
 
 
     def setup_lights(self):
-
+        # Red light
         if self.light_states['red']:
-            red = Light(GL_LIGHT0, [-6, ROOM_HEIGHT - 1.0, -5, 1], ambient=[0.0, 0.0, 0.0, 0.2], 
-                        diffuse=[1.0, 0.0, 0.0, 1.0], specular=[1.0, 0.0, 0.0, 1.0])
-            red.place_light()
+            light_num = GL_LIGHT0
+            glEnable(light_num)
+            glLightfv(light_num, GL_POSITION, [-5, ROOM_HEIGHT-0.1, -5, 1])
+            glLightfv(light_num, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])  # Full red diffuse light
+            glLightfv(light_num, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])  # Full red highlights
+            # glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+            # glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
+            # glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.001)
+            self.draw_light_indicator([-5, ROOM_HEIGHT-0.1, -5], [1.0, 0.0, 0.0])  # Red sphere
         else:
             glDisable(GL_LIGHT0)
-        
+
+        # Green light
         if self.light_states['green']:
-            green = Light(GL_LIGHT1, [0, ROOM_HEIGHT - 1.0, -5, 1], ambient=[0.0, 0.0, 0.0, 0.2], 
-                        diffuse=[0.0, 1.0, 0.0, 1.0], specular=[0.0, 1.0, 0.0, 1.0])
-            green.place_light()
+            light_num = GL_LIGHT1
+            glEnable(light_num)
+            glLightfv(light_num, GL_POSITION, [5, ROOM_HEIGHT-0.1, -5, 1])
+            glLightfv(light_num, GL_DIFFUSE, [0.0, 1.0, 0.0, 1.0])  # Full green diffuse light
+            glLightfv(light_num, GL_SPECULAR, [0.0, 1.0, 0.0, 1.0])  # Full green highlights
+            # glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+            # glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
+            # glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.001)
+            self.draw_light_indicator([5, ROOM_HEIGHT-0.1, -5], [0.0, 1.0, 0.0])  # Green sphere
         else:
             glDisable(GL_LIGHT1)
 
-        if self.light_states['blue']: # Working when 0 is on
-            blue = Light(GL_LIGHT2, [6, ROOM_HEIGHT - 1.0, -5, 1], ambient=[0.0, 0.0, 0.0, 0.2], 
-                        diffuse=[0.0, 0.0, 1.0, 1.0], specular=[0.0, 0.0, 1.0, 1.0])
-            blue.place_light()
+        # Blue light
+        if self.light_states['blue']:
+            light_num = GL_LIGHT2
+            glEnable(light_num)
+            glLightfv(light_num, GL_POSITION, [0, ROOM_HEIGHT-0.1, 5, 1])
+            glLightfv(light_num, GL_DIFFUSE, [0.0, 0.0, 1.0, 1.0])  # Full blue diffuse light
+            glLightfv(light_num, GL_SPECULAR, [0.0, 0.0, 1.0, 1.0])  # Full blue highlights
+            # glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+            # glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
+            # glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.001)
+            self.draw_light_indicator([0, ROOM_HEIGHT-0.1, 5], [0.0, 0.0, 1.0])  # Blue sphere
         else:
             glDisable(GL_LIGHT2)
 
-        if self.light_states['spotlight']:
-            spotlight = Light(GL_LIGHT3, [0, ROOM_HEIGHT - 0.1, 0, 1], ambient=[0.5, 0.5, 0.5, 0.7], 
-                        diffuse=[1.0, 1.0, 1.0, 1.0], specular=[1.0, 1.0, 1.0, 1.0])
-            spotlight.place_light()
-        else:
-            glDisable(GL_LIGHT3)
 
+        # Spotlight
+        if self.light_states['spotlight']:
+            self.spot_light_is_enabled = True
+        else:
+            self.spot_light_is_enabled = False
+
+        # Desk Lamp
         if self.light_states['lamp']:
-            lamp = Light(GL_LIGHT4, [0, ROOM_HEIGHT - 0.1, 0, 1], ambient=[0.5, 0.5, 0.5, 0.7], 
-                        diffuse=[1.0, 1.0, 1.0, 1.0], specular=[1.0, 1.0, 1.0, 1.0])
-            lamp.place_light()
+            glPushMatrix()
+            glLoadIdentity()
+
+            light_num = GL_LIGHT4
+            glEnable(light_num)
+            glLightfv(light_num, GL_POSITION, [-ROOM_WIDTH/2 + 1.3, 5.25, -ROOM_DEPTH/2 + 1.3])
+            glLightfv(light_num, GL_DIFFUSE, [0.75, 0.75, 0.75, 1.0])  # 75% white diffuse light
+            glLightfv(light_num, GL_SPECULAR, [0.75, 0.75, 0.75, 1.0])  # Dimmer white highlights
+            glMatrixMode(GL_MODELVIEW)
+
+
+            glLightfv(light_num, GL_SPOT_DIRECTION, [0,-1,0])
+            glLightf(light_num, GL_SPOT_CUTOFF, 70.0)
+            glLightf(light_num, GL_SPOT_EXPONENT, 1.0)
+
+            # Distance attenuation
+            glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+            glLightf(light_num, GL_LINEAR_ATTENUATION, 0.10)
+            glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.00)
+            glEnable(light_num)
+            glPopMatrix()
+
+            # self.draw_light_indicator([-ROOM_WIDTH/2 + 1.3, 5.25, -ROOM_DEPTH/2 + 1.3], [0.0, 1.0, 1.0])  # Yellow sphere
         else:
             glDisable(GL_LIGHT4)
 
-        if self.light_states['flashlight']: # Working with 0 pressed
-            flashlight = Light(GL_LIGHT5, [0, ROOM_HEIGHT - 0.1, 0, 1], ambient=[0.5, 0.5, 0.5, 0.7], 
-                        diffuse=[1.0, 1.0, 1.0, 1.0], specular=[1.0, 1.0, 1.0, 1.0])
-            flashlight.place_light()
+        # Flashlight
+        if self.light_states['flashlight']:
+            light_num = GL_LIGHT5
+            Light.place_flashlight(light_num)
         else:
-            glDisable(GL_LIGHT5) 
+            glDisable(GL_LIGHT5)
 
+
+    def draw_light_indicator(self, position, color):
+        """
+        Draw a self-illuminated sphere at the specified position.
+        :param position: The [x, y, z] position of the sphere.
+        :param color: The [r, g, b] color of the sphere.
+        """
+        glPushMatrix()
+        glDisable(GL_LIGHTING)  # Disable lighting for the sphere
+        glColor3f(*color)  # Set the color of the sphere
+        glTranslatef(position[0], position[1], position[2])
+        gluSphere(gluNewQuadric(), 0.2, 16, 16)  # Draw a small sphere
+        glEnable(GL_LIGHTING)  # Re-enable lighting
+        glPopMatrix()
 
     def toggle_light(self, index):
         """Toggle specific light based on index"""
@@ -289,7 +349,7 @@ class Room:
         """Draw the room with textured walls, floor, and ceiling"""
         
         # Set the material to be combined with the textures
-        Materials.set_material(GL_FRONT, Materials.BALL_RESIN)
+        Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
         
         # Floor with checkerboard texture
         Textures.set_texture(self.textures['floor'])
@@ -368,7 +428,7 @@ class Room:
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(0 , ROOM_HEIGHT - 6, 0)  # Move to ceiling
         hanging_light_equation = Room.swing_factor * math.sin(0.03 * Room.hanging_light_frame)
-        Components.draw_animated_hanging_spotlight(hanging_light_equation)
+        Components.draw_animated_hanging_spotlight(hanging_light_equation, self.spot_light_is_enabled, self.global_frame)
         glPopMatrix()  # Restore previous transformation matrix
 
         if self.show_picture:
@@ -376,6 +436,8 @@ class Room:
             glPushMatrix()
             glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.25)  # Center frame on the back wall and move aout a little
             glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
+            glTranslate(-1,0,0) # Move up
+            glTranslate(0,3.5,0) # Move to the right
             Components.draw_framed_picture(3, 1.2, 3)  # Frame size: 3x3   
             glPopMatrix()
 

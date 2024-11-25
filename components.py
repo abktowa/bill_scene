@@ -12,6 +12,7 @@ from textures import *
 from pool_ball import *
 from initialize_textures import *
 from room import *
+import random
 
 
 class Components:
@@ -109,27 +110,36 @@ class Components:
         # Draw the lamp shade
         glTranslatef(0, 6, 0)  # Move above the smaller sphere (base height + offset for stacking)
         Components.draw_lamp_shade(height=3.0)  # Adjust height as needed
-        Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
-        Components.draw_light_bulb()
+        # Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
+        # Components.draw_light_bulb()
 
         glPopMatrix()
 
-    def draw_animated_hanging_spotlight(angle):
+    def draw_animated_hanging_spotlight(angle, is_on, frame_count):
         glPushMatrix()
 
         glTranslate(0,6,0) # Go to the top of the light
         glRotate(angle, 0, 0, 1)
         glTranslate(0,-6,0) # Go back down
 
-        Components.draw_hanging_spotlight()
+        Components.draw_hanging_spotlight(is_on, frame_count)
 
         glPopMatrix()
 
 
 
 
-    def draw_hanging_spotlight():
+    def draw_hanging_spotlight(is_on, frame_count):
         glPushMatrix()
+
+        Components.setup_spotlight_lighting(is_on, frame_count)
+
+        # Draw lightbulb
+        glTranslate(0,-0.5,0)
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.LIGHTBULB)
+        BasicShapes.draw_sphere(radius=0.15)  # Small sphere for the bulb
+        glTranslate(0,0.5,0)
+
         Materials.set_material(GL_FRONT_AND_BACK, Materials.SILVER)
 
         # Ceiling attachment
@@ -141,22 +151,49 @@ class Components:
 
         glPopMatrix()
 
-    def setup_lightbulb_lighting():
-            """Sets up a light source at the position of the lightbulb."""
-            # Define light properties
-            light_position = [0.0, 1.5, 0.0, 1.0]  # Relative to the lamp
-            diffuse_color = [2.0, 2.0, 1.8, 1.0]   # Intense warm white light (double the normal intensity)
-            ambient_color = [0.5, 0.5, 0.4, 1.0]   # Soft ambient glow
-            specular_color = [1.5, 1.5, 1.5, 1.0]  # Strong highlights for reflective surfaces
 
+    def setup_spotlight_lighting(is_on, frame_count):
+        """
+        Set up the spotlight with smoother flickering and occasional darkness.
+        :param is_on: Whether the spotlight is initially enabled.
+        :param frame_count: The current frame count (used to control flickering).
+        """
+        light_num = GL_LIGHT3
 
-            # Configure the light source
-            glEnable(GL_LIGHT3)  # Enable light for the bulb
-            glLightfv(GL_LIGHT3, GL_POSITION, light_position)
-            glLightfv(GL_LIGHT3, GL_DIFFUSE, diffuse_color)
-            glLightfv(GL_LIGHT3, GL_AMBIENT, ambient_color)
-            glLightfv(GL_LIGHT3, GL_SPECULAR, specular_color)
+        # Flicker logic: Change target intensity occasionally
+        if frame_count % 30 == 0:  # Update intensity every 30 frames
+            Room.spotlight_state["target_intensity"] = 0.0 if random.random() < 0.1 else 0.5  # 10% chance to turn off
 
+        # Smooth transition to target intensity
+        Room.spotlight_state["current_intensity"] += (
+            Room.spotlight_state["target_intensity"] - Room.spotlight_state["current_intensity"]
+        ) * 0.1
+        Room.spotlight_state["current_intensity"] = max(0.0, min(Room.spotlight_state["current_intensity"], 0.5))  # Clamp to [0, 0.5]
+
+        # Set the light properties
+        if is_on and Room.spotlight_state["current_intensity"] > 0.0:
+            glEnable(light_num)
+            glLightfv(light_num, GL_POSITION, [0, ROOM_HEIGHT - 8, 0, 1])
+            glLightfv(light_num, GL_DIFFUSE, [
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"] / 2,
+                1.0
+            ])
+            glLightfv(light_num, GL_SPECULAR, [
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"],
+                Room.spotlight_state["current_intensity"] / 2,
+                1.0
+            ])
+            glLightfv(light_num, GL_SPOT_DIRECTION, [0, -1, 0])
+            glLightf(light_num, GL_SPOT_CUTOFF, 15.0)
+            glLightf(light_num, GL_SPOT_EXPONENT, 0.0)
+            glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+            glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
+            glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.00)
+        else:
+            glDisable(light_num)
 
     def draw_light_bulb():
         """Draws a small light bulb inside the lamp shade."""
@@ -425,7 +462,6 @@ class Components:
             InitializeTextures.wall_photo_name
         ]
         glPushMatrix()
-        glTranslatef(1, 0, 0)
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
         Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
         BasicShapes.draw_cube(length,width, height, face_textures)
@@ -436,7 +472,6 @@ class Components:
 
         Components.draw_picture(length, width, height)
 
-        glTranslate(1,0,0)
 
         Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
         Textures.set_texture(InitializeTextures.wood_two_texture)

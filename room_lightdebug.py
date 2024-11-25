@@ -8,7 +8,7 @@ from textures import *
 from materials import *
 from components import *
 from initialize_textures import *
-from light import Light
+from light_unused import Light
 
 # Window settings
 window_dimensions = (1200, 800)
