@@ -187,7 +187,7 @@ class Components:
                 1.0
             ])
             glLightfv(light_num, GL_SPOT_DIRECTION, [0, -1, 0])
-            glLightf(light_num, GL_SPOT_CUTOFF, 15.0)
+            glLightf(light_num, GL_SPOT_CUTOFF, 9.0)
             glLightf(light_num, GL_SPOT_EXPONENT, 0.0)
             glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
             glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)

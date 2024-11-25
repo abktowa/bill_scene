@@ -231,50 +231,47 @@ class Room:
 
 
     def setup_lights(self):
-        # Red light
+        # Red Light
         if self.light_states['red']:
-            light_num = GL_LIGHT0
-            glEnable(light_num)
-            glLightfv(light_num, GL_POSITION, [-5, ROOM_HEIGHT-0.1, -5, 1])
-            glLightfv(light_num, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])  # Full red diffuse light
-            glLightfv(light_num, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])  # Full red highlights
-            # glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
-            # glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
-            # glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.001)
-            self.draw_light_indicator([-5, ROOM_HEIGHT-0.1, -5], [1.0, 0.0, 0.0])  # Red sphere
+            red_light = Light(
+                light_num=GL_LIGHT0,
+                position=[-5, ROOM_HEIGHT - 0.1, -5, 1],
+                diffuse=[1.0, 0.0, 0.0, 1.0],
+                specular=[1.0, 0.0, 0.0, 1.0]
+            )
+            red_light.enable()
+            self.draw_light_indicator([-5, ROOM_HEIGHT - 0.1, -5], [1.0, 0.0, 0.0])  # Red sphere
         else:
             glDisable(GL_LIGHT0)
 
-        # Green light
+        # Green Light
         if self.light_states['green']:
-            light_num = GL_LIGHT1
-            glEnable(light_num)
-            glLightfv(light_num, GL_POSITION, [5, ROOM_HEIGHT-0.1, -5, 1])
-            glLightfv(light_num, GL_DIFFUSE, [0.0, 1.0, 0.0, 1.0])  # Full green diffuse light
-            glLightfv(light_num, GL_SPECULAR, [0.0, 1.0, 0.0, 1.0])  # Full green highlights
-            # glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
-            # glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
-            # glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.001)
-            self.draw_light_indicator([5, ROOM_HEIGHT-0.1, -5], [0.0, 1.0, 0.0])  # Green sphere
+            green_light = Light(
+                light_num=GL_LIGHT1,
+                position=[5, ROOM_HEIGHT - 0.1, -5, 1],
+                diffuse=[0.0, 1.0, 0.0, 1.0],
+                specular=[0.0, 1.0, 0.0, 1.0]
+            )
+            green_light.enable()
+            self.draw_light_indicator([5, ROOM_HEIGHT - 0.1, -5], [0.0, 1.0, 0.0])  # Green sphere
         else:
             glDisable(GL_LIGHT1)
 
-        # Blue light
+        # Blue Light
         if self.light_states['blue']:
-            light_num = GL_LIGHT2
-            glEnable(light_num)
-            glLightfv(light_num, GL_POSITION, [0, ROOM_HEIGHT-0.1, 5, 1])
-            glLightfv(light_num, GL_DIFFUSE, [0.0, 0.0, 1.0, 1.0])  # Full blue diffuse light
-            glLightfv(light_num, GL_SPECULAR, [0.0, 0.0, 1.0, 1.0])  # Full blue highlights
-            # glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
-            # glLightf(light_num, GL_LINEAR_ATTENUATION, 0.01)
-            # glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.001)
-            self.draw_light_indicator([0, ROOM_HEIGHT-0.1, 5], [0.0, 0.0, 1.0])  # Blue sphere
+            blue_light = Light(
+                light_num=GL_LIGHT2,
+                position=[0, ROOM_HEIGHT - 0.1, 5, 1],
+                diffuse=[0.0, 0.0, 1.0, 1.0],
+                specular=[0.0, 0.0, 1.0, 1.0]
+            )
+            blue_light.enable()
+            self.draw_light_indicator([0, ROOM_HEIGHT - 0.1, 5], [0.0, 0.0, 1.0])  # Blue sphere
         else:
             glDisable(GL_LIGHT2)
 
-
         # Spotlight
+         # Spotlight
         if self.light_states['spotlight']:
             self.spot_light_is_enabled = True
         else:
@@ -282,29 +279,18 @@ class Room:
 
         # Desk Lamp
         if self.light_states['lamp']:
-            glPushMatrix()
-            glLoadIdentity()
-
-            light_num = GL_LIGHT4
-            glEnable(light_num)
-            glLightfv(light_num, GL_POSITION, [-ROOM_WIDTH/2 + 1.3, 5.25, -ROOM_DEPTH/2 + 1.3])
-            glLightfv(light_num, GL_DIFFUSE, [0.75, 0.75, 0.75, 1.0])  # 75% white diffuse light
-            glLightfv(light_num, GL_SPECULAR, [0.75, 0.75, 0.75, 1.0])  # Dimmer white highlights
-            glMatrixMode(GL_MODELVIEW)
-
-
-            glLightfv(light_num, GL_SPOT_DIRECTION, [0,-1,0])
-            glLightf(light_num, GL_SPOT_CUTOFF, 70.0)
-            glLightf(light_num, GL_SPOT_EXPONENT, 1.0)
-
-            # Distance attenuation
-            glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
-            glLightf(light_num, GL_LINEAR_ATTENUATION, 0.10)
-            glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.00)
-            glEnable(light_num)
-            glPopMatrix()
-
-            # self.draw_light_indicator([-ROOM_WIDTH/2 + 1.3, 5.25, -ROOM_DEPTH/2 + 1.3], [0.0, 1.0, 1.0])  # Yellow sphere
+            desk_lamp = Light(
+                light_num=GL_LIGHT4,
+                position=[-ROOM_WIDTH / 2 + 1.3, 5.25, -ROOM_DEPTH / 2 + 1.3, 1],
+                diffuse=[0.75, 0.75, 0.75, 1.0],
+                specular=[0.75, 0.75, 0.75, 1.0],
+                attenuation={"constant": 1.0, "linear": 0.1, "quadratic": 0.0},
+                spot_direction=[0, -1, 0],
+                spot_cutoff=70.0,
+                spot_exponent=1.0
+            )
+            desk_lamp.enable()
+            self.draw_light_indicator([-ROOM_WIDTH / 2 + 1.3, 5.25, -ROOM_DEPTH / 2 + 1.3], [1.0, 1.0, 0.0])  # Yellow sphere
         else:
             glDisable(GL_LIGHT4)
 
@@ -314,6 +300,7 @@ class Room:
             Light.place_flashlight(light_num)
         else:
             glDisable(GL_LIGHT5)
+
 
 
     def draw_light_indicator(self, position, color):
@@ -420,9 +407,11 @@ class Room:
         collisionList.append(Collision(2,2,-ROOM_WIDTH/2 +1.3,-ROOM_DEPTH/2 + 1.3)) #Create collision box for table
         glPopMatrix()  # Restore previous transformation matrix
 
+        # Draw a ball around the top of the lamp
         glPushMatrix()  # Save current transformation matrix
         glTranslatef(0, ROOM_HEIGHT - 0.4, 0)  # Move to Center
-        Components.draw_red_ball()
+        Materials.set_material(GL_FRONT_AND_BACK, Materials.RUBBER_BUMPER)
+        BasicShapes.draw_sphere(0.2)
         glPopMatrix()  # Restore previous transformation matrix
 
         glPushMatrix()  # Save current transformation matrix
