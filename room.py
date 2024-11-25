@@ -5,7 +5,6 @@ from OpenGL.GLU import *
 import math
 from utils import Point
 from camera import Camera
-from textures import *
 from materials import *
 from components import *
 from collision import Collision
@@ -46,22 +45,20 @@ class Room:
     hanging_light_frame = 0
     initial_hanging_light_frame = 0
 
-    # Animation booleans
+    # animation booleans
     animate_dice = False
     animate_hanging_light = False
 
-    # other animation variables
+    # Other spotlight variables
     swing_factor = 0
-
-    # Picture boolean
-    show_picture = False
-
-    # spotlight variable
     spot_light_is_enabled = False
     spotlight_state = {
             "current_intensity": 0.5,  # Default starting intensity
             "target_intensity": 0.5   # Default target intensity
         }
+    
+    # Picture boolean
+    show_picture = False
 
     def __init__(self):
         pygame.init()
@@ -228,7 +225,6 @@ class Room:
                 Room.hanging_light_frame = 0
                     
 
-
     def setup_lights(self):
         # Red Light
         if self.light_states['red']:
@@ -330,7 +326,7 @@ class Room:
         Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
         
         # Floor with checkerboard texture
-        Textures.set_texture(InitializeTextures.checkerboard_floor_name)
+        Textures.set_texture(Textures.checkerboard_floor_name)
 
         glBegin(GL_QUADS)
         glNormal3f(0, 1, 0)
@@ -342,7 +338,7 @@ class Room:
 
 
         # Walls
-        Textures.set_texture(InitializeTextures.wall_name)
+        Textures.set_texture(Textures.wall_name)
         
         # Back wall
         glPushMatrix()
@@ -433,9 +429,9 @@ class Room:
         
         self.setup_lights()
         self.show_picture = self.should_we_show_picture()
-        self.draw_room()
-
         self.animate()
+        
+        self.draw_room()
         self.draw_components()
         
         pygame.display.flip()

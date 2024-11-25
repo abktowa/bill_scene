@@ -8,16 +8,15 @@ from OpenGL.GL import *
 from basic_shapes import *
 from components import *
 from materials import *
-from textures import *
 from pool_ball import *
-from initialize_textures import *
+from textures import *
 from room import *
 import random
 
 
 class Components:
 	
-    InitializeTextures.init()  # Ensure textures are loaded
+    Textures.initialize_textures()  # Ensure textures are loaded
 
     
     #==============================
@@ -225,8 +224,8 @@ class Components:
 
         # Draw the table
         Materials.set_material(GL_FRONT_AND_BACK, Materials.REDDISH_WOOD)
-        # Textures.set_texture(InitializeTextures.wood_two)
-        Components.draw_elegant_table(table_length, table_width, InitializeTextures.wood_two_texture)
+        # Textures.set_texture(Textures.wood_two)
+        Components.draw_elegant_table(table_length, table_width, Textures.wood_two_texture)
 
         # Position and scale the lamp
         glPushMatrix()
@@ -318,12 +317,12 @@ class Components:
 
     def draw_die(): 
         face_textures = [ 
-            InitializeTextures.die_one_name,
-            InitializeTextures.die_two_name,
-            InitializeTextures.die_three_name,
-            InitializeTextures.die_four_name,
-            InitializeTextures.die_five_name,
-            InitializeTextures.die_six_name
+            Textures.die_one_name,
+            Textures.die_two_name,
+            Textures.die_three_name,
+            Textures.die_four_name,
+            Textures.die_five_name,
+            Textures.die_six_name
         ]
         glPushMatrix()
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
@@ -362,9 +361,9 @@ class Components:
         width=4
 
         # Draw the main table
-        Components.draw_elegant_table(length, width, InitializeTextures.wood_one_texture)
+        Components.draw_elegant_table(length, width, Textures.wood_one_texture)
         
-        Textures.set_texture(InitializeTextures.wood_one_texture) # Set the texture
+        Textures.set_texture(Textures.wood_one_texture) # Set the texture
         glTranslatef(0, 1.5, 0)  # Move up from the ground
         BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
 
@@ -415,7 +414,7 @@ class Components:
         Components.draw_1ball()
 
         # Draw the 8 ball
-        Textures.set_texture(InitializeTextures.eight_ball_texture) # Set the texture
+        Textures.set_texture(Textures.eight_ball_texture) # Set the texture
         glTranslatef(4, 0, 0)
         Components.draw_rotated_1ball(100,0,0)
 
@@ -434,7 +433,7 @@ class Components:
         glTranslate(0,-1.5,0)
         glRotate(-17.7,0,0,1)
         glTranslate(-5.3,0,-1)
-        Textures.set_texture(InitializeTextures.wood_one_texture)
+        Textures.set_texture(Textures.wood_one_texture)
         Components.draw_cue_stick()
         glPopMatrix()
         
@@ -447,7 +446,7 @@ class Components:
         ball_2 = PoolBall(False, None, False) 
         ball_3 = PoolBall(False, None, False) 
         ball_4 = PoolBall(False, None, False)
-        eight_ball = PoolBall(True, InitializeTextures.eight_ball_texture, False)
+        eight_ball = PoolBall(True, Textures.eight_ball_texture, False)
         cue_ball = PoolBall(False, None, True)
 
         # Configarate the balls
@@ -473,7 +472,7 @@ class Components:
 
     def draw_picture(length, width, height):
         face_textures = [ 
-            InitializeTextures.wall_photo_name
+            Textures.wall_photo_name
         ]
         glPushMatrix()
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
@@ -488,7 +487,7 @@ class Components:
 
 
         Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
-        Textures.set_texture(InitializeTextures.wood_two_texture)
+        Textures.set_texture(Textures.wood_two_texture)
         glTranslate(0, -0.25, 0) # Go to bottom of picture
         BasicShapes.draw_rectangle(height, width, 0.25)
         glTranslate(0, length + 0.25, 0) # Go to top
