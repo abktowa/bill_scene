@@ -8,6 +8,7 @@ from textures import *
 from materials import *
 from components import *
 from collision import Collision
+from light import *
 
 # Window settings
 window_dimensions = (1200, 800)
@@ -67,29 +68,25 @@ class Room:
         
         # Light states
         self.light_states = {
-            'main': True,
-            'spotlight': True,
-            'desk': True,
             'red': False,
             'green': False,
-            'blue': False
+            'blue': False,
+            'spotlight': False,
+            'lamp': False,
+            'flashlight': False
         }
         
         self.running = True
 
-    # This method returns True only if no lights are on
     def should_we_show_picture(self):
+        # Iterate through the light states
+        for light_name, this_light_is_on in self.light_states.items(): 
+            # Ignore the flashlight and check other lights
+            if light_name != 'flashlight' and this_light_is_on:
+                return False  # If any non-flashlight light is on, don't show the picture
         
-        a_light_is_on = False # Assume there are no lights on
-
-        # Iterates through the light states
-        for this_light_is_on in self.light_states.values(): 
-
-            # If a light is on, "a_light_is_on" becomes true and stays true throughout the iteration
-            a_light_is_on = a_light_is_on or this_light_is_on 
-
-        # Method returns false if there's a light on (because we don't want to show the picture)
-        return not a_light_is_on
+        # If no non-flashlight lights are on, show the picture
+        return True
 
     def init_gl(self):
         """Initialize OpenGL settings"""
@@ -111,10 +108,9 @@ class Room:
         glMaterialfv(GL_FRONT, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
         glMaterialfv(GL_FRONT, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
         glMaterialf(GL_FRONT, GL_SHININESS, 100.0)
-
+        
 
     def handle_input(self):
-        
         """Handle keyboard and mouse input"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -122,12 +118,17 @@ class Room:
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
-                elif event.key == pygame.K_r: #Reset Camera to starting point
+                elif event.key == pygame.K_r: # Reset Camera to starting point
                     self.camera.eye.x = 0
                     self.camera.eye.y = 5.67
                     self.camera.eye.z = 8
+                    # Reset collision point to match the camera's position
+                    self.camera.collisionPoint.x = self.camera.eye.x
+                    self.camera.collisionPoint.y = self.camera.eye.y
+                    self.camera.collisionPoint.z = self.camera.eye.z
                 elif event.key == pygame.K_t:  # Reset Vertical Camera position
                     self.camera.heightAngle = INITIAL_LOOK_ANGLE
+
                 elif event.key in [pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]:
                     light_index = event.key - pygame.K_0
                     self.toggle_light(light_index)
@@ -203,6 +204,7 @@ class Room:
     def animate(self):
 
         Room.global_frame += 1
+
         if Room.animate_dice:
             Room.dice_frame += 1
             if Room.global_frame - Room.initial_dice_frame > 200:
@@ -224,63 +226,53 @@ class Room:
 
 
     def setup_lights(self):
-        """Setup all lights in the scene"""
-        # Main ceiling light
-        if self.light_states['main']:
-            glEnable(GL_LIGHT0)
-            glLightfv(GL_LIGHT0, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1])
-            glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
-            glLightfv(GL_LIGHT0, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
+
+        if self.light_states['red']:
+            red = Light(GL_LIGHT0, [-6, ROOM_HEIGHT - 1.0, -5, 1], ambient=[0.0, 0.0, 0.0, 0.2], 
+                        diffuse=[1.0, 0.0, 0.0, 1.0], specular=[1.0, 0.0, 0.0, 1.0])
+            red.place_light()
         else:
             glDisable(GL_LIGHT0)
-
-        # Spotlight over pool table
-        if self.light_states['spotlight']:
-            glEnable(GL_LIGHT1)
-            glLightfv(GL_LIGHT1, GL_POSITION, [0, ROOM_HEIGHT-0.5, 0, 1])
-            glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, [0, -1, 0])
-            glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 30.0)
-            glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0)
-            glLightfv(GL_LIGHT1, GL_DIFFUSE, [0.5, 0.5, 0.2, 1.0])
+        
+        if self.light_states['green']:
+            green = Light(GL_LIGHT1, [0, ROOM_HEIGHT - 1.0, -5, 1], ambient=[0.0, 0.0, 0.0, 0.2], 
+                        diffuse=[0.0, 1.0, 0.0, 1.0], specular=[0.0, 1.0, 0.0, 1.0])
+            green.place_light()
         else:
             glDisable(GL_LIGHT1)
 
-        # Red Ceiling Light
-        if self.light_states['red']:
-            glEnable(GL_LIGHT3)
-            #Positioned in the center hopefully
-            glLightfv(GL_LIGHT3, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
-            glLightfv(GL_LIGHT3, GL_DIFFUSE, [1.0, 0.0, 0.0, 1.0])
-            glLightfv(GL_LIGHT3, GL_SPECULAR, [1.0, 0.0, 0.0, 1.0])
-            glLightfv(GL_LIGHT3, GL_AMBIENT, [1.0, 0.0, 0.0, 1.0])
+        if self.light_states['blue']: # Working when 0 is on
+            blue = Light(GL_LIGHT2, [6, ROOM_HEIGHT - 1.0, -5, 1], ambient=[0.0, 0.0, 0.0, 0.2], 
+                        diffuse=[0.0, 0.0, 1.0, 1.0], specular=[0.0, 0.0, 1.0, 1.0])
+            blue.place_light()
+        else:
+            glDisable(GL_LIGHT2)
+
+        if self.light_states['spotlight']:
+            spotlight = Light(GL_LIGHT3, [0, ROOM_HEIGHT - 0.1, 0, 1], ambient=[0.5, 0.5, 0.5, 0.7], 
+                        diffuse=[1.0, 1.0, 1.0, 1.0], specular=[1.0, 1.0, 1.0, 1.0])
+            spotlight.place_light()
         else:
             glDisable(GL_LIGHT3)
 
-        # Green Ceiling Light
-        if self.light_states['green']:
-            glEnable(GL_LIGHT4)
-            #Positioned in the center hopefully
-            glLightfv(GL_LIGHT4, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
-            glLightfv(GL_LIGHT4, GL_DIFFUSE, [0.0, 1.0, 0.0, 1.0])
-            glLightfv(GL_LIGHT4, GL_SPECULAR, [0.0, 1.0, 0.0, 1.0])
-            glLightfv(GL_LIGHT4, GL_AMBIENT, [0.0, 1.0, 0.0, 1.0])
+        if self.light_states['lamp']:
+            lamp = Light(GL_LIGHT4, [0, ROOM_HEIGHT - 0.1, 0, 1], ambient=[0.5, 0.5, 0.5, 0.7], 
+                        diffuse=[1.0, 1.0, 1.0, 1.0], specular=[1.0, 1.0, 1.0, 1.0])
+            lamp.place_light()
         else:
             glDisable(GL_LIGHT4)
 
-        # Blue Ceiling Light
-        if self.light_states['blue']:
-            glEnable(GL_LIGHT5)
-            #Positioned in the center hopefully
-            glLightfv(GL_LIGHT5, GL_POSITION, [0, ROOM_HEIGHT-0.1, 0, 1]) 
-            glLightfv(GL_LIGHT5, GL_DIFFUSE, [0.0, 0.0, 1.0, 1.0])
-            glLightfv(GL_LIGHT5, GL_SPECULAR, [0.0, 0.0, 1.0, 1.0])
-            glLightfv(GL_LIGHT5, GL_AMBIENT, [0.0, 0.0, 1.0, 1.0])
+        if self.light_states['flashlight']: # Working with 0 pressed
+            flashlight = Light(GL_LIGHT5, [0, ROOM_HEIGHT - 0.1, 0, 1], ambient=[0.5, 0.5, 0.5, 0.7], 
+                        diffuse=[1.0, 1.0, 1.0, 1.0], specular=[1.0, 1.0, 1.0, 1.0])
+            flashlight.place_light()
         else:
-            glDisable(GL_LIGHT5)
+            glDisable(GL_LIGHT5) 
+
 
     def toggle_light(self, index):
         """Toggle specific light based on index"""
-        light_names = ['main', 'spotlight', 'desk', 'red', 'green', 'blue']
+        light_names = ['red', 'green', 'blue', 'spotlight', 'lamp', 'flashlight']
         if index < len(light_names):
             self.light_states[light_names[index]] = not self.light_states[light_names[index]]
 
