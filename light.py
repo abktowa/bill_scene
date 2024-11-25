@@ -6,6 +6,14 @@ allowing for the creation, configuration, and management of
 light objects in the project. 
 """
 
+"""
+Light Class for Managing OpenGL Lights with Debugging Indicators
+
+This class encapsulates OpenGL light properties and behaviors, 
+allowing for the creation, configuration, and management of 
+light objects in the project. It includes a feature to draw a 
+colored sphere at the light's position for debugging purposes.
+"""
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
@@ -43,3 +51,33 @@ class Light:
     def disable(self):
         """Disable the light."""
         glDisable(self.light_num)
+
+
+    def place_flashlight(light_num):
+        """Creates a (spotlight) flashlight near the viewer/camera"""
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+        light_position = [ 0.2, -0.5, 0.0, 1.0 ]
+        light_direction = [ 0.0, 0.0, 0.0, 0.0]
+        light_ambient = [ 1.0, 1.0, 1.0, 1.0 ]
+        light_diffuse = [ 1.0, 1.0, 1.0, 1.0 ]
+        light_specular = [ 1.0, 1.0, 1.0, 1.0 ]
+
+        # For Light 0, set position, ambient, diffuse, and specular values
+        glLightfv(light_num, GL_POSITION, light_position)
+        glLightfv(light_num, GL_AMBIENT, light_ambient)
+        glLightfv(light_num, GL_DIFFUSE, light_diffuse)
+        glLightfv(light_num, GL_SPECULAR, light_specular)
+
+        glLightfv(light_num, GL_SPOT_DIRECTION, light_direction)
+        glLightf(light_num, GL_SPOT_CUTOFF, 15.0)
+        glLightf(light_num, GL_SPOT_EXPONENT, 0.0)
+
+        # Distance attenuation
+        glLightf(light_num, GL_CONSTANT_ATTENUATION, 1.0)
+        glLightf(light_num, GL_LINEAR_ATTENUATION, 0.10)
+        glLightf(light_num, GL_QUADRATIC_ATTENUATION, 0.00)
+        glEnable(light_num)
+        glPopMatrix()
+

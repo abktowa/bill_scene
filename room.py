@@ -76,12 +76,12 @@ class Room:
         
         # Light states
         self.light_states = {
-            'red': False,
-            'green': False,
-            'blue': False,
-            'spotlight': False,
-            'lamp': False,
-            'flashlight': False
+            'red': True,
+            'green': True,
+            'blue': True,
+            'spotlight': True,
+            'lamp': True,
+            'flashlight': True
         }
         
         self.running = True
