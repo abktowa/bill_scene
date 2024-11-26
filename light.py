@@ -6,14 +6,6 @@ allowing for the creation, configuration, and management of
 light objects in the project. 
 """
 
-"""
-Light Class for Managing OpenGL Lights with Debugging Indicators
-
-This class encapsulates OpenGL light properties and behaviors, 
-allowing for the creation, configuration, and management of 
-light objects in the project. It includes a feature to draw a 
-colored sphere at the light's position for debugging purposes.
-"""
 from OpenGL.GL import *
 from OpenGL.GLU import *
 

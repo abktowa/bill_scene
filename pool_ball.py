@@ -87,8 +87,7 @@ class PoolBall:
         # glTranslate(space, 0, 0)
         # Rotate the aim
         
-        Materials.set_material(GL_FRONT, Materials.BALL_RESIN)
-        BasicShapes.draw_rectangle(.08, 0.125, 0.04) # line is 1.5 in wide, 0.5 in tall
+        BasicShapes.draw_white_rectangle(.08, 0.125, 0.04) # line is 1.5 in wide, 0.5 in tall
         if dashNum == 10:
             print(cue_ball.position_x + ((.48) * dashNum) * math.cos(math.radians(angle)))
         if (dashX < 4.6 and  dashX > -4 and dashZ < 2 and dashZ > -2):

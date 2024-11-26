@@ -331,6 +331,13 @@ class BasicShapes:
         gluDeleteQuadric(quadric)
         glPopMatrix()
 
+    def draw_white_rectangle(length, width, height):
+	
+        glDisable(GL_LIGHTING)  # Disable lighting for the solid colored rectangle
+        glColor3f(1.0, 1.0, 1.0)  # Set the color to white
+        BasicShapes.draw_rectangle(length, width, height)  # Draw the rectangle
+        glEnable(GL_LIGHTING)  # Re-enable lighting
+
     #=======================================
     # Prism functions
     #=======================================
