@@ -60,8 +60,8 @@ class PoolBall:
         if self.power != 0:
             self.position_x += (self.direction.dx * self.power)
             self.position_z += (self.direction.dz * self.power)
-            self.power *= .96
-            if self.power < .05:
+            self.power *= .963
+            if self.power < .005:
                 self.power = 0
             if self.position_x >= self.max_x and self.direction.dx > 0:
                 self.direction.dx *= -1
