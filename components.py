@@ -12,7 +12,8 @@ from pool_ball import *
 from textures import *
 from room import *
 import random
-
+#Global Variables, needed for pool ball functions
+global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle
 
 class Components:
 	
@@ -422,7 +423,8 @@ class Components:
 
     
     def draw_animated_pool_table_scene(in_shooting_mode, shooting_angle):
-
+        global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle
+        angle = shooting_angle
         glPushMatrix()
 
         # Set the material for the table and cue stick
@@ -441,6 +443,22 @@ class Components:
 
         glTranslatef(0, 3.08, 0)  # Move up from the ground
 
+
+        # Draw the balls
+        ball_1.draw()
+        ball_2.draw()
+        ball_3.draw()
+        ball_4.draw()
+        eight_ball.draw()
+        cue_ball.draw()
+
+        if in_shooting_mode:
+            PoolBall.draw_dash(cue_ball, shooting_angle, 1)
+
+        glPopMatrix()
+
+    def config_balls():
+        global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball
         # Create the balls
         ball_1 = PoolBall(False, None, False) # has_texture, texture_name, is_cue
         ball_2 = PoolBall(False, None, False) 
@@ -457,18 +475,10 @@ class Components:
         eight_ball.set_config(0.3, 0.7, 100, 0)
         cue_ball.set_config(-2, 0, 0, 0)
 
-        # Draw the balls
-        ball_1.draw()
-        ball_2.draw()
-        ball_3.draw()
-        ball_4.draw()
-        eight_ball.draw()
-        cue_ball.draw()
-
-        if in_shooting_mode:
-            PoolBall.draw_dash(cue_ball, shooting_angle, 1)
-
-        glPopMatrix()
+    def shoot_cue(shootingAngle):
+        cue_ball.direction.dx = math.cos(math.radians(shootingAngle))
+        cue_ball.direction.dz = -math.sin(math.radians(shootingAngle))
+        cue_ball.power = .4
 
     def draw_picture(length, width, height):
         face_textures = [ 

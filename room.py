@@ -211,6 +211,10 @@ class Room:
             Room.shooting_angle += 1
         if keys[pygame.K_l] and Room.in_shooting_mode:
             Room.shooting_angle -= 1
+        if keys[pygame.K_SPACE] and Room.in_shooting_mode:
+            Room.in_shooting_mode = False
+            Components.shoot_cue(Room.shooting_angle)
+            
 
         if keys[pygame.K_x]:
                 Room.initial_dice_frame =  Room.global_frame
@@ -452,6 +456,8 @@ class Room:
 
 
     def run(self):
+        """Set up Pool Balls"""
+        Components.config_balls()
         """Main game loop"""
         while self.running:
             self.handle_input()
