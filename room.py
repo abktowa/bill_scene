@@ -360,44 +360,42 @@ class Room:
         
         # Back wall
         glPushMatrix()
-        glTranslate(0,0,ROOM_DEPTH/2 + 0.5) # Move back
-        glRotate(270,0,1,0)
-        glRotate(180,1,0,0)
-        glTranslate(0,-ROOM_HEIGHT,0)
-        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glTranslate(0,ROOM_HEIGHT/2,ROOM_DEPTH/2) # Move back and up
+        glRotate(270, 1,0,0)
+        glRotate(180, 0,1,0)
+        BasicShapes.draw_plane_with_grid(ROOM_DEPTH, ROOM_HEIGHT,30,30)
         glPopMatrix()
 
         # Front wall
         glPushMatrix()
-        glTranslate(0,0,-(ROOM_DEPTH/2 + 0.5)) # Move forward
-        glRotate(90,0,1,0)
-        glRotate(180,1,0,0)
-        glTranslate(0,-ROOM_HEIGHT,0)
-        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glTranslate(0,ROOM_HEIGHT/2,-ROOM_DEPTH/2) # Move forward and up
+        glRotate(90,1,0,0)
+        BasicShapes.draw_plane_with_grid(ROOM_DEPTH, ROOM_HEIGHT,30,30)
         glPopMatrix()
-
-        # Left wall
-        glPushMatrix()
-        glTranslate(-(ROOM_WIDTH/2 + 0.5),0,0) # Move left
-        glRotate(180,0,0,1)
-        glTranslate(0,-ROOM_HEIGHT,0)
-        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
-        glPopMatrix()
-
 
         # Right wall
         glPushMatrix()
-        glTranslate(ROOM_WIDTH/2 + 0.5,0,0) # Move right
-        glRotate(180,0,1,0)
-        glRotate(180,0,0,1)
-        glTranslate(0,-ROOM_HEIGHT,0)
-        BasicShapes.draw_rectangle(1, ROOM_DEPTH, ROOM_HEIGHT)
+        glRotate(90,0,1,0)
+        glTranslate(0,ROOM_HEIGHT/2,ROOM_DEPTH/2)
+        glRotate(270, 1,0,0)
+        glRotate(180, 0,1,0)
+        BasicShapes.draw_plane_with_grid(ROOM_DEPTH, ROOM_HEIGHT,30,30)
+        glPopMatrix()
+
+
+        # Left wall
+        glPushMatrix()
+        glRotate(90,0,1,0)
+        glTranslate(0,ROOM_HEIGHT/2,-ROOM_DEPTH/2)
+        glRotate(90,1,0,0)
+        BasicShapes.draw_plane_with_grid(ROOM_DEPTH, ROOM_HEIGHT,30,30)
         glPopMatrix()
 
         # Ceiling
         glPushMatrix()
-        glTranslate(0, ROOM_HEIGHT, 0) # Move right
-        BasicShapes.draw_rectangle(ROOM_WIDTH, ROOM_DEPTH, 1)
+        glTranslate(0, ROOM_HEIGHT, 0) # Move up
+        glRotate(180,0,0,1)
+        BasicShapes.draw_plane_with_grid(ROOM_WIDTH, ROOM_DEPTH,30,30)
         glPopMatrix()
 
     def draw_components(self):
