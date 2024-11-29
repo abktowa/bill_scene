@@ -32,7 +32,7 @@ class Components:
             Textures.set_texture(texture)
 
         glTranslatef(0, 2.5, 0)  # Move up from the ground
-        BasicShapes.draw_rectangle(length, width, 0.5)  # Draw surface
+        BasicShapes.draw_rectangle_with_grid(length, width, 0.5,5,30)  # Draw surface
         glTranslatef(0, -2.5, 0)  # Move back down
 
         percent_length = length * 0.75
@@ -366,7 +366,7 @@ class Components:
         
         Textures.set_texture(Textures.wood_one_texture) # Set the texture
         glTranslatef(0, 1.5, 0)  # Move up from the ground
-        BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
+        BasicShapes.draw_rectangle_with_grid(7.7,3.7,1, 10,30) # Draw the trim
 
         glTranslatef(0, 1.5, 0)  # Move up more
         Materials.set_material(GL_FRONT, Materials.GREEN_FELT) # Set the material

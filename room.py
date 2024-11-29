@@ -399,7 +399,7 @@ class Room:
         glPopMatrix()
 
     def draw_components(self):
-        
+
         Components.draw_animated_pool_table_scene(Room.in_shooting_mode, Room.shooting_angle)
         collisionList.append(Collision(8,4,0,0)) #Create collision box for pool table
 
