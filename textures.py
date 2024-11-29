@@ -79,7 +79,7 @@ class Textures:
         screen = pygame.display.set_mode((1200, 800), pygame.DOUBLEBUF|pygame.OPENGL)
 
         # Create a texture
-        Textures.checkerboard_floor_name = Textures.create_checkerboard_texture()
+        Textures.checkerboard_floor_name = Textures.create_checkerboard_texture_adjustable()
 
         # Load the rest of the textures from images
         Textures.texture_array = glGenTextures(13)  # Texture names for all textures to create
@@ -110,6 +110,44 @@ class Textures:
         Textures.load_texture(Textures.wood_panel_name, Textures.wood_panel_file)
         Textures.load_texture(Textures.ceiling_name, Textures.ceiling_file)
         Textures.load_texture(Textures.wall_name, Textures.wall_file)
+
+    def create_checkerboard_texture_adjustable(size=128, checker_size=8):
+        """
+        Create a checkerboard texture with sharp edges.
+        :param size: Size of the texture (e.g., 128x128 pixels).
+        :param checker_size: Size of each checker square in pixels.
+        :return: OpenGL texture ID for the checkerboard texture.
+        """
+        # Generate a new texture ID
+        texture = glGenTextures(1)
+
+        # Bind the texture so subsequent calls affect this texture
+        glBindTexture(GL_TEXTURE_2D, texture)
+
+        # Create the checkerboard pattern
+        data = []
+        for i in range(size):
+            for j in range(size):
+                if ((i // checker_size) + (j // checker_size)) % 2 == 0:
+                    data.extend([255, 255, 255])  # White square
+                else:
+                    data.extend([0, 0, 0])  # Black square
+
+        # Convert the list to bytes (OpenGL expects bytes for texture data)
+        data = bytes(data)
+
+        # Specify the texture parameters and upload the texture data to OpenGL
+        glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGB, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+        )
+
+        # Set texture filtering to nearest-neighbor for sharp edges
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+
+        return texture
+
+
 
     def create_checkerboard_texture():
         # Professor Duncan told in the project that we need a checkerboard pattern for the floor so for that

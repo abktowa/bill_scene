@@ -343,16 +343,10 @@ class Room:
         # Set the material to be combined with the textures
         Materials.set_material(GL_FRONT, Materials.BRIGHT_WHITE)
         
-        # Floor with checkerboard texture
+        # Floor with checkerboard texture (20 x 20)
         Textures.set_texture(Textures.checkerboard_floor_name)
 
-        glBegin(GL_QUADS)
-        glNormal3f(0, 1, 0)
-        glTexCoord2f(0, 0); glVertex3f(-ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
-        glTexCoord2f(0, 4); glVertex3f(-ROOM_WIDTH/2, 0, ROOM_DEPTH/2)
-        glTexCoord2f(4, 4); glVertex3f(ROOM_WIDTH/2, 0, ROOM_DEPTH/2)
-        glTexCoord2f(4, 0); glVertex3f(ROOM_WIDTH/2, 0, -ROOM_DEPTH/2)
-        glEnd()
+        BasicShapes.draw_plane_with_grid(ROOM_WIDTH, ROOM_DEPTH, 30, 30)
 
 
         # Walls
@@ -426,7 +420,7 @@ class Room:
         if self.show_picture:
             # Add a frame to the back wall
             glPushMatrix()
-            glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.25)  # Center frame on the back wall and move aout a little
+            glTranslatef(0, ROOM_HEIGHT / 2, -ROOM_DEPTH / 2 + 0.25)  # Center frame on the back wall and move out a little
             glRotatef(90, 0, 0, -1)  # Rotate 90 degrees clockwise around the Z-axis
             glTranslate(-1,0,0) # Move up
             glTranslate(0,3.5,0) # Move to the right
