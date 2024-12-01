@@ -6,7 +6,6 @@
 #   This program creates a fully interactive 3D room, with textured walls/floor/ceiling
 #   The player may also interact with the lights, pool table, as well as the pair of dice
 #   on the corner table
-# Bonus Additions: Balls spin when moved, which is best seen on the eight ball
 #   
 #==============================
 import pygame
