@@ -1,4 +1,14 @@
-
+#==============================
+# Matthew Glennon, Shmuel Feld, Aban Khan, Sai Vemula, Jose Salgado, Camryn Keller
+# CSC645: Computer Graphics
+#   Fall 2024
+# Description:
+#   This program creates a fully interactive 3D room, with textured walls/floor/ceiling
+#   The player may also interact with the lights, pool table, as well as the pair of dice
+#   on the corner table
+# Bonus Additions: Balls spin when moved, which is best seen on the eight ball
+#   
+#==============================
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -230,7 +240,7 @@ class Room:
         if keys[pygame.K_SPACE] and Room.in_shooting_mode:
             Room.in_shooting_mode = False
             Components.shoot_cue(Room.shooting_angle)
-            
+                 
         #Dice control key
         if keys[pygame.K_x]:
                 Room.initial_dice_frame =  Room.global_frame
