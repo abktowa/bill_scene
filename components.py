@@ -12,8 +12,9 @@ from pool_ball import *
 from textures import *
 from room import *
 import random
+from utils import *
 #Global Variables, needed for pool ball functions
-global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle
+global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle, balls
 
 class Components:
 	
@@ -271,7 +272,7 @@ class Components:
         print("Press 3 to turn the spotlight light on/off\nPress 4 to turn the desk light on/off\nPress 5 to turn the flashlight on/off")
         print("Press \"X\" to spin the dice\nPress \"C\" to swing the lamp and press again for it to slow to a stop")
         print("Press \"P\" to enter Pool mode\nOnce in Pool mode, press \"J\" and \"L\" to aim the ball \nPress the space bar to shoot the ball")
-
+        
     #==============================
     # Cue Sticks
     #==============================
@@ -423,7 +424,7 @@ class Components:
 
     
     def draw_animated_pool_table_scene(in_shooting_mode, shooting_angle):
-        global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle
+        global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle, balls
         angle = shooting_angle
         glPushMatrix()
 
@@ -438,12 +439,8 @@ class Components:
         Textures.set_texture(Textures.wood_one_texture)
         Components.draw_cue_stick()
         glPopMatrix()
-        
         Components.draw_pool_table()
-
         glTranslatef(0, 3.08, 0)  # Move up from the ground
-
-
         # Draw the balls
         ball_1.draw()
         ball_2.draw()
@@ -452,13 +449,54 @@ class Components:
         eight_ball.draw()
         cue_ball.draw()
 
+        for i in range(len(balls)):
+            for j in range(i+1, len(balls)):
+                pos1 = (balls[i][0].position_x, balls[i][0].position_z)
+                pos2 = (balls[j][0].position_x, balls[j][0].position_z)
+                isMoving = balls[i][0].power != 0
+                noCooldown = balls[i][1] == 0 and balls[j][1] == 0
+                if math.dist(pos1,pos2)< 2 * balls[i][0].radius and isMoving and noCooldown:
+                    #Set 1/12 second cooldown to prevent repeat collisions
+                    balls[i][1] = 5
+                    balls[j][1] = 5
+
+                    #Calculate the instance vector for carrying movement
+                    diffX = balls[j][0].position_x - balls[i][0].position_x
+                    diffZ = balls[j][0].position_z - balls[i][0].position_z
+                    instVector = Vector(diffX, 0, diffZ)
+                    instVector.normalize()
+                    balls[j][0].changeDirection(instVector)
+                    
+
+                    #Next, calculate the power of both colliding pool balls
+                    #Note: Magnitude of the direction vectors is 1, simplifying calculation
+                    dotProduct = balls[i][0].direction.dx * balls[j][0].direction.dx + balls[i][0].direction.dz * balls[j][0].direction.dz
+                    pathAngle = math.degrees(math.acos(dotProduct))
+
+                    balls[i][0].power = balls[i][0].power * pathAngle / 90
+                    balls[j][0].power = balls[i][0].power * (90 - pathAngle)/90
+
+                    #Finally, calculate the new direction of the original ball, noting edge cases when going below 0 degrees
+                    if (balls[i][0].getAngle() % 360 < balls[j][0].getAngle() %360) or (balls[i][0].getAngle() % 360 > 270 and balls[j][0].getAngle() % 360 < 90):
+                        desiredAngle = balls[i][0].getAngle() - 90
+                    else:
+                        desiredAngle = balls[i][0].getAngle() + 90
+                    #Set new direction for original ball
+                    desiredVector = Vector(math.cos(math.radians(desiredAngle)),0,math.sin(math.radians(desiredAngle)))
+                    balls[i][0].changeDirection(desiredVector)
+            #Lower Cooldowns by 1 for all collisions
+            if balls[i][1] > 0:
+                balls[i][1] -= 1
+
+        #Draw the dashed lines for the cue ball
         if in_shooting_mode:
             PoolBall.draw_dash(cue_ball, shooting_angle, 1)
 
         glPopMatrix()
 
+    #Sets initial state for the pool balls
     def config_balls():
-        global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball
+        global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, balls
         # Create the balls
         ball_1 = PoolBall(False, None, False) # has_texture, texture_name, is_cue
         ball_2 = PoolBall(False, None, False) 
@@ -467,7 +505,8 @@ class Components:
         eight_ball = PoolBall(True, Textures.eight_ball_texture, False)
         cue_ball = PoolBall(False, None, True)
 
-        # Configarate the balls
+
+        # Configure the balls
         ball_1.set_config(0.5, 0.3, 0, 0) # position_x, position_z, rotation_x, rotation_z
         ball_2.set_config(-0.3, 1, 0, 0)
         ball_3.set_config(1, 0.8, 0, 0)
@@ -475,11 +514,16 @@ class Components:
         eight_ball.set_config(0.3, 0.7, 100, 0)
         cue_ball.set_config(-2, 0, 0, 0)
 
+        #Place balls in a list, with cooldown collisions: Needed for ball movement and interactions
+        balls = [[cue_ball, 0], [ball_1, 0], [ball_2, 0], [ball_3, 0], [ball_4,0], [eight_ball, 0]]
+        
+    #Takes the shooting angle from Room, then pushes the cue_ball in that direction
     def shoot_cue(shootingAngle):
         cue_ball.direction.dx = math.cos(math.radians(shootingAngle))
         cue_ball.direction.dz = -math.sin(math.radians(shootingAngle))
         cue_ball.power = .4
 
+    #Method which draws the picture for the room
     def draw_picture(length, width, height):
         face_textures = [ 
             Textures.wall_photo_name

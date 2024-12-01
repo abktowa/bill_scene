@@ -145,37 +145,47 @@ class Room:
         keys = pygame.key.get_pressed()
         moveBack = False
         if keys[pygame.K_w]:
-            self.camera.slideCollision(0,0,-0.1)
+            self.camera.slideCollision(0,0,-0.1) #First move collision box
+            #Check and see if a collision occurs with objects, if so flag it
             for i in range(len(collisionList)):
                 if collisionList[i].pointInside(self.camera.collisionPoint):
                     moveBack = True
+            #Check and see if wall collision occurs, if so flag it
             if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
                 moveBack = True
-            
+
+            #On collision, move collider back onto the player, do not move forward
             if moveBack == True:
                 self.camera.slideCollision(0,0,.1)
             else:
                 self.camera.slide(0, 0, -0.1)
 
         if keys[pygame.K_s]:
-            self.camera.slideCollision(0,0,0.1)
+            self.camera.slideCollision(0,0,0.1) #First move collision box
+            #Check and see if a collision occurs with objects, if so flag it
             for i in range(len(collisionList)):
                 if collisionList[i].pointInside(self.camera.collisionPoint):
                     moveBack = True
+            #Check and see if wall collision occurs, if so flag it
             if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
                 moveBack = True
 
+            #On collision, move collider back onto the player, do not move forward
             if moveBack == True:
                 self.camera.slideCollision(0,0,-.1)
             else:
                 self.camera.slide(0, 0, 0.1)
         if keys[pygame.K_a]:
             self.camera.slideCollision(-.1,0,0)
+            #Check and see if a collision occurs with objects, if so flag it
             for i in range(len(collisionList)):
                 if collisionList[i].pointInside(self.camera.collisionPoint):
                     moveBack = True
+            #Check and see if wall collision occurs, if so flag it
             if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
                 moveBack = True
+
+            #On collision, move collider back onto the player, do not move forward
             if moveBack == True:
                 self.camera.slideCollision(.1,0,0)
             else:
@@ -183,16 +193,20 @@ class Room:
         if keys[pygame.K_d]:
             
             self.camera.slideCollision(.1,0,0)
+            #Check and see if a collision occurs with objects, if so flag it
             for i in range(len(collisionList)):
                 if collisionList[i].pointInside(self.camera.collisionPoint):
                     moveBack = True
+            #Check and see if wall collision occurs, if so flag it
             if self.camera.collisionPoint.x < .2 -ROOM_WIDTH/2 or self.camera.collisionPoint.x > -.2 + ROOM_WIDTH/2 or self.camera.collisionPoint.z < .2 -ROOM_DEPTH/2 or self.camera.collisionPoint.z > -.2 + ROOM_DEPTH/2:
                 moveBack = True
 
+            #On collision, move collider back onto the player, do not move forward
             if moveBack == True:
                 self.camera.slideCollision(-.1,0,0)
             else:
                 self.camera.slide(.1, 0, 0)
+        #Camera turning functions!
         if keys[pygame.K_LEFT]:
             self.camera.turn(1)
         if keys[pygame.K_RIGHT]:
@@ -200,7 +214,9 @@ class Room:
         if keys[pygame.K_DOWN]:
             self.camera.rise(-1)
         if keys[pygame.K_UP]:
-            self.camera.rise(1)   
+            self.camera.rise(1)  
+
+        #Pool table control functions 
         if keys[pygame.K_p]:
             if Room.toggleHold != True:
                 Room.in_shooting_mode = not Room.in_shooting_mode
@@ -215,13 +231,15 @@ class Room:
             Room.in_shooting_mode = False
             Components.shoot_cue(Room.shooting_angle)
             
-
+        #Dice control key
         if keys[pygame.K_x]:
                 Room.initial_dice_frame =  Room.global_frame
                 Room.animate_dice = True
+        #Hanging light control key
         if keys[pygame.K_c]:
             Room.animate_hanging_light = not Room.animate_hanging_light
 
+    #Function sets the animation frames of the room for the dice and light
     def animate(self):
 
         Room.global_frame += 1
@@ -241,7 +259,7 @@ class Room:
             else:
                 Room.hanging_light_frame = 0
                     
-
+    #Light orientation method
     def setup_lights(self):
 
         # Red Light
@@ -315,7 +333,7 @@ class Room:
             glDisable(GL_LIGHT5)
 
 
-
+    #Draws the sphere which represents each light
     def draw_light_indicator(self, position, color):
         """
         Draw a self-illuminated sphere at the specified position.
@@ -330,6 +348,7 @@ class Room:
         glEnable(GL_LIGHTING)  # Re-enable lighting
         glPopMatrix()
 
+    #Light toggling
     def toggle_light(self, index):
         """Toggle specific light based on index"""
         light_names = ['red', 'green', 'blue', 'spotlight', 'lamp', 'flashlight']

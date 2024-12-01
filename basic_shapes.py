@@ -66,7 +66,7 @@ class BasicShapes:
         
         # Place in the correct postion/rotation
         glTranslate(position_x, 0, position_z)
-        glRotate(rotate_x, 0,0,0)
+        glRotate(rotate_x * 2, 1,0,0)
         glRotate(rotate_z, 0,0,1)
         
         # Draw the sphere with specified radius, smooth appearance with 32 slices and stacks

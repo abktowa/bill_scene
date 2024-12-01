@@ -3,7 +3,7 @@
 # Description:
 #   Defines utility classes for 3D graphics
 #==============================
-
+import math
 class Point:
     """A simple 3D Point Class"""
 
@@ -30,9 +30,9 @@ class Point:
                     self.z + t*v.dz)
 
 class Vector:
-    """A simple 3D Vector Class"""
+    """A simple 3D Vector Class
     def __init__(self, p=None, q=None):
-        """A constructor for Vector class between two Points p and q"""
+        #A constructor for Vector class between two Points p and q
         if q is None:
             if p is None:
                 self.dx = 0
@@ -46,7 +46,28 @@ class Vector:
             self.dx = q.x - p.x
             self.dy = q.y - p.y
             self.dz = q.z - p.z
+    """
+
+    def __init__(self, dx,dy,dz):
+        self.dx = dx
+        self.dy = dy
+        self.dz = dz
 
     def __str__(self):
         """Basic string representation of this vector"""
         return "<%s,%s,%s>" % (self.dx, self.dy, self.dz)
+    
+    def magnitude(self):
+        """Computes the magnitude (length) of this vector"""
+        return math.sqrt(self.dx*self.dx + self.dy*self.dy + self.dz*self.dz)
+    
+    def normalize(self):
+        """Normalizes this Vector"""
+        mag = self.magnitude()
+        if mag != 0:
+            self.dx /= mag
+            self.dy /= mag
+            self.dz /= mag
+        
+
+    
