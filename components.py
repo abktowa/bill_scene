@@ -33,7 +33,7 @@ class Components:
             Textures.set_texture(texture)
 
         glTranslatef(0, 2.5, 0)  # Move up from the ground
-        BasicShapes.draw_rectangle(length, width, 0.5)  # Draw surface
+        BasicShapes.draw_rectangle_with_grid(length, width, 0.5,5,20)  # Draw surface
         glTranslatef(0, -2.5, 0)  # Move back down
 
         percent_length = length * 0.75
@@ -367,7 +367,7 @@ class Components:
         
         Textures.set_texture(Textures.wood_one_texture) # Set the texture
         glTranslatef(0, 1.5, 0)  # Move up from the ground
-        BasicShapes.draw_rectangle(7.7,3.7,1) # Draw the trim
+        BasicShapes.draw_rectangle_with_grid(7.7,3.7,1, 8,20) # Draw the trim
 
         glTranslatef(0, 1.5, 0)  # Move up more
         Materials.set_material(GL_FRONT, Materials.GREEN_FELT) # Set the material
@@ -522,16 +522,19 @@ class Components:
         cue_ball.direction.dx = math.cos(math.radians(shootingAngle))
         cue_ball.direction.dz = -math.sin(math.radians(shootingAngle))
         cue_ball.power = .4
-
     #Method which draws the picture for the room
-    def draw_picture(length, width, height):
-        face_textures = [ 
-            Textures.wall_photo_name
-        ]
+
+    def draw_picture(length, frame_width, height):
+        
         glPushMatrix()
         # BasicShapes.draw_cube(0.10, 0.10, 0.10, face_textures)
         Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
-        BasicShapes.draw_cube(length,width, height, face_textures)
+        Textures.set_texture(Textures.wall_photo_name)
+
+        glTranslate(0,length/2,frame_width/2)
+        glRotate(90, 1,0,0)
+        glRotate(90, 0,1,0)
+        BasicShapes.draw_plane_with_grid(length, height, 5,5)
         glPopMatrix()
 
     def draw_framed_picture(length, width, height):
@@ -543,14 +546,14 @@ class Components:
         Materials.set_material(GL_FRONT, Materials.BALL_PLASTIC)
         Textures.set_texture(Textures.wood_two_texture)
         glTranslate(0, -0.25, 0) # Go to bottom of picture
-        BasicShapes.draw_rectangle(height, width, 0.25)
+        BasicShapes.draw_rectangle_with_grid(height, width, 0.25, 5,5)
         glTranslate(0, length + 0.25, 0) # Go to top
-        BasicShapes.draw_rectangle(height, width, 0.25)
+        BasicShapes.draw_rectangle_with_grid(height, width, 0.25, 5,5)
         glTranslate(0, -(length+0.25), 0) # Go to bottom
         glTranslate(-(length/2 + 0.125), 0, 0) # Go to left
-        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+        BasicShapes.draw_rectangle_with_grid(0.25, width, height + 0.5, 5,5)
         glTranslate(length + 0.25, 0, 0) # Go to right
-        BasicShapes.draw_rectangle(0.25, width, height + 0.5)
+        BasicShapes.draw_rectangle_with_grid(0.25, width, height + 0.5, 5,5)
 
         glPopMatrix()
 

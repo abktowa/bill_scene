@@ -142,6 +142,161 @@ class BasicShapes:
 
         """
 
+    # Use this rectangle for drawing textured objects to ensure proper lighting. 
+    # Larger objects generally require more rows and columns, while smaller ones can use fewer. 
+    # Increasing the number of columns improves lighting accuracy but can slow down the program. 
+    # Aim to find the right balance between visual quality and performance for your object.
+    def draw_rectangle_with_grid(length, width, height, rows, cols):
+        """
+        Draw a rectangular prism with grid vertices on each face.
+        :param length: Distance in the x direction.
+        :param width: Distance in the z direction.
+        :param height: Distance in the y direction.
+        :param rows: Number of rows for grid.
+        :param cols: Number of columns for grid.
+        """
+        glPushMatrix()
+
+        # Half dimensions for centering
+        half_length = length / 2
+        half_width = width / 2
+
+        # Helper to draw one face as a grid
+        def draw_face(p1, p2, p3, p4, tex_coords):
+            """
+            Draws a single face of the rectangular prism.
+            :param p1, p2, p3, p4: Four corners of the face in counterclockwise order.
+            :param tex_coords: Texture coordinates for the four corners.
+            """
+            dx1 = (p2[0] - p1[0]) / cols
+            dy1 = (p2[1] - p1[1]) / cols
+            dz1 = (p2[2] - p1[2]) / cols
+
+            dx2 = (p4[0] - p1[0]) / rows
+            dy2 = (p4[1] - p1[1]) / rows
+            dz2 = (p4[2] - p1[2]) / rows
+
+            tx1, ty1 = tex_coords[1][0] - tex_coords[0][0], tex_coords[1][1] - tex_coords[0][1]
+            tx2, ty2 = tex_coords[3][0] - tex_coords[0][0], tex_coords[3][1] - tex_coords[0][1]
+
+            for i in range(rows):
+                glBegin(GL_TRIANGLE_STRIP)
+                for j in range(cols + 1):
+                    # Top vertex
+                    glTexCoord2f(tex_coords[0][0] + j * tx1 / cols, tex_coords[0][1] + (i + 1) * ty2 / rows)
+                    glVertex3f(
+                        p1[0] + j * dx1 + (i + 1) * dx2,
+                        p1[1] + j * dy1 + (i + 1) * dy2,
+                        p1[2] + j * dz1 + (i + 1) * dz2,
+                    )
+                    # Bottom vertex
+                    glTexCoord2f(tex_coords[0][0] + j * tx1 / cols, tex_coords[0][1] + i * ty2 / rows)
+                    glVertex3f(
+                        p1[0] + j * dx1 + i * dx2,
+                        p1[1] + j * dy1 + i * dy2,
+                        p1[2] + j * dz1 + i * dz2,
+                    )
+                glEnd()
+
+        # Vertices for the rectangular prism
+        vertices = [
+            [-half_length, 0, -half_width],       # Vertex 0
+            [half_length, 0, -half_width],        # Vertex 1
+            [half_length, height, -half_width],   # Vertex 2
+            [-half_length, height, -half_width],  # Vertex 3
+            [-half_length, 0, half_width],        # Vertex 4
+            [half_length, 0, half_width],         # Vertex 5
+            [half_length, height, half_width],    # Vertex 6
+            [-half_length, height, half_width]    # Vertex 7
+        ]
+
+        # Texture coordinates for a face
+        tex_coords = [
+            (0.0, 0.0),  # Bottom-left
+            (1.0, 0.0),  # Bottom-right
+            (1.0, 1.0),  # Top-right
+            (0.0, 1.0)   # Top-left
+        ]
+
+        # Draw each face of the rectangular prism
+        draw_face(vertices[0], vertices[1], vertices[2], vertices[3], tex_coords)  # Bottom
+        draw_face(vertices[4], vertices[5], vertices[6], vertices[7], tex_coords)  # Top
+        draw_face(vertices[0], vertices[4], vertices[7], vertices[3], tex_coords)  # Left
+        draw_face(vertices[1], vertices[5], vertices[6], vertices[2], tex_coords)  # Right
+        draw_face(vertices[3], vertices[2], vertices[6], vertices[7], tex_coords)  # Back
+        draw_face(vertices[0], vertices[1], vertices[5], vertices[4], tex_coords)  # Front
+
+        glPopMatrix()
+
+    
+    def draw_plane_with_grid(length, width, rows, cols):
+        """
+        Draw a single textured plane with a grid of vertices.
+        :param length: Length of the plane (X-axis direction).
+        :param width: Width of the plane (Z-axis direction).
+        :param rows: Number of rows for the grid.
+        :param cols: Number of columns for the grid.
+        """
+        glPushMatrix()
+
+        # Half dimensions for centering
+        half_length = length / 2
+        half_width = width / 2
+
+        # Bottom-left and top-right corners of the plane
+        p1 = [-half_length, 0, -half_width]  # Bottom-left
+        p2 = [half_length, 0, -half_width]  # Bottom-right
+        p3 = [half_length, 0, half_width]   # Top-right
+        p4 = [-half_length, 0, half_width]  # Top-left
+
+        # Texture coordinates for a plane
+        tex_coords = [
+            (0.0, 0.0),  # Bottom-left
+            (1.0, 0.0),  # Bottom-right
+            (1.0, 1.0),  # Top-right
+            (0.0, 1.0)   # Top-left
+        ]
+
+        # Helper function to draw the grid
+        def draw_grid(p1, p2, p3, p4, tex_coords, rows, cols):
+            """
+            Draws a grid on the plane using triangle strips.
+            """
+            dx1 = (p2[0] - p1[0]) / cols
+            dz1 = (p2[2] - p1[2]) / cols
+
+            dx2 = (p4[0] - p1[0]) / rows
+            dz2 = (p4[2] - p1[2]) / rows
+
+            tx1, tz1 = tex_coords[1][0] - tex_coords[0][0], tex_coords[1][1] - tex_coords[0][1]
+            tx2, tz2 = tex_coords[3][0] - tex_coords[0][0], tex_coords[3][1] - tex_coords[0][1]
+
+            for i in range(rows):
+                glBegin(GL_TRIANGLE_STRIP)
+                for j in range(cols + 1):
+                    # Top vertex
+                    glTexCoord2f(tex_coords[0][0] + j * tx1 / cols, tex_coords[0][1] + (i + 1) * tz2 / rows)
+                    glVertex3f(
+                        p1[0] + j * dx1 + (i + 1) * dx2,
+                        p1[1],
+                        p1[2] + j * dz1 + (i + 1) * dz2,
+                    )
+                    # Bottom vertex
+                    glTexCoord2f(tex_coords[0][0] + j * tx1 / cols, tex_coords[0][1] + i * tz2 / rows)
+                    glVertex3f(
+                        p1[0] + j * dx1 + i * dx2,
+                        p1[1],
+                        p1[2] + j * dz1 + i * dz2,
+                    )
+                glEnd()
+
+        # Draw the plane
+        draw_grid(p1, p2, p3, p4, tex_coords, rows, cols)
+
+        glPopMatrix()
+
+
+
     # Function to draw a dice
     def draw_cube(length, width, height, face_textures=None):
         """
