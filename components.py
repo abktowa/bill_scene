@@ -9,7 +9,7 @@ from basic_shapes import *
 from components import *
 from materials import *
 from pool_ball import *
-from textures import *
+# from textures import *
 from room import *
 import random
 from utils import *
@@ -17,8 +17,10 @@ from utils import *
 global ball_1, ball_2, ball_3, ball_4, cue_ball, eight_ball, angle, balls
 
 class Components:
-	
-    Textures.initialize_textures()  # Ensure textures are loaded
+
+    def initialize():
+        from textures import Textures
+        Textures.initialize_textures()  # Ensure textures are loaded
 
     
     #==============================

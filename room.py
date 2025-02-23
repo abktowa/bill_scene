@@ -476,6 +476,7 @@ class Room:
 
 
     def run(self):
+        Components.initialize()
         """Set up Pool Balls"""
         Components.config_balls()
         """Main game loop"""
